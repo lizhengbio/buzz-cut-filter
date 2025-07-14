@@ -138,6 +138,19 @@ export async function createCheckoutSession(
   discountCode?: string
 ) {
   try {
+    // 添加调试信息：打印传入的参数和环境变量状态
+    console.log("Creating checkout session with parameters:", {
+      productId,
+      email,
+      userId,
+      productType,
+      credits_amount,
+      discountCode,
+      apiUrl: process.env.CREEM_API_URL,
+      hasApiKey: !!process.env.CREEM_API_KEY,
+      hasSuccessUrl: !!process.env.CREEM_SUCCESS_URL,
+    });
+
     const requestBody: any = {
       product_id: productId,
       // request_id: `${userId}-${Date.now()}`, // use Unique request ID if you need
@@ -161,6 +174,9 @@ export async function createCheckoutSession(
       requestBody.discount_code = discountCode;
     }
 
+    // 打印最终的请求体
+    console.log("Request body:", JSON.stringify(requestBody, null, 2));
+
     const response = await fetch(process.env.CREEM_API_URL + "/checkouts", {
       method: "POST",
       headers: {
@@ -170,14 +186,34 @@ export async function createCheckoutSession(
       body: JSON.stringify(requestBody),
     });
 
+    // 添加响应状态调试信息
+    console.log("Creem API response status:", response.status);
+    console.log("Creem API response headers:", Object.fromEntries(response.headers.entries()));
+
     if (!response.ok) {
-      throw new Error("Failed to create checkout session");
+      // 获取详细的错误信息
+      const errorText = await response.text();
+      console.error("Creem API Error Details:", {
+        status: response.status,
+        statusText: response.statusText,
+        errorBody: errorText,
+      });
+      throw new Error(`Failed to create checkout session: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
+    console.log("Checkout session created successfully:", {
+      checkout_url: data.checkout_url,
+      response_keys: Object.keys(data),
+    });
     return data.checkout_url;
   } catch (error) {
     console.error("Error creating checkout session:", error);
+    // 添加更详细的错误信息
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
     throw error;
   }
 }
