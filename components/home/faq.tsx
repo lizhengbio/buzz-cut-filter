@@ -1,39 +1,39 @@
 const faqs = [
   {
     id: 1,
-    question: "How does the global authentication system work?",
+    question: "How accurate is the buzz cut preview?",
     answer:
-      "Our authentication system is built on Supabase, which supports email/password login, OAuth providers (like Google), and magic link authentication. It works seamlessly across all regions worldwide and includes features like multi-factor authentication and session management.",
+      "Our AI-powered technology provides highly accurate previews with a 95% accuracy rate. The system uses advanced hair simulation algorithms to show realistic results for different guard lengths and colors, helping you make confident decisions about your hairstyle.",
   },
   {
     id: 2,
-    question: "What payment methods are supported?",
+    question: "Is BuzzCut AI free to use?",
     answer:
-      "Through our integration with Creem.io, we support major credit cards, PayPal, and various regional payment methods. The system handles multiple currencies and automatically manages exchange rates, making it easy to accept payments from customers worldwide.",
+      "Yes! BuzzCut AI is completely free to use. You can try unlimited buzz cut variations, use the camera preview, upload photos, and download high-resolution results without any cost or registration required.",
   },
   {
     id: 3,
-    question: "Is this starter kit developer-friendly for beginners?",
+    question: "What guard lengths are available?",
     answer:
-      "Absolutely! We've designed this kit with simplicity in mind. It includes comprehensive documentation, clean code structure, and follows best practices. Even if you're new to Next.js or React, you'll find it easy to understand and extend the codebase.",
+      "We offer 12 different guard lengths ranging from 1mm to 12mm. Each length is precisely calibrated to show realistic results: 1mm (nearly bald), 3mm (very short), 6mm (short), 9mm (medium), and 12mm (longer buzz cut).",
   },
   {
     id: 4,
-    question: "Can I deploy this application anywhere?",
+    question: "Can I try different hair colors?",
     answer:
-      "Yes, the application can be deployed to any modern hosting platform. We provide detailed deployment guides for Vercel, as well as instructions for deploying to traditional servers. The application is optimized to work globally with minimal configuration.",
+      "Absolutely! You can experiment with various hair colors including natural brown, black, blonde, gray, and others. This helps you see how different colors complement your features and skin tone.",
   },
   {
     id: 5,
-    question: "How do I manage subscriptions and billing?",
+    question: "How do I get the best results?",
     answer:
-      "The starter kit includes a complete subscription management system. You can define different subscription tiers, manage billing cycles, and handle customer accounts through the admin dashboard. All payment processing is handled securely by Creem.io.",
+      "For best results, use a well-lit photo with your face clearly visible and hair not covered by hats or accessories. The AI works best with front-facing photos where your hairline is visible. Both camera and uploaded photos work great.",
   },
   {
     id: 6,
-    question: "Is the code base accessible for developers in all regions?",
+    question: "Is my photo data secure?",
     answer:
-      "Yes, we've carefully selected dependencies and hosting providers that work well globally. The codebase is optimized for developers worldwide, with consideration for different network environments and accessibility requirements.",
+      "Yes, your privacy is our priority. Uploaded photos are automatically deleted after 24 hours, and we never store or share your personal images. All processing is done securely and your data remains completely private.",
   },
 ]
 

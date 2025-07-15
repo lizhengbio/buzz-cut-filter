@@ -1,10 +1,10 @@
 'use client'
 
 const stats = [
-  { id: 1, name: 'Creators on the platform', value: '8,000+' },
-  { id: 2, name: 'Flat platform fee', value: '3%' },
-  { id: 3, name: 'Uptime guarantee', value: '99.9%' },
-  { id: 4, name: 'Paid out to creators', value: '$70M' },
+  { id: 1, name: 'Users helped find their perfect buzz cut', value: '50,000+' },
+  { id: 2, name: 'Average processing time', value: '< 3s' },
+  { id: 3, name: 'Accuracy rate', value: '95%' },
+  { id: 4, name: 'Hairstyles generated', value: '2M+' },
 ]
 
 export default function Stats() {
@@ -14,9 +14,9 @@ export default function Stats() {
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
             <h2 className="text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl">
-              Trusted by creators worldwide
+              Trusted by buzz cut enthusiasts
             </h2>
-            <p className="mt-4 text-lg/8 text-muted-foreground">Lorem ipsum dolor sit amet consect adipisicing possimus.</p>
+            <p className="mt-4 text-lg/8 text-muted-foreground">Join thousands who've found their perfect buzz cut with our AI-powered preview technology.</p>
           </div>
           <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
