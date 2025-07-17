@@ -61,8 +61,12 @@ export class KieImageAPI {
   private apiKey: string;
   private baseUrl: string;
 
-  constructor(apiKey: string = KIE_API_KEY, baseUrl: string = KIE_API_BASE_URL) {
-    this.apiKey = apiKey;
+  constructor(apiKey?: string, baseUrl: string = KIE_API_BASE_URL) {
+    const key = apiKey || KIE_API_KEY;
+    if (!key) {
+      throw new Error("KIE_API_KEY is required");
+    }
+    this.apiKey = key;
     this.baseUrl = baseUrl;
   }
 

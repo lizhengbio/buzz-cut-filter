@@ -25,10 +25,8 @@ export async function POST(request: NextRequest) {
       image_base64,
       color,
       {
-        hairMask: hairMask || undefined,
-        strength: 0.6, // Moderate change for hair only
-        guidanceScale: 7.5, // Good balance
-        steps: 50 // High quality
+        safetyTolerance: 2,
+        promptUpsampling: false
       }
     );
 

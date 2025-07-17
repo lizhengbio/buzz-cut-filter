@@ -2,8 +2,15 @@
 
 import { useState } from "react";
 
+interface TestResult {
+  fluxDirectTest?: any;
+  fluxStatusTest?: any;
+  kieTest?: any;
+  [key: string]: any;
+}
+
 export default function DebugImagePage() {
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<TestResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploadedImageBase64, setUploadedImageBase64] = useState<string>("");
 
@@ -79,14 +86,14 @@ export default function DebugImagePage() {
       const data = await response.json();
       console.log("Flux direct test result:", data);
       
-      setResult(prev => ({
+      setResult((prev: TestResult | null) => ({
         ...prev,
         fluxDirectTest: data
       }));
       
     } catch (error) {
       console.error("Flux direct test error:", error);
-      setResult(prev => ({
+      setResult((prev: TestResult | null) => ({
         ...prev,
         fluxDirectError: error instanceof Error ? error.message : String(error)
       }));
