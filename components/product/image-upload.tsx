@@ -2,18 +2,20 @@
 
 import { useCallback, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { Upload, X } from "lucide-react";
 
 interface ImageUploadProps {
   onImageUpload: (file: File) => void;
   isUploading: boolean;
   uploadedImageUrl?: string | null;
+  onClear?: () => void;
 }
 
 export function ImageUpload({
   onImageUpload,
   isUploading,
   uploadedImageUrl,
+  onClear,
 }: ImageUploadProps) {
   const [dragActive, setDragActive] = useState(false);
 
@@ -73,6 +75,7 @@ export function ImageUpload({
     return true;
   };
 
+  // Uploaded image display
   if (uploadedImageUrl) {
     return (
       <Card>
@@ -82,26 +85,15 @@ export function ImageUpload({
               src={uploadedImageUrl}
               alt="Uploaded image"
               className="w-full h-64 object-cover rounded-lg"
-              crossOrigin="anonymous"
-              onError={(e) => {
-                console.error("Image failed to load:", uploadedImageUrl);
-                // Try to reload the image or show placeholder
-                const img = e.target as HTMLImageElement;
-                img.src = "/api/placeholder/400/300"; // Fallback
-              }}
-              onLoad={() => {
-                console.log("Image loaded successfully");
-              }}
             />
-            <button
-              onClick={() => {
-                // Clear uploaded image - force component reset
-                window.location.reload();
-              }}
-              className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            {onClear && (
+              <button
+                onClick={onClear}
+                className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
           <p className="text-sm text-muted-foreground mt-2 text-center">
             Image uploaded successfully and ready for processing
@@ -111,6 +103,7 @@ export function ImageUpload({
     );
   }
 
+  // Upload area
   return (
     <Card className={`transition-colors ${dragActive ? "border-primary" : ""}`}>
       <CardContent className="p-6">

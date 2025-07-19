@@ -3,44 +3,51 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, RotateCcw, Share2, CheckCircle } from "lucide-react";
-import { GenerationResult, GenerationStatus } from "./buzz-cut-simulator";
 
+// Simplified component interface
 interface ResultDisplayProps {
-  status: GenerationStatus;
-  result: GenerationResult | null;
+  state: "idle" | "uploading" | "generating" | "success" | "error";
+  originalImage: string | null;
+  resultImage: string | null;
   error: string | null;
   onReset: () => void;
 }
 
 export function ResultDisplay({
-  status,
-  result,
+  state,
+  originalImage,
+  resultImage,
   error,
   onReset,
 }: ResultDisplayProps) {
+  
+  /**
+   * Download result image
+   */
   const handleDownload = async () => {
-    if (!result) return;
+    if (!resultImage) return;
     
     try {
-      const response = await fetch(result.resultImageUrl);
+      const response = await fetch(resultImage);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       
       const a = document.createElement("a");
       a.href = url;
-      a.download = `buzz-cut-${result.id}.png`;
+      a.download = `buzz-cut-${Date.now()}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      console.error("Failed to download image:", err);
+      console.error("Download failed:", err);
     }
   };
 
+  /**
+   * Share result
+   */
   const handleShare = async () => {
-    if (!result) return;
-    
     if (navigator.share) {
       try {
         await navigator.share({
@@ -49,7 +56,7 @@ export function ResultDisplay({
           url: window.location.href,
         });
       } catch (err) {
-        console.error("Failed to share:", err);
+        console.error("Share failed:", err);
       }
     } else {
       // Fallback: copy to clipboard
@@ -58,7 +65,8 @@ export function ResultDisplay({
     }
   };
 
-  if (status === "idle") {
+  // Idle state
+  if (state === "idle") {
     return (
       <Card className="h-full">
         <CardContent className="p-6 flex items-center justify-center h-64">
@@ -73,7 +81,8 @@ export function ResultDisplay({
     );
   }
 
-  if (status === "generating") {
+  // Generating state
+  if (state === "generating") {
     return (
       <Card className="h-full">
         <CardContent className="p-6 flex items-center justify-center h-64">
@@ -81,10 +90,10 @@ export function ResultDisplay({
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-lg font-medium">Generating your buzz cut...</p>
             <p className="text-sm text-muted-foreground mt-2">
-              Using GPT-4o Vision AI with face preservation
+              Using Flux AI technology with face preservation
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              This may take up to 60 seconds
+              This may take 30-60 seconds
             </p>
           </div>
         </CardContent>
@@ -92,7 +101,8 @@ export function ResultDisplay({
     );
   }
 
-  if (status === "error" || error) {
+  // Error state
+  if (state === "error" || error) {
     return (
       <Card className="h-full">
         <CardContent className="p-6 flex items-center justify-center h-64">
@@ -102,7 +112,7 @@ export function ResultDisplay({
             </div>
             <p className="text-lg font-medium text-red-600">Generation Failed</p>
             <p className="text-sm text-muted-foreground mt-2">
-              {error || "Something went wrong. Please try again."}
+              {error || "Something went wrong, please try again"}
             </p>
             <Button
               onClick={onReset}
@@ -117,7 +127,8 @@ export function ResultDisplay({
     );
   }
 
-  if (status === "success" && result) {
+  // Success state
+  if (state === "success" && resultImage && originalImage) {
     return (
       <Card className="h-full">
         <CardHeader>
@@ -127,12 +138,12 @@ export function ResultDisplay({
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Image Comparison */}
+          {/* Image comparison */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium mb-2">Original</p>
               <img
-                src={result.originalImageUrl}
+                src={originalImage}
                 alt="Original"
                 className="w-full h-32 object-cover rounded-lg"
               />
@@ -140,29 +151,14 @@ export function ResultDisplay({
             <div>
               <p className="text-sm font-medium mb-2">Buzz Cut</p>
               <img
-                src={result.resultImageUrl}
+                src={resultImage}
                 alt="Buzz Cut Result"
                 className="w-full h-32 object-cover rounded-lg"
               />
             </div>
           </div>
           
-          {/* Face Similarity Score */}
-          <div className="p-3 bg-muted/50 rounded-lg">
-            <p className="text-sm">
-              Face Similarity Score: 
-              <span className={`font-medium ml-1 ${
-                result.faceSimilarity < 0.3 ? "text-green-600" : "text-yellow-600"
-              }`}>
-                {(result.faceSimilarity * 100).toFixed(1)}%
-              </span>
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Lower scores indicate better face preservation
-            </p>
-          </div>
-          
-          {/* Action Buttons */}
+          {/* Action buttons */}
           <div className="flex gap-2">
             <Button
               onClick={handleDownload}
@@ -188,7 +184,7 @@ export function ResultDisplay({
             </Button>
           </div>
           
-          {/* Watermark Notice for Free Users */}
+          {/* Free version notice */}
           <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-sm text-yellow-800">
               Free version includes watermark. Upgrade to Pro for 4K downloads without watermark.

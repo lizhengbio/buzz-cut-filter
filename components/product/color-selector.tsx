@@ -8,30 +8,27 @@ interface ColorSelectorProps {
   disabled?: boolean;
 }
 
+// Hair color options
 const COLOR_OPTIONS = [
   {
     id: "black",
     name: "Black",
     hex: "#1a1a1a",
-    description: "Classic black hair",
   },
   {
-    id: "brown",
+    id: "brown", 
     name: "Brown",
     hex: "#8b4513",
-    description: "Natural brown hair",
   },
   {
     id: "blonde",
     name: "Blonde",
     hex: "#ffd700",
-    description: "Golden blonde hair",
   },
   {
     id: "gray",
-    name: "Gray",
+    name: "Gray", 
     hex: "#808080",
-    description: "Silver gray hair",
   },
 ];
 
@@ -63,23 +60,10 @@ export function ColorSelector({
                   className="w-6 h-6 rounded-full border-2 border-white shadow-md"
                   style={{ backgroundColor: color.hex }}
                 />
-                <div className="text-left">
-                  <div className="font-medium">{color.name}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {color.description}
-                  </div>
-                </div>
+                <div className="font-medium">{color.name}</div>
               </div>
             </button>
           ))}
-        </div>
-        
-        <div className="mt-4 p-3 bg-muted/50 rounded-lg">
-          <p className="text-sm text-muted-foreground">
-            Selected: <span className="font-medium text-foreground">
-              {COLOR_OPTIONS.find(c => c.id === selectedColor)?.name}
-            </span>
-          </p>
         </div>
       </CardContent>
     </Card>
