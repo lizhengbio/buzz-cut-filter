@@ -6,33 +6,28 @@ import { ColorSelector } from "./color-selector";
 import { ResultDisplay } from "./result-display";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// 简化的状态类型
-type SimulatorState = "idle" | "uploading" | "generating" | "success" | "error";
+export type GenerationStatus = "idle" | "uploading" | "generating" | "success" | "error";
 
-// 核心数据结构
-interface SimulatorData {
-  state: SimulatorState;
-  selectedColor: string;
-  uploadedImage: string | null;
-  resultImageUrl: string | null;
-  error: string | null;
+export interface GenerationResult {
+  id: string;
+  originalImageUrl: string;
+  resultImageUrl: string;
+  color: string;
+  faceSimilarity: number;
+  createdAt: Date;
 }
 
 export function BuzzCutSimulator() {
-  // 单一数据源 - 所有状态从这里推导
-  const [data, setData] = useState<SimulatorData>({
-    state: "idle",
-    selectedColor: "black",
-    uploadedImage: null,
-    resultImageUrl: null,
-    error: null,
-  });
+  const [status, setStatus] = useState<GenerationStatus>("idle");
+  const [selectedColor, setSelectedColor] = useState<string>("black");
+  const [result, setResult] = useState<GenerationResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
 
-  /**
-   * Handle image upload
-   */
   const handleImageUpload = async (file: File) => {
-    setData(prev => ({ ...prev, state: "uploading", error: null }));
+    setStatus("uploading");
+    setError(null);
     
     try {
       const formData = new FormData();
@@ -47,136 +42,108 @@ export function BuzzCutSimulator() {
         throw new Error("Failed to upload image");
       }
       
-      const { imageBase64 } = await response.json();
-      
-      setData(prev => ({
-        ...prev,
-        state: "idle",
-        uploadedImage: imageBase64
-      }));
-      
-    } catch (error) {
-      setData(prev => ({
-        ...prev,
-        state: "error",
-        error: error instanceof Error ? error.message : "Upload failed"
-      }));
+      const data = await response.json();
+      console.log("📤 Upload response:", {
+        imageUrlLength: data.imageUrl?.length || 0,
+        imageBase64Length: data.imageBase64?.length || 0,
+        imageUrlPreview: data.imageUrl?.substring(0, 50) + "...",
+        imageBase64Preview: data.imageBase64?.substring(0, 50) + "..."
+      });
+      setUploadedImageUrl(data.imageUrl);
+      setImageBase64(data.imageBase64);
+      setStatus("idle");
+    } catch (err) {
+      setError("Failed to upload image. Please try again.");
+      setStatus("error");
     }
   };
 
-  /**
-   * 处理颜色选择
-   */
-  const handleColorSelect = (color: string) => {
-    setData(prev => ({ ...prev, selectedColor: color }));
-  };
-
-  /**
-   * Start generating buzz cut
-   */
   const handleGenerate = async () => {
-    if (!data.uploadedImage) {
-      setData(prev => ({ ...prev, error: "Please upload an image first" }));
+    if (!uploadedImageUrl || !imageBase64) {
+      setError("Please upload an image first");
       return;
     }
     
-    setData(prev => ({ ...prev, state: "generating", error: null }));
+    setStatus("generating");
+    setError(null);
+    
+    console.log("🚀 Starting generation with:", {
+      imageBase64Length: imageBase64?.length || 0,
+      imageBase64Preview: imageBase64?.substring(0, 50) + "...",
+      selectedColor: selectedColor,
+      uploadedImageUrl: uploadedImageUrl?.substring(0, 50) + "..."
+    });
     
     try {
-      // 1. Create generation task
       const response = await fetch("/api/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          image_base64: data.uploadedImage,
-          color: data.selectedColor,
+          image_base64: imageBase64,
+          color: selectedColor,
+          tier: "free",
         }),
       });
       
       if (!response.ok) {
-        throw new Error("Failed to create generation task");
+        throw new Error("Failed to generate buzz cut");
       }
       
-      const { task_id } = await response.json();
+      const data = await response.json();
       
-      // 2. Poll for generation result
-      await pollGenerationResult(task_id);
+      // Poll for result using kie.ai API with timeout
+      const pollResult = async (taskId: string, attempts: number = 0) => {
+        const maxAttempts = 60; // 60 attempts * 3 seconds = 3 minutes max
+        
+        console.log(`🔍 Polling attempt ${attempts + 1}/${maxAttempts} for task:`, taskId);
+        
+        if (attempts >= maxAttempts) {
+          throw new Error("Generation timeout - please try again with a different image");
+        }
+        
+        try {
+          const pollUrl = `/api/generate/${taskId}`;
+          const pollResponse = await fetch(pollUrl);
+          
+          if (!pollResponse.ok) {
+            throw new Error(`Failed to check status: ${pollResponse.status}`);
+          }
+          
+          const pollData = await pollResponse.json();
+          console.log(`📊 Poll response:`, pollData);
+          
+          if (pollData.status === "success") {
+            console.log("✅ Generation completed successfully!");
+            setResult({
+              id: taskId,
+              originalImageUrl: uploadedImageUrl,
+              resultImageUrl: pollData.result_url,
+              color: selectedColor,
+              faceSimilarity: pollData.facesim,
+              createdAt: new Date(),
+            });
+            setStatus("success");
+          } else if (pollData.status === "error") {
+            throw new Error(pollData.error || "Generation failed");
+          } else {
+            // Still processing
+            console.log(`⏳ Still processing... Status: ${pollData.status || pollData.progress}`);
+            setTimeout(() => pollResult(taskId, attempts + 1), 3000);
+          }
+        } catch (pollError) {
+          console.error("❌ Polling error:", pollError);
+          throw pollError;
+        }
+      };
       
-    } catch (error) {
-      setData(prev => ({
-        ...prev,
-        state: "error",
-        error: error instanceof Error ? error.message : "Generation failed"
-      }));
+      await pollResult(data.task_id);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate buzz cut");
+      setStatus("error");
     }
   };
-
-  /**
-   * Poll for generation result
-   */
-  const pollGenerationResult = async (taskId: string) => {
-    const maxAttempts = 60; // Max 60 attempts (3 minutes)
-    let attempts = 0;
-    
-    const poll = async (): Promise<void> => {
-      if (attempts >= maxAttempts) {
-        throw new Error("Generation timeout, please try again");
-      }
-      
-      attempts++;
-      
-      try {
-        const response = await fetch(`/api/generate/${taskId}`);
-        if (!response.ok) {
-          throw new Error("Failed to check status");
-        }
-        
-        const result = await response.json();
-        
-        switch (result.status) {
-          case "success":
-            setData(prev => ({
-              ...prev,
-              state: "success",
-              resultImageUrl: result.result_url
-            }));
-            return;
-            
-          case "error":
-            throw new Error(result.error || "Generation failed");
-            
-          case "processing":
-            // Continue polling after 3 seconds
-            setTimeout(poll, 3000);
-            return;
-            
-          default:
-            throw new Error("Unknown response status");
-        }
-      } catch (error) {
-        throw error;
-      }
-    };
-    
-    await poll();
-  };
-
-  /**
-   * 重置状态
-   */
-  const handleReset = () => {
-    setData({
-      state: "idle",
-      selectedColor: "black",
-      uploadedImage: null,
-      resultImageUrl: null,
-      error: null,
-    });
-  };
-
-  // 从核心数据推导UI状态
-  const canGenerate = data.uploadedImage && data.state !== "generating";
-  const isGenerating = data.state === "generating";
 
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
@@ -191,40 +158,42 @@ export function BuzzCutSimulator() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* 左侧：输入控制 */}
             <div className="space-y-4">
               <ImageUpload
                 onImageUpload={handleImageUpload}
-                isUploading={data.state === "uploading"}
-                uploadedImageUrl={data.uploadedImage}
-                onClear={() => setData(prev => ({ ...prev, uploadedImage: null }))}
+                isUploading={status === "uploading"}
+                uploadedImageUrl={uploadedImageUrl}
               />
               
               <ColorSelector
-                selectedColor={data.selectedColor}
-                onColorSelect={handleColorSelect}
-                disabled={isGenerating}
+                selectedColor={selectedColor}
+                onColorSelect={setSelectedColor}
+                disabled={status === "generating"}
               />
               
               <div className="flex justify-center">
                 <button
                   onClick={handleGenerate}
-                  disabled={!canGenerate}
+                  disabled={!uploadedImageUrl || status === "generating"}
                   className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isGenerating ? "Generating..." : "Generate Buzz Cut"}
+                  {status === "generating" ? "Generating..." : "Generate Buzz Cut"}
                 </button>
               </div>
             </div>
             
-            {/* 右侧：结果展示 */}
             <div>
               <ResultDisplay
-                state={data.state}
-                originalImage={data.uploadedImage}
-                resultImage={data.resultImageUrl}
-                error={data.error}
-                onReset={handleReset}
+                status={status}
+                result={result}
+                error={error}
+                onReset={() => {
+                  setResult(null);
+                  setError(null);
+                  setStatus("idle");
+                  setUploadedImageUrl(null);
+                  setImageBase64(null);
+                }}
               />
             </div>
           </div>
