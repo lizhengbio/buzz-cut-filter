@@ -1,280 +1,300 @@
-# BUZ CUT FILTER
+# Buzz Cut AI Filter
 
-这是一个面向编程小白的现代化启动套件，基于 Next.js、Supabase 和 Creem.io 构建。专为帮助开发者快速搭建支持全球用户登录和支付的网站，特别对中国大陆开发者友好。
+> 🔥 **AI驱动的智能发型转换平台** - 使用先进的AI技术和人脸保护机制，安全地将任何发型转换为寸头造型
 
-## 🌟 简介
+一个基于Next.js、AI视觉模型和高级人脸保护技术构建的现代化发型转换平台。专为用户提供安全、准确、高质量的寸头预览体验。
 
-这是一个基于 Next.js、Supabase 和 Creem.io 构建的现代化、生产就绪的启动套件。非常适合快速构建具有身份验证、订阅和积分系统的 SaaS 应用程序，让您的 MVP 开发速度提升10倍。
+## ✨ 核心特性
 
-## 核心特色功能
+### 🛡️ **高级人脸保护技术**
+- **人脸ID锁定** - 使用人脸嵌入技术确保身份不变
+- **精准发型分割** - MediaPipe风格的头发区域检测
+- **ControlNet约束** - 限制AI编辑范围，只修改头发
+- **防换脸机制** - 多重技术栈防止身份替换
 
-- 💯 **精美的用户界面**
-  - 经过精心设计的现代化界面
-  - 优雅的响应式设计，在各种设备上呈现完美体验
-  - 平滑的动画和过渡效果
-  - 精心优化的布局和组件排列
-  - 专业的色彩方案和排版
+### 🎨 **智能发型转换**
+- **Flux Kontext Pro模型** - 业界领先的图像生成模型
+- **多种发色选择** - 黑色、棕色、金色、灰色
+- **真实感渲染** - 保持原始光影和照片风格
+- **高分辨率输出** - 1024x1024高清图像生成
 
-- 🚀 **Next.js App Router**
-  - 使用最新的 Next.js 功能
-  - 服务器组件和客户端组件的最佳组合
-  - 内置的路由保护
-  - 快速的页面加载和导航体验
+### 🚀 **现代化用户体验**
+- **拖拽上传** - 简单直观的图片上传界面
+- **实时预览** - 即时查看转换效果
+- **响应式设计** - 完美适配各种设备
+- **流畅动画** - 精心设计的交互体验
 
-- 🔐 **全面的身份验证系统**
-  - 基于 Supabase
-  - 电子邮件/密码认证
-  - OAuth 提供商支持 (Google, GitHub等)
-  - 安全的会话管理
-  - 使用中间件保护路由
-  
-- 💳 **完整的支付与订阅系统**
-  - 与 Creem.io 完美集成，支持全球信用卡收款 
-  - 特别适合中国大陆用户作为商家使用
-  - 多级订阅方案
-  - 灵活的积分系统
-  - 详细的使用量跟踪
+### 🔧 **技术架构**
+- **Next.js 14** - App Router + 服务器组件
+- **TypeScript** - 类型安全的开发体验
+- **Tailwind CSS** - 现代化UI设计系统
+- **Supabase** - 身份验证和数据存储
+- **AI模型集成** - 多个AI服务API整合
 
-- 🛠️ **开发者友好**
-  - TypeScript 类型安全
-  - 清晰的项目结构
-  - 完善的文档
-  - Cursor编辑器友好框架
+## 🏗️ 技术实现
 
-## 📱 响应式设计
+### 人脸保护核心机制
 
-Raphael Starter Kit 采用了全面的响应式设计，确保您的应用在任何设备上都能完美呈现：
+```typescript
+// 人脸嵌入提取 (utils/face-protection.ts:120-144)
+const faceEmbedding = await extractFaceEmbedding(imageBase64);
 
-- 手机端优化的导航和布局
-- 平板电脑友好的交互设计
-- 桌面端的高效工作流
-- 精确的组件间距和对齐
+// 发型分割遮罩生成 (utils/face-protection.ts:77-115)  
+const hairMask = await generateHairMask(imageBase64);
 
-## 🎨 UI 组件库
+// ControlNet + IP-Adapter 约束生成 (utils/face-protection.ts:149-194)
+const result = await generateWithControlNet(
+  originalImage,
+  hairMask,
+  faceEmbedding,
+  color,
+  { preserveFace: true, faceIdStrength: 0.8 }
+);
+```
 
-我们的启动套件包含了丰富的预构建组件，帮助您快速组装精美的界面：
+### AI模型集成
 
-- 现代化的导航栏和页脚
-- 引人注目的英雄区域
-- 特色功能展示组件
-- 专业的徽标云展示
-- 灵活的FAQ手风琴组件
-- 精美的定价卡片
-- 引人注目的行动号召按钮
-- 引导用户的清晰路径
+- **Flux Kontext Pro** - 主要的图像生成模型
+- **KIE API** - 人脸分析和嵌入提取
+- **头发分割服务** - 精准的头发区域检测
+- **安全容忍度控制** - 防止不当内容生成
 
-## 快速开始
+## 🚀 快速开始
 
-### 前提条件
+### 环境要求
 
-- Node.js 18+ 和 npm
+- Node.js 18+
+- npm 或 yarn
 - Supabase 账户
-- Creem.io 账户
+- Replicate API 密钥
+- KIE API 密钥
 
-### 步骤 1: 克隆仓库
+### 安装步骤
 
-```bash
-git clone https://github.com/yourusername/raphael-starter-kit.git
-cd raphael-starter-kit
-```
+1. **克隆项目**
+   ```bash
+   git clone https://github.com/yourusername/buzz-cut-filter.git
+   cd buzz-cut-filter
+   ```
 
-### 步骤 2: 安装依赖
+2. **安装依赖**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm i
-```
-
-### 步骤 3: 设置 Supabase
-
-1. 在 [Supabase](https://app.supabase.com) 上创建一个新项目
-   - 点击"新建项目"
-   - 填写基本信息（项目名称、密码等）
-
-2. 前往 项目设置 > API 获取项目凭证
-   - 从项目设置页面复制凭证信息
-   - 将凭证粘贴到.env文件中
-
-3. 配置登录认证
-   - 选择【Auth】>【Providers】
-   - 选择email认证
-   - 关闭"Confirm email"选项并保存设置
-
-4. (可选) 设置Google登录
-   - 进入[Google 开发者控制台](https://console.cloud.google.com)，创建新项目
-   - 配置项目权限
-   - 前往【API与服务】>【凭据】
-   - 创建OAuth客户端ID
-   - 添加授权来源URL和重定向URI
-   - 重定向URI格式: `https://<项目ID>.supabase.co/auth/v1/callback`
-   - 复制OAuth客户端ID和密钥
-
-5. 在Supabase配置Google认证
-   - 打开Auth > Providers > Google
-   - 填写从Google开发者控制台获取的客户端ID和密钥
-   - 启用Google认证
-
-6. 设置定向URL
-   - 将定向URL更改为您的线上地址
-   - 确保URL与Google开发者控制台中的地址完全一致
-
-7. 设置环境变量
+3. **环境配置**
    ```bash
    cp .env.example .env.local
    ```
    
-   在`.env.local`中更新Supabase变量:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=你的项目URL
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=你的匿名密钥
-   SUPABASE_SERVICE_ROLE_KEY=你的服务角色密钥
-   ```
-
-8. 创建数据库表结构
-   - 复制SQL代码到Supabase SQL编辑器
-   - 执行SQL创建必要的表结构
-
-### 步骤 4: 设置 Creem.io
-
-1. 登录到 [Creem.io 仪表板](https://www.creem.io/)
-2. 初始设置
-   - 打开测试模式
-   - 导航到顶部导航栏中的"开发者"部分
-   - 复制API Key并粘贴到.env文件中
-
-3. 创建Webhooks
-   - 前往开发者 > Webhooks
-   - 创建新的Webhook
-   - 填写URL: `https://你的域名/api/webhooks/creem`
-   - 复制Webhook密钥并粘贴到.env文件中
-
-4. 更新环境变量
-   ```
-   CREEM_API_URL=https://test-api.creem.io/v1
-   ```
-
-5. 创建收费项目
-   - 在Creem.io中创建订阅项目和积分项目
-   - 复制项目ID并配置到代码中
-
-6. 完整的环境变量示例
-   ```
+   配置以下环境变量：
+   ```env
    # Supabase配置
-   NEXT_PUBLIC_SUPABASE_URL=你的supabaseURL
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=你的supabase pubilc key
-   SUPABASE_SERVICE_ROLE_KEY=你的supabase SERVICE_ROLE key
-
-   # Creem配置
-   CREEM_WEBHOOK_SECRET=你的webhook key
-   CREEM_API_KEY=你的creem key
-   CREEM_API_URL=https://test-api.creem.io/v1
-
-   # 站点URL配置
-   NEXT_PUBLIC_SITE_URL=http://你的线上地址
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
    
-   # 支付成功后的重定向URL
-   CREEM_SUCCESS_URL=http://你的线上地址/dashboard
+   # AI模型API密钥
+   REPLICATE_API_TOKEN=your_replicate_token
+   KIE_API_KEY=your_kie_api_key
+   
+   # 应用配置
+   NEXT_PUBLIC_SITE_URL=http://localhost:3000
    ```
 
-### 步骤 5: 运行开发服务器
+4. **数据库设置**
+   - 在Supabase中运行SQL迁移文件
+   - 配置身份验证提供商
+
+5. **启动开发服务器**
+   ```bash
+   npm run dev
+   ```
+
+访问 [http://localhost:3000](http://localhost:3000) 查看应用。
+
+## 📁 项目结构
+
+```
+buzz-cut-filter/
+├── app/                      # Next.js应用目录
+│   ├── api/                 # API路由
+│   │   ├── generate/        # 主要生成API
+│   │   ├── generate-flux/   # Flux模型API
+│   │   └── webhooks/        # Webhook处理
+│   ├── dashboard/           # 用户仪表板
+│   └── page.tsx            # 首页
+├── components/              # React组件
+│   ├── product/            # 产品核心组件
+│   │   ├── buzz-cut-simulator.tsx
+│   │   ├── color-selector.tsx
+│   │   ├── image-upload.tsx
+│   │   └── result-display.tsx
+│   ├── ui/                 # 基础UI组件
+│   └── home/               # 首页组件
+├── utils/                   # 工具函数
+│   ├── face-protection.ts  # 人脸保护核心
+│   ├── flux-kontext-api.ts # Flux API集成
+│   ├── kie-api.ts          # KIE API集成
+│   └── supabase/           # Supabase工具
+├── types/                   # TypeScript类型定义
+└── public/                  # 静态资源
+```
+
+## 🔐 安全特性
+
+### 人脸保护机制
+
+1. **身份锁定**
+   - 提取并保存原始人脸的数字化特征
+   - 使用人脸嵌入作为身份验证锚点
+
+2. **区域限制**
+   - 精准的头发分割遮罩
+   - 物理隔离面部和头发编辑区域
+
+3. **模型约束**
+   - ControlNet引导生成过程
+   - IP-Adapter控制面部特征保持
+
+4. **Prompt工程**
+   - 明确指令限制编辑范围
+   - 强调保持面部特征不变
+
+### 数据安全
+
+- 图片临时存储，定期清理
+- API密钥加密存储
+- 用户数据隐私保护
+- 安全的文件上传验证
+
+## 🎯 使用指南
+
+### 基本操作
+
+1. **上传照片**
+   - 支持 JPG、PNG 格式
+   - 建议分辨率 512x512 以上
+   - 确保人脸清晰可见
+
+2. **选择发色**
+   - 黑色：经典深色寸头
+   - 棕色：自然棕色寸头  
+   - 金色：时尚金色寸头
+   - 灰色：成熟银灰寸头
+
+3. **生成预览**
+   - 点击"生成寸头"按钮
+   - 等待AI处理（通常1-3分钟）
+   - 查看高质量转换结果
+
+### 最佳实践
+
+- 📸 使用光线充足的正面照片
+- 👤 确保人脸占照片主要部分
+- 🔍 避免模糊或低分辨率图片
+- 💡 尝试不同发色找到最佳效果
+
+## 🛠️ 开发指南
+
+### API端点
+
+```typescript
+// 主要生成API
+POST /api/generate
+{
+  "image_base64": "data:image/jpeg;base64,/9j/4AAQ...",
+  "color": "black",
+  "tier": "free"
+}
+
+// 状态查询API  
+GET /api/generate/[taskId]
+
+// Flux直接API
+POST /api/generate-flux
+```
+
+### 核心组件
+
+- `BuzzCutSimulator` - 主要交互组件
+- `ImageUpload` - 图片上传处理
+- `ColorSelector` - 发色选择界面
+- `ResultDisplay` - 结果展示组件
+
+### 扩展开发
+
+1. **添加新发色**
+   ```typescript
+   // components/product/color-selector.tsx
+   const COLOR_OPTIONS = [
+     // 添加新的颜色配置
+   ];
+   ```
+
+2. **集成新的AI模型**
+   ```typescript
+   // utils/new-model-api.ts
+   export class NewModelAPI {
+     // 实现模型接口
+   }
+   ```
+
+## 📊 性能优化
+
+- 🚀 **图片压缩** - 自动优化上传图片
+- ⚡ **流式处理** - 异步任务处理机制
+- 🔄 **智能缓存** - 减少重复API调用
+- 📱 **响应式加载** - 适配不同设备性能
+
+## 🚀 部署指南
+
+### Vercel部署（推荐）
+
+1. 连接GitHub仓库到Vercel
+2. 配置环境变量
+3. 自动部署完成
+
+### 自定义部署
 
 ```bash
-npm run dev
+npm run build
+npm start
 ```
 
-访问 [http://localhost:3000](http://localhost:3000) 查看你的应用程序。
+### 环境变量配置
 
-### 步骤 6: Vercel部署
+确保在生产环境中正确配置所有API密钥和服务端点。
 
-1. 将代码推送到GitHub
-2. 将仓库导入到[Vercel](https://vercel.com)
-3. 添加所有环境变量
-4. 完成部署
+## 🤝 贡献指南
 
-### 步骤 7: 更新Webhook回调地址
+1. Fork 项目
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开 Pull Request
 
-1. 进入Creem.io，打开开发者模式
-2. 更新Webhooks配置
-   - 进入对应的Webhook设置
-   - 点击"更多"，选择"编辑"
-   - 将线上地址更新为: `https://你的域名/api/webhooks/creem`
+## 📄 许可证
 
-### 步骤 8: 测试系统功能
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
-1. 测试用户登录功能
-2. 测试订阅支付功能（测试信用卡号: 4242 4242 4242 4242）
-3. 测试积分购买功能
+## 🆘 支持与帮助
 
-### 步骤 9: 设计网站首页
+- 📧 邮箱：support@example.com
+- 💬 微信：your-wechat-id
+- 🐛 Bug报告：[GitHub Issues](https://github.com/yourusername/buzz-cut-filter/issues)
+- 📚 文档：[完整文档](https://docs.example.com)
 
-1. 使用组件库
-   - 您可以使用[TailwindCSS](https://tailwindcss.com)上的组件
-   - 复制代码到相应的组件文件中
+## 🎉 致谢
 
-2. 自定义页面配色
-   - 调整全局色系
-   - 将样式代码添加到全局CSS文件中
+感谢以下开源项目和服务：
 
-3. 根据需要精修页面布局
+- [Next.js](https://nextjs.org/) - React应用框架
+- [Flux Kontext Pro](https://replicate.com/) - AI图像生成模型
+- [Supabase](https://supabase.com/) - 后端即服务
+- [Tailwind CSS](https://tailwindcss.com/) - CSS框架
+- [Radix UI](https://www.radix-ui.com/) - 无障碍UI组件
 
-### 步骤 10: 切换到正式付款
+---
 
-1. 进入Creem.io，关闭测试模式
-2. 创建新的正式项目，将ID更新到代码中
-3. 更新环境变量，将API URL从测试环境切换到正式环境:
-   ```
-   # 将此行
-   CREEM_API_URL=https://test-api.creem.io/v1
-   
-   # 替换为
-   CREEM_API_URL=https://api.creem.io
-   ```
-
-## 💳 订阅系统详情
-
-启动套件包含由 Creem.io 提供支持的完整订阅系统：
-
-- 多级订阅方案
-- 基于使用量的计费
-- 积分系统
-- 订阅管理
-- 安全支付处理
-- Webhook 集成实时更新
-- 自动发票生成
-- 全球支付支持（特别适合中国大陆商家）
-
-### 设置 Webhooks
-
-处理订阅更新和支付事件:
-
-1. 前往 Creem.io 仪表板
-2. 导航到 开发者 > Webhooks
-3. 添加你的 webhook 端点: `https://your-domain.com/api/webhooks/creem`
-4. 复制 webhook 密钥并添加到你的 `.env.local`:
-   ```
-   CREEM_WEBHOOK_SECRET=你的webhook密钥
-   ```
-
-## 项目结构
-
-```
-├── app/                   # Next.js 应用目录
-│   ├── (auth-pages)/     # 身份验证页面
-│   ├── dashboard/        # 仪表板页面
-│   ├── api/             # API 路由
-│   └── layout.tsx       # 根布局
-├── components/           # React 组件
-│   ├── ui/             # Shadcn/ui 组件
-│   ├── dashboard/      # 仪表板组件
-│   └── home/          # 登陆页面组件
-│   └── layout/        # 页面布局组件
-├── hooks/               # 自定义 React 钩子
-├── lib/                # 工具库
-├── public/             # 静态资源
-├── styles/             # 全局样式
-├── types/              # TypeScript 类型
-└── utils/              # 工具函数
-```
-
-## 支持与联系
-
-如果您有任何问题或需要支持，请通过微信联系我们。
+**⭐ 如果这个项目对你有帮助，请给我们一个星标！**
