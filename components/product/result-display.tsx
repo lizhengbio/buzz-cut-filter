@@ -128,38 +128,32 @@ export function ResultDisplay({
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Image Comparison */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-6">
             <div>
-              <p className="text-sm font-medium mb-2">Original</p>
-              <img
-                src={result.originalImageUrl}
-                alt="Original"
-                className="w-full h-32 object-cover rounded-lg"
-              />
+              <p className="text-sm font-medium mb-3 text-center">Original</p>
+              <div className="w-full max-w-xs mx-auto">
+                <img
+                  src={result.originalImageUrl}
+                  alt="Original"
+                  className="w-full max-h-48 sm:max-h-56 object-contain rounded-lg bg-muted/20 shadow-sm"
+                />
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="text-primary text-lg">↓</span>
+              </div>
             </div>
             <div>
-              <p className="text-sm font-medium mb-2">Buzz Cut</p>
-              <img
-                src={result.resultImageUrl}
-                alt="Buzz Cut Result"
-                className="w-full h-32 object-cover rounded-lg"
-              />
+              <p className="text-sm font-medium mb-3 text-center">Buzz Cut</p>
+              <div className="w-full max-w-xs mx-auto">
+                <img
+                  src={result.resultImageUrl}
+                  alt="Buzz Cut Result"
+                  className="w-full max-h-48 sm:max-h-56 object-contain rounded-lg bg-muted/20 shadow-sm"
+                />
+              </div>
             </div>
-          </div>
-          
-          {/* Face Similarity Score */}
-          <div className="p-3 bg-muted/50 rounded-lg">
-            <p className="text-sm">
-              Face Similarity Score: 
-              <span className={`font-medium ml-1 ${
-                result.faceSimilarity < 0.3 ? "text-green-600" : "text-yellow-600"
-              }`}>
-                {(result.faceSimilarity * 100).toFixed(1)}%
-              </span>
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Lower scores indicate better face preservation
-            </p>
           </div>
           
           {/* Action Buttons */}

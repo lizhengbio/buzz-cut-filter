@@ -78,32 +78,34 @@ export function ImageUpload({
       <Card>
         <CardContent className="p-4">
           <div className="relative">
-            <img
-              src={uploadedImageUrl}
-              alt="Uploaded image"
-              className="w-full h-64 object-cover rounded-lg"
-              crossOrigin="anonymous"
-              onError={(e) => {
-                console.error("Image failed to load:", uploadedImageUrl);
-                // Try to reload the image or show placeholder
-                const img = e.target as HTMLImageElement;
-                img.src = "/api/placeholder/400/300"; // Fallback
-              }}
-              onLoad={() => {
-                console.log("Image loaded successfully");
-              }}
-            />
-            <button
-              onClick={() => {
-                // Clear uploaded image - force component reset
-                window.location.reload();
-              }}
-              className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="w-full max-w-lg mx-auto">
+              <img
+                src={uploadedImageUrl}
+                alt="Uploaded image"
+                className="w-full max-h-80 sm:max-h-96 object-contain rounded-lg bg-muted/20 shadow-sm"
+                crossOrigin="anonymous"
+                onError={(e) => {
+                  console.error("Image failed to load:", uploadedImageUrl);
+                  // Try to reload the image or show placeholder
+                  const img = e.target as HTMLImageElement;
+                  img.src = "/api/placeholder/400/300"; // Fallback
+                }}
+                onLoad={() => {
+                  console.log("Image loaded successfully");
+                }}
+              />
+              <button
+                onClick={() => {
+                  // Clear uploaded image - force component reset
+                  window.location.reload();
+                }}
+                className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-md"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground mt-2 text-center">
+          <p className="text-sm text-muted-foreground mt-3 text-center">
             Image uploaded successfully and ready for processing
           </p>
         </CardContent>
