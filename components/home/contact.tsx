@@ -29,10 +29,10 @@ export default function Contact() {
       </svg>
       <div className="mx-auto max-w-xl lg:max-w-4xl">
         <h2 className="text-4xl font-semibold tracking-tight text-pretty text-foreground sm:text-5xl">
-          Get in touch with our team
+          Contact Our Team
         </h2>
         <p className="mt-2 text-lg/8 text-muted-foreground">
-          Have questions about implementation or need custom solutions? We're here to help developers worldwide.
+          Have questions about Buzz Cut AI Preview or need technical support? Our team is here to help you.
         </p>
         <div className="mt-16 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
           <form action="#" method="POST" className="lg:flex-auto">
@@ -81,7 +81,7 @@ export default function Contact() {
               </div>
               <div>
                 <label htmlFor="company" className="block text-sm/6 font-semibold text-foreground">
-                  Company
+                  Company (Optional)
                 </label>
                 <div className="mt-2.5">
                   <input
@@ -101,7 +101,7 @@ export default function Contact() {
                     id="message"
                     name="message"
                     rows={4}
-                    placeholder="Tell us about your project or questions"
+                    placeholder="Tell us about your questions or suggestions..."
                     className="block w-full rounded-md bg-background px-3.5 py-2 text-base text-foreground outline-1 -outline-offset-1 outline-border placeholder:text-muted-foreground/60 focus:outline-2 focus:-outline-offset-2 focus:outline-primary"
                     defaultValue={''}
                   />
@@ -113,7 +113,7 @@ export default function Contact() {
                 type="submit"
                 className="block w-full rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-primary"
               >
-                Send message
+                Send Message
               </button>
             </div>
             <p className="mt-4 text-sm/6 text-muted-foreground">
@@ -125,26 +125,22 @@ export default function Contact() {
             </p>
           </form>
           <div className="lg:mt-6 lg:w-80 lg:flex-none">
-            <img
-              alt="Raphael logo"
-              src="https://tailwindcss.com/plus-assets/img/logos/workcation-logo-indigo-600.svg"
-              className="h-12 w-auto"
-            />
+            <div className="h-12 w-auto flex items-center">
+              <span className="text-2xl font-bold text-primary">🔥 Buzz Cut AI</span>
+            </div>
             <figure className="mt-10">
               <blockquote className="text-lg/8 font-semibold text-foreground">
                 <p>
-                  "Raphael Starter Kit saved us months of development time. The global authentication and payment systems work flawlessly for our international customer base."
+                  "Buzz Cut AI Preview let me see the result before cutting! So practical! The generated effect is very realistic and gave me great confidence."
                 </p>
               </blockquote>
               <figcaption className="mt-10 flex gap-x-6">
-                <img
-                  alt="Customer photo"
-                  src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=96&h=96&q=80"
-                  className="size-12 flex-none rounded-full bg-muted"
-                />
+                <div className="size-12 flex-none rounded-full bg-gradient-to-br from-primary/20 to-blue-600/20 flex items-center justify-center">
+                  <span className="text-primary font-semibold">J</span>
+                </div>
                 <div>
-                  <div className="text-base font-semibold text-foreground">Sarah Chen</div>
-                  <div className="text-sm/6 text-muted-foreground">CTO, GlobalTech Solutions</div>
+                  <div className="text-base font-semibold text-foreground">John D.</div>
+                  <div className="text-sm/6 text-muted-foreground">Satisfied Customer</div>
                 </div>
               </figcaption>
             </figure>

@@ -95,8 +95,8 @@ export default function Pricing() {
               Subscription Plans
             </h2>
             <p className="max-w-[95%] sm:max-w-[85%] text-sm sm:text-lg leading-normal text-muted-foreground">
-              Start building for free and scale up as you grow. All plans
-              include the core features you need to get started.
+              Start with free trial and upgrade as needed. All plans include core buzz cut preview features
+              to meet different user requirements.
             </p>
           </div>
           <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 mt-8 md:mt-12">
@@ -146,7 +146,7 @@ export default function Pricing() {
                       handleSubscribe(tier.productId, tier.discountCode)
                     }
                   >
-                    Get started
+                    Get Started
                   </Button>
                 </div>
               </div>
@@ -161,8 +161,8 @@ export default function Pricing() {
               Credit Packages
             </h2>
             <p className="max-w-[95%] sm:max-w-[85%] text-sm sm:text-lg leading-normal text-muted-foreground">
-              Purchase credits to use our services on-demand. Perfect for
-              occasional use and testing.
+              Purchase credits on-demand for flexible use of our buzz cut preview service.
+              Perfect for occasional users or those wanting HD output experience.
             </p>
           </div>
           <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 mt-8 md:mt-12">

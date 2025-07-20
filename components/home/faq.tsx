@@ -1,39 +1,39 @@
 const faqs = [
   {
     id: 1,
-    question: "How does the global authentication system work?",
+    question: "What is Buzz Cut AI Preview? How safe is it?",
     answer:
-      "Our authentication system is built on Supabase, which supports email/password login, OAuth providers (like Google), and magic link authentication. It works seamlessly across all regions worldwide and includes features like multi-factor authentication and session management.",
+      "Buzz Cut AI Preview is an advanced AI-powered hair transformation service. We use IP-Adapter FaceID technology and MediaPipe hair segmentation to ensure only hairstyles are changed while preserving your facial features. All processing occurs in secure server environments, and uploaded images are automatically deleted after 24 hours.",
   },
   {
     id: 2,
-    question: "What payment methods are supported?",
+    question: "How realistic are the generated buzz cut results?",
     answer:
-      "Through our integration with Creem.io, we support major credit cards, PayPal, and various regional payment methods. The system handles multiple currencies and automatically manages exchange rates, making it easy to accept payments from customers worldwide.",
+      "We utilize the Flux Kontext Pro model, one of the most advanced image generation technologies available. Combined with precise hair segmentation and face protection mechanisms, the generated results closely resemble actual post-haircut appearance. Most users report high similarity between generated results and real outcomes.",
   },
   {
     id: 3,
-    question: "Is this starter kit developer-friendly for beginners?",
+    question: "What are the limitations of the free version?",
     answer:
-      "Absolutely! We've designed this kit with simplicity in mind. It includes comprehensive documentation, clean code structure, and follows best practices. Even if you're new to Next.js or React, you'll find it easy to understand and extend the codebase.",
+      "Free users can generate 3 buzz cut preview images per day at 720p resolution with watermarks. This is sufficient for experiencing our service and making hairstyle decisions. For unlimited usage and high-definition output, you can upgrade to the Pro version.",
   },
   {
     id: 4,
-    question: "Can I deploy this application anywhere?",
+    question: "What image formats are supported? What photo requirements?",
     answer:
-      "Yes, the application can be deployed to any modern hosting platform. We provide detailed deployment guides for Vercel, as well as instructions for deploying to traditional servers. The application is optimized to work globally with minimal configuration.",
+      "We support JPG, PNG, and WEBP formats with a maximum file size of 5MB per image. For best results, use clear front-facing photos with the face occupying the main portion of the image, good lighting, and no obstructions. Avoid overly blurry or side-angle photos.",
   },
   {
     id: 5,
-    question: "How do I manage subscriptions and billing?",
+    question: "How long does it take to generate one image?",
     answer:
-      "The starter kit includes a complete subscription management system. You can define different subscription tiers, manage billing cycles, and handle customer accounts through the admin dashboard. All payment processing is handled securely by Creem.io.",
+      "Typically, the process from photo upload to completion takes 1-3 minutes. Processing time depends on server load and image complexity. We display real-time progress updates so you can stay informed of the current status.",
   },
   {
     id: 6,
-    question: "Is the code base accessible for developers in all regions?",
+    question: "Can I choose different hair colors?",
     answer:
-      "Yes, we've carefully selected dependencies and hosting providers that work well globally. The codebase is optimized for developers worldwide, with consideration for different network environments and accessibility requirements.",
+      "Yes! We offer multiple hair color options including black, brown, blonde, gray, and more. You can try different colors to find the buzz cut style that suits you best. The Pro version will continue adding more personalization options.",
   },
 ]
 
@@ -41,7 +41,7 @@ export default function FAQ() {
   return (
     <div id="faq" className="bg-background">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
-        <h2 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Frequently asked questions</h2>
+        <h2 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Frequently Asked Questions</h2>
         <dl className="mt-20 divide-y divide-foreground/10">
           {faqs.map((faq) => (
             <div key={faq.id} className="py-8 first:pt-0 last:pb-0 lg:grid lg:grid-cols-12 lg:gap-8">
