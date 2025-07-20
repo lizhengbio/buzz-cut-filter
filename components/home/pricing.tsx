@@ -95,8 +95,8 @@ export default function Pricing() {
               Subscription Plans
             </h2>
             <p className="max-w-[95%] sm:max-w-[85%] text-sm sm:text-lg leading-normal text-muted-foreground">
-              Start with free trial and upgrade as needed. All plans include core buzz cut preview features
-              to meet different user requirements.
+              Start with free trial and upgrade as needed. High-fidelity Face-Lock buzz cut previews 
+              with commercial licensing options for all user types.
             </p>
           </div>
           <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 mt-8 md:mt-12">
@@ -111,14 +111,14 @@ export default function Pricing() {
               >
                 {tier.featured && (
                   <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
-                    Popular
+                    Most Popular
                   </div>
                 )}
                 <div className="space-y-4">
                   <h3 className="text-xl sm:text-2xl font-bold">{tier.name}</h3>
                   <div className="text-3xl sm:text-4xl font-bold">
                     {tier.priceMonthly}
-                    {tier.priceMonthly !== "Custom" && (
+                    {tier.priceMonthly !== "$0" && tier.priceMonthly !== "Custom" && (
                       <span className="text-base font-normal text-muted-foreground">
                         /month
                       </span>
@@ -139,15 +139,25 @@ export default function Pricing() {
                   </ul>
                 </div>
                 <div className="mt-6">
-                  <Button
-                    className="w-full"
-                    variant={tier.featured ? "default" : "outline"}
-                    onClick={() =>
-                      handleSubscribe(tier.productId, tier.discountCode)
-                    }
-                  >
-                    Get Started
-                  </Button>
+                  {tier.id === "tier-free" ? (
+                    <Button
+                      className="w-full"
+                      variant="outline"
+                      onClick={() => router.push("/buzz-cut-simulator")}
+                    >
+                      Get Started Free
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full"
+                      variant={tier.featured ? "default" : "outline"}
+                      onClick={() =>
+                        handleSubscribe(tier.productId, tier.discountCode)
+                      }
+                    >
+                      Upgrade to {tier.name}
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}
@@ -161,8 +171,8 @@ export default function Pricing() {
               Credit Packages
             </h2>
             <p className="max-w-[95%] sm:max-w-[85%] text-sm sm:text-lg leading-normal text-muted-foreground">
-              Purchase credits on-demand for flexible use of our buzz cut preview service.
-              Perfect for occasional users or those wanting HD output experience.
+              Purchase credits on-demand for flexible buzz cut preview generation.
+              Perfect for occasional users or those wanting premium quality without subscription.
             </p>
           </div>
           <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 mt-8 md:mt-12">
@@ -171,10 +181,18 @@ export default function Pricing() {
                 key={tier.id}
                 className="relative flex flex-col rounded-2xl border bg-background p-4 sm:p-6 shadow-lg border-border"
               >
+                {tier.featured && (
+                  <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-green-600 px-3 py-1 text-xs font-medium text-white">
+                    Best Value
+                  </div>
+                )}
                 <div className="space-y-4">
                   <h3 className="text-xl sm:text-2xl font-bold">{tier.name}</h3>
                   <div className="text-3xl sm:text-4xl font-bold">
                     {tier.priceMonthly}
+                    <span className="text-base font-normal text-muted-foreground">
+                      {` (${tier.creditAmount} credits)`}
+                    </span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {tier.description}
@@ -193,7 +211,7 @@ export default function Pricing() {
                 <div className="mt-6">
                   <Button
                     className="w-full"
-                    variant="outline"
+                    variant={tier.featured ? "default" : "outline"}
                     onClick={() =>
                       handleBuyCredits(
                         tier.productId,
@@ -207,6 +225,21 @@ export default function Pricing() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Annual Savings Banner */}
+        <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border rounded-xl p-6 md:p-8">
+          <div className="text-center space-y-4">
+            <h3 className="text-2xl font-semibold">Save with Annual Plans</h3>
+            <p className="text-muted-foreground">
+              Pro Annual: <strong>$49/year</strong> (save $10) • Studio Annual: <strong>$99/year</strong> (save $20)
+            </p>
+            <Button asChild size="lg">
+              <a href="/pricing">
+                View All Plans
+              </a>
+            </Button>
           </div>
         </div>
       </div>

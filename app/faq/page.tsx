@@ -57,19 +57,27 @@ const faqCategories = [
     questions: [
       {
         question: "What are the limitations of the free version?",
-        answer: "Free users can generate 3 images daily at 720p with watermark. Images are automatically deleted after 24 hours. This is perfect for trying our service."
+        answer: "Free users get 3 generations per day at 720p with watermark, Face-Lock Lite technology, basic color options, and 24-hour automatic image deletion. Perfect for trying our Face-Lock buzz cut simulator."
       },
       {
         question: "What are the advantages of Pro version?",
-        answer: "Pro users enjoy: unlimited monthly generations (up to 60), 4K high-definition output, watermark-free downloads, multiple format support, priority processing queue, private mode, and commercial usage rights."
+        answer: "Pro users enjoy unlimited generations, 4K JPG/PNG/WebP formats, watermark-free downloads, ad-free experience, commercial usage rights, 2x faster processing queue, all color adjustment options, and Face-Lock Pro technology."
+      },
+      {
+        question: "What's included in the Studio plan?",
+        answer: "Studio includes everything in Pro plus API access, 500 generations per month, batch processing, GDPR compliance contract, SLA, commercial licensing, and dedicated account manager."
+      },
+      {
+        question: "How do credit packages work?",
+        answer: "Credit packages are pay-as-you-go options: Starter Pack ($1.99 for 5 credits), Value Pack ($5.99 for 25 credits), and Creator Pack ($14.99 for 100 credits). Credits never expire and include 4K quality output."
       },
       {
         question: "How do I cancel my subscription?",
-        answer: "You can cancel your subscription anytime in the Creem subscription management page. After cancellation, your Pro benefits will be retained until the current billing period ends."
+        answer: "You can cancel your subscription anytime in the Creem subscription management page. After cancellation, your Pro or Studio benefits will be retained until the current billing period ends."
       },
       {
-        question: "Do you offer refunds?",
-        answer: "We offer a 7-day satisfaction guarantee. If you're not satisfied with the service, you can apply for a full refund within 7 days."
+        question: "Do you offer annual discounts?",
+        answer: "Yes! Pro Annual is $49/year (save $10) and Studio Annual is $99/year (save $20). Annual plans include all the same features as monthly plans."
       }
     ]
   },

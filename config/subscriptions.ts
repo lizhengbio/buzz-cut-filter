@@ -2,105 +2,115 @@ import { ProductTier } from "@/types/subscriptions";
 
 export const SUBSCRIPTION_TIERS: ProductTier[] = [
   {
-    name: "Starter",
-    id: "tier-hobby",
-    productId: "prod_63JTQmsUcQrlZe94IL76fI", // $11 monthly subscription
-    priceMonthly: "$11",
-    description: "Perfect for individual developers and small projects.",
+    name: "Free",
+    id: "tier-free",
+    productId: "", // Free tier doesn't have a product ID
+    priceMonthly: "$0",
+    description: "Perfect for trying out our buzz cut simulator",
     features: [
-      "Global authentication system",
-      "Database integration",
-      "Secure API routes",
-      "Modern UI components",
-      "Dark/Light mode",
-      "Community forum access",
+      "3 generations per day",
+      "720p JPG format with watermark",
+      "Face-Lock Lite technology",
+      "Basic color options",
+      "24-hour image auto-deletion",
+      "Community support"
     ],
     featured: false,
-    discountCode: "", // Optional discount code
+    discountCode: "",
   },
   {
-    name: "Business",
+    name: "Pro",
     id: "tier-pro",
-    productId: "prod_36Wgp4JJF3b1i29KggQXiC", // $29 monthly subscription
-    priceMonthly: "$29",
-    description: "Ideal for growing businesses and development teams.",
+    productId: "prod_36Wgp4JJF3b1i29KggQXiC", // $4.99 monthly subscription
+    priceMonthly: "$4.99",
+    description: "For serious users who want the best quality",
     features: [
-      "Everything in Starter",
-      "Multi-currency payments",
-      "Priority support",
-      "Advanced analytics",
-      "Custom branding options",
-      "API usage dashboard",
+      "Unlimited generations",
+      "4K JPG/PNG/WebP formats",
+      "Watermark-free downloads",
+      "Ad-free experience",
+      "Commercial usage rights",
+      "2x faster processing queue",
+      "All color adjustment options",
+      "Priority support"
     ],
     featured: true,
-    discountCode: "", // Optional discount code
+    discountCode: "",
   },
   {
-    name: "Enterprise",
-    id: "tier-enterprise",
-    productId: "prod_3qPYksZMtk94wQsdkgajrJ", // $99 monthly subscription
-    priceMonthly: "$99",
-    description: "For large organizations with advanced requirements.",
+    name: "Studio",
+    id: "tier-studio",
+    productId: "prod_3qPYksZMtk94wQsdkgajrJ", // $9.99 monthly subscription
+    priceMonthly: "$9.99",
+    description: "For businesses and content creators",
     features: [
-      "Everything in Business",
-      "Dedicated account manager",
-      "Custom implementation support",
-      "High-volume transaction processing",
-      "Advanced security features",
+      "Everything in Pro",
+      "API access included",
+      "500 generations per month",
+      "Batch processing",
+      "GDPR compliance contract",
       "Service Level Agreement (SLA)",
+      "Commercial licensing",
+      "Dedicated account manager"
     ],
     featured: false,
-    discountCode: "", // Optional discount code
+    discountCode: "",
   },
 ];
 
 export const CREDITS_TIERS: ProductTier[] = [
   {
-    name: "Basic Package",
-    id: "tier-3-credits",
-    productId: "prod_MqcjVo0Bpx0rbYmHVlrh2", // $9 one-time purchase
-    priceMonthly: "$9",
-    description: "3 credits for testing and small-scale projects.",
-    creditAmount: 3,
+    name: "Starter Pack",
+    id: "tier-5-credits",
+    productId: "prod_MqcjVo0Bpx0rbYmHVlrh2", // $1.99 one-time purchase
+    priceMonthly: "$1.99",
+    description: "5 credits for occasional use",
+    creditAmount: 5,
     features: [
-      "3 credits for use across all features",
+      "5 buzz cut generations",
+      "4K quality output",
+      "Watermark-free downloads",
       "No expiration date",
-      "Access to standard features",
-      "Community support"
+      "All color options"
     ],
     featured: false,
-    discountCode: "", // Optional discount code
+    discountCode: "",
   },
   {
-    name: "Standard Package",
-    id: "tier-6-credits",
-    productId: "prod_4ICkTovEC6o9QY6UuL3aI0", // $13 one-time purchase
-    priceMonthly: "$13",
-    description: "6 credits for medium-sized applications.",
-    creditAmount: 6,
+    name: "Value Pack",
+    id: "tier-25-credits",
+    productId: "prod_4ICkTovEC6o9QY6UuL3aI0", // $5.99 one-time purchase
+    priceMonthly: "$5.99",
+    description: "25 credits for regular users",
+    creditAmount: 25,
     features: [
-      "6 credits for use across all features",
-      "No expiration date",
+      "25 buzz cut generations",
+      "4K quality output",
+      "Watermark-free downloads",
       "Priority processing",
-      "Basic email support"
+      "No expiration date",
+      "All color options"
     ],
     featured: true,
-    discountCode: "", // Optional discount code
+    discountCode: "",
   },
   {
-    name: "Premium Package",
-    id: "tier-9-credits",
-    productId: "prod_3b3oyQtIJA3eaMIHLNjyCc", // $29 one-time purchase
-    priceMonthly: "$29",
-    description: "9 credits for larger applications and production use.",
-    creditAmount: 9,
+    name: "Creator Pack",
+    id: "tier-100-credits",
+    productId: "prod_3b3oyQtIJA3eaMIHLNjyCc", // $14.99 one-time purchase
+    priceMonthly: "$14.99",
+    description: "100 credits for content creators",
+    creditAmount: 100,
     features: [
-      "9 credits for use across all features",
+      "100 buzz cut generations",
+      "4K quality output",
+      "Watermark-free downloads",
+      "Priority processing",
+      "Commercial usage rights",
       "No expiration date",
-      "Premium support",
-      "Advanced analytics access"
+      "All color options"
     ],
     featured: false,
-    discountCode: "", // Optional discount code
+    discountCode: "",
   },
 ];
