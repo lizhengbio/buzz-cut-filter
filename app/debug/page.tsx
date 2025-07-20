@@ -13,18 +13,30 @@ export default function DebugPage() {
     setLogs(prev => [...prev, `[${timestamp}] ${message}`]);
   };
 
-  const testKieAPI = async () => {
+  const testFluxAPI = async () => {
     setLoading(true);
     setLogs([]);
     
     try {
-      addLog("Testing kie.ai API connection...");
+      addLog("Testing Flux API connection...");
       
-      const response = await fetch("/api/test-kie");
+      // Test with a minimal image
+      const testImage = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
+      
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image_base64: testImage,
+          color: "black",
+        }),
+      });
+      
       const data = await response.json();
-      
-      addLog(`API Test Result: ${data.success ? "SUCCESS" : "FAILED"}`);
-      addLog(`Status: ${data.status}`);
+      addLog(`API Test Result: ${response.ok ? "SUCCESS" : "FAILED"}`);
+      addLog(`Status: ${response.status}`);
       addLog(`Response: ${JSON.stringify(data, null, 2)}`);
       
     } catch (error) {
@@ -86,11 +98,11 @@ export default function DebugPage() {
         <CardContent className="space-y-4">
           <div className="flex gap-4">
             <Button 
-              onClick={testKieAPI}
+              onClick={testFluxAPI}
               disabled={loading}
               variant="outline"
             >
-              {loading ? "Testing..." : "Test Kie API"}
+              {loading ? "Testing..." : "Test Flux API"}
             </Button>
             <Button 
               onClick={testFullFlow}

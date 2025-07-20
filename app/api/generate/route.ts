@@ -1,38 +1,31 @@
-import { NextRequest, NextResponse } from "next/server";
-import { kieImageAPI } from "@/utils/kie-api";
-import { faceProtectedGenerator } from "@/utils/face-protection";
+import { NextRequest } from "next/server";
 import { fluxKontextAPI } from "@/utils/flux-kontext-api";
+import { 
+  handleApiError, 
+  createErrorResponse, 
+  createSuccessResponse,
+  validateImageData,
+  validateRequiredEnvVars 
+} from "@/utils/api-helpers";
 
 export async function POST(request: NextRequest) {
   try {
+    // Validate environment
+    validateRequiredEnvVars(["REPLICATE_API_TOKEN"]);
+    
     const body = await request.json();
     const { image_base64, color, tier, retry_count = 0 } = body;
 
-    if (!image_base64) {
-      return NextResponse.json(
-        { error: "Image base64 data is required" },
-        { status: 400 }
-      );
+    // Validate input
+    validateImageData(image_base64);
+    
+    if (!color) {
+      return createErrorResponse("Color parameter is required", 400);
     }
 
     console.log("🚀 Generating buzz cut with Flux Kontext Pro");
     console.log("🎨 Color:", color);
     console.log("📊 Base64 size:", image_base64.length);
-    console.log("📸 Base64 preview (first 100 chars):", image_base64.substring(0, 100));
-    console.log("🔍 Base64 starts with data URL?", image_base64.startsWith('data:image/'));
-    
-    // Validate image data
-    if (image_base64.length === 0) {
-      console.error("❌ Empty image data in generate endpoint");
-      return NextResponse.json(
-        { error: "Empty image data received" },
-        { status: 400 }
-      );
-    }
-    console.log("✅ Image data received in generate endpoint");
-
-    // Use Flux Kontext Pro only (no fallbacks for debugging)
-    console.log("🎯 Starting Flux Kontext Pro generation...");
     
     // Generate hair mask for targeted editing
     const hairMask = await fluxKontextAPI.generateHairMask(image_base64);
@@ -49,9 +42,9 @@ export async function POST(request: NextRequest) {
 
     console.log("✅ Flux generation started:", prediction.id);
 
-    // Return Flux-compatible response
-    return NextResponse.json({
-      task_id: prediction.id, // Use prediction ID as task ID
+    // Return standardized response
+    return createSuccessResponse({
+      task_id: prediction.id,
       prediction_id: prediction.id,
       status: "queued",
       model: "flux-kontext-pro",
@@ -66,21 +59,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error("Error creating generation task:", error);
-    
-    // Provide more detailed error information
-    let errorMessage = "Failed to create generation task";
-    if (error instanceof Error) {
-      errorMessage = error.message;
-      console.error("Error details:", error.stack);
-    }
-    
-    return NextResponse.json(
-      { 
-        error: errorMessage,
-        details: error instanceof Error ? error.message : String(error)
-      },
-      { status: 500 }
-    );
+    return handleApiError(error, "Failed to create generation task");
   }
 }
