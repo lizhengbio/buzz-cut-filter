@@ -9,31 +9,31 @@ const footerLinks = [
   {
     title: "Product",
     links: [
-      { label: "Features", href: "#features" },
-      { label: "Pricing", href: "#pricing" },
-      { label: "Documentation", href: "#docs" },
-      { label: "Changelog", href: "#changelog" },
-      { label: "Integration", href: "#integration" },
+      { label: "Buzz Cut Simulator", href: "/buzz-cut-simulator" },
+      { label: "Live Camera", href: "/buzz-cut-simulator/live-camera" },
+      { label: "Photo Upload", href: "/buzz-cut-simulator/upload-photo" },
+      { label: "Pricing Plans", href: "/pricing" },
+      { label: "FAQ", href: "/faq" },
+    ],
+  },
+  {
+    title: "Guides",
+    links: [
+      { label: "How to Use", href: "/buzz-cut-guides/how-to-use-buzz-cut-filter" },
+      { label: "Guard Lengths", href: "/buzz-cut-guides/guard-lengths" },
+      { label: "Hair Styles", href: "/buzz-cut-guides/styles" },
+      { label: "Maintenance Tips", href: "/buzz-cut-guides/maintenance-tips" },
+      { label: "Style Comparison", href: "/buzz-cut-guides/buzz-cut-vs-crew-cut" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "#about" },
-      { label: "Blog", href: "#blog" },
-      { label: "Careers", href: "#careers" },
-      { label: "Contact", href: "#contact" },
-      { label: "Partners", href: "#partners" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy", href: "#privacy" },
-      { label: "Terms", href: "#terms" },
-      { label: "License", href: "#license" },
-      { label: "Security", href: "#security" },
-      { label: "Compliance", href: "#compliance" },
+      { label: "About Us", href: "/about-us" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "Blog", href: "/blog" },
+      { label: "Inspiration", href: "/inspiration" },
+      { label: "API Docs", href: "/api" },
     ],
   },
 ];
@@ -69,8 +69,7 @@ export function Footer() {
           <div className="col-span-full lg:col-span-2">
             <Logo />
             <p className="mt-4 text-sm text-muted-foreground">
-              Starter kit for your next project. Built with Next.js and
-              Creem.io.
+              Smart AI buzz cut preview platform with safe face protection technology. See your real results before cutting.
             </p>
           </div>
           <div className="col-span-2 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-4">
@@ -94,11 +93,11 @@ export function Footer() {
         </div>
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Built by{" "}
-            <Link href="#" className="font-medium underline underline-offset-4">
-              Raphael Starter
+            © 2024{" "}
+            <Link href="/about-us" className="font-medium underline underline-offset-4">
+              Buzz Cut AI
             </Link>
-            .
+            . All rights reserved.
           </p>
         </div>
       </div>

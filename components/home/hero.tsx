@@ -64,12 +64,12 @@ export default function Hero() {
           {/* CTA Buttons */}
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <a
-              href="#buzz-cut-simulator"
+              href="/buzz-cut-simulator"
               className="group relative inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 py-4 text-base font-bold text-white shadow-lg hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-300 transform hover:scale-105"
             >
               <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/80 to-blue-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <CameraIcon className="h-6 w-6 relative z-10" />
-              <span className="relative z-10">See My Look</span>
+              <span className="relative z-10">Try Buzz Cut</span>
               <ArrowRightIcon className="h-5 w-5 relative z-10 transition-transform group-hover:translate-x-1" />
             </a>
             <a

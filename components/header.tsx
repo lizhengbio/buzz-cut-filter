@@ -23,10 +23,10 @@ export default function Header({ user }: HeaderProps) {
 
   // Main navigation items that are always shown
   const mainNavItems: NavItem[] = [
-    { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Contact", href: "#contact" },
+    { label: "Simulator", href: "/buzz-cut-simulator" },
+    { label: "Guides", href: "/buzz-cut-guides" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "FAQ", href: "/faq" },
   ];
 
   // Dashboard items - empty array as we don't want navigation items in dashboard

@@ -1,0 +1,5 @@
+---
+description:除了 README 文件外，所有网站相关的文案（如页面文本、UI 字符串等）必须使用英文编写。
+globs:除了 README 文件外，所有网站相关的文案（如页面文本、UI 字符串等）必须使用英文编写。
+alwaysApply: true
+---
