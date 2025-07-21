@@ -2,214 +2,150 @@
 
 import { ArrowRightIcon, SparklesIcon, CameraIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+import { Button } from '../ui/button'
+import { useState } from 'react'
 
 export default function Hero() {
+  const [dragActive, setDragActive] = useState(false)
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true)
+    } else if (e.type === 'dragleave') {
+      setDragActive(false)
+    }
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+  }
+
+  const sampleImages = [
+    '/images/sample-1.jpg',
+    '/images/sample-2.jpg',
+    '/images/sample-3.jpg',
+    '/images/sample-4.jpg'
+  ]
+
   return (
-    <div className="bg-background relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-        <div
-          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary to-blue-600 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-          style={{
-            clipPath:
-              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-          }}
-        />
-      </div>
+    <section className="relative bg-white overflow-hidden">
+      <div className="container mx-auto px-4 py-8 lg:py-16">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          {/* Left side - Hero Image with background shape */}
+          <div className="relative order-2 lg:order-1">
+            {/* Organic yellow background shape */}
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 140C100 100 140 60 180 60C220 60 240 40 280 60C320 80 340 120 340 160C340 200 360 240 340 280C320 320 280 340 240 340C200 340 160 360 120 340C80 320 60 280 60 240C60 200 40 160 60 120C80 80 100 100 100 140Z' fill='%23f6c63d' opacity='0.9'/%3E%3C/svg%3E")`,
+                backgroundSize: '380px 380px',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                transform: 'translateX(-20px)'
+              }}
+            />
 
-      <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          {/* Announcement Badge */}
-          <div className="mb-8 inline-flex items-center gap-x-2 rounded-full border border-border bg-background/50 px-4 py-2 text-sm font-medium backdrop-blur-sm">
-            <SparklesIcon className="h-4 w-4 text-primary" />
-            <span className="text-muted-foreground">AI-Powered Hair Transformation</span>
-            <ArrowRightIcon className="h-4 w-4 text-primary" />
-          </div>
-
-          {/* Main Heading */}
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-              Try a Buzz Cut
-            </span>
-            <br />
-            Risk-Free Preview
-          </h1>
-
-          {/* Description */}
-          <p className="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl">
-            Thinking about going short? See exactly how you'll look with a buzz cut before making the cut. 
-            <span className="font-semibold text-primary"> Preview first, decide with confidence!</span>
-          </p>
-
-          {/* Feature Highlights */}
-          <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-green-500"></div>
-              <span>100% Free</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-              <span>Face Protected</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-              <span>Multiple Styles</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-orange-500"></div>
-              <span>HD Quality</span>
-            </div>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            <a
-              href="/buzz-cut-simulator"
-              className="group relative inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 py-4 text-base font-bold text-white shadow-lg hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-300 transform hover:scale-105"
-            >
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/80 to-blue-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <CameraIcon className="h-6 w-6 relative z-10" />
-              <span className="relative z-10">Try Buzz Cut</span>
-              <ArrowRightIcon className="h-5 w-5 relative z-10 transition-transform group-hover:translate-x-1" />
-            </a>
-            <a
-              href="#features"
-              className="inline-flex items-center gap-2 text-base font-semibold leading-6 text-foreground hover:text-primary transition-colors"
-            >
-              See Examples <span aria-hidden="true">→</span>
-            </a>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              <span>No Sign-up Required</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              <span>Privacy Protected</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              <span>Instant Results</span>
-            </div>
-          </div>
-
-          {/* Demo Images */}
-          <div className="mt-16">
-            <div className="mx-auto max-w-5xl">
-                            <div className="text-center">
-                <p className="text-sm font-medium text-muted-foreground mb-8">
-                  ✨ Real User Transformations
-                </p>
-              </div>
-              
-              {/* Before/After Showcase */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                {/* Comparison Set 1 */}
-                <div className="bg-background/50 backdrop-blur-sm border border-border rounded-2xl p-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center">
-                      <div className="aspect-square rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center mb-3 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
-                        <span className="text-muted-foreground text-sm relative z-10">Original Photo</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">Before</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-blue-600/20 flex items-center justify-center mb-3 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-blue-600/30"></div>
-                        <span className="text-primary text-sm font-medium relative z-10">Buzz Cut Result</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">After AI</p>
-                    </div>
-                  </div>
-                  <div className="mt-4 text-center">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      Face Match: 98%
-                    </span>
-                  </div>
+            {/* Main hero image placeholder */}
+            <div className="relative z-10 max-w-sm mx-auto lg:mx-0">
+              <div className="w-full h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
+                <div className="text-center">
+                  <SparklesIcon className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                  <p className="text-gray-500">Buzz Cut Transformation</p>
                 </div>
+              </div>
+            </div>
 
-                {/* Comparison Set 2 */}
-                <div className="bg-background/50 backdrop-blur-sm border border-border rounded-2xl p-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center">
-                      <div className="aspect-square rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center mb-3 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-red-500/20"></div>
-                        <span className="text-muted-foreground text-sm relative z-10">Original Photo</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">Before</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-blue-600/20 flex items-center justify-center mb-3 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-blue-600/30"></div>
-                        <span className="text-primary text-sm font-medium relative z-10">Buzz Cut Result</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">After AI</p>
-                    </div>
-                  </div>
-                  <div className="mt-4 text-center">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      Face Match: 96%
-                    </span>
-                  </div>
+            {/* Additional decorative elements */}
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-400/20 rounded-full -translate-x-16 translate-y-16"></div>
+            <div className="absolute top-1/4 right-0 w-20 h-20 bg-yellow-400/30 rounded-full translate-x-10"></div>
+          </div>
+
+          {/* Right side - Text and Upload */}
+          <div className="order-1 lg:order-2 lg:pl-8">
+            <div className="space-y-8">
+              {/* Title and badge */}
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
+                  Try Buzz Cut
+                  <br />
+                  AI Preview
+                </h1>
+
+                <div className="flex items-center flex-wrap gap-3">
+                  <span className="text-lg text-gray-600">100% Free and</span>
+                  <span className="bg-yellow-400 text-gray-800 font-medium px-3 py-1 text-lg">
+                    Instant
+                  </span>
                 </div>
               </div>
 
-              {/* Feature Highlights */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="text-center p-4 bg-background/30 backdrop-blur-sm border border-border rounded-xl">
-                  <div className="text-2xl mb-2">🎯</div>
-                  <h4 className="font-semibold text-foreground mb-1">Precise Recognition</h4>
-                  <p className="text-xs text-muted-foreground">AI accurately identifies facial features while preserving your natural look</p>
-                </div>
-                <div className="text-center p-4 bg-background/30 backdrop-blur-sm border border-border rounded-xl">
-                  <div className="text-2xl mb-2">🚀</div>
-                  <h4 className="font-semibold text-foreground mb-1">Lightning Fast</h4>
-                  <p className="text-xs text-muted-foreground">Get your buzz cut preview in 3-5 seconds</p>
-                </div>
-                <div className="text-center p-4 bg-background/30 backdrop-blur-sm border border-border rounded-xl">
-                  <div className="text-2xl mb-2">🎨</div>
-                  <h4 className="font-semibold text-foreground mb-1">Multiple Options</h4>
-                  <p className="text-xs text-muted-foreground">Choose from different buzz cut lengths and hair colors</p>
-                </div>
-              </div>
-
-              {/* Secondary CTA */}
-              <div className="text-center">
-                                  <a
-                    href="#buzz-cut-simulator"
-                    className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-lg font-semibold transition-all duration-300"
+              {/* Upload area */}
+              <div className="space-y-6">
+                <div
+                  className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-all ${
+                    dragActive
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-300 bg-gray-50/50'
+                  }`}
+                  onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={handleDrop}
+                >
+                  <Button
+                    size="lg"
+                    className="bg-[#2563eb] hover:bg-blue-600 text-white px-8 py-3 text-lg rounded-full font-medium"
+                    asChild
                   >
-                    <span className="text-lg">✂️</span>
-                    Get My Preview
-                  </a>
+                    <a href="/buzz-cut-simulator">
+                      Upload Photo
+                    </a>
+                  </Button>
+
+                  <div className="mt-6 space-y-2">
+                    <p className="text-gray-600">or drop a file,</p>
+                    <p className="text-gray-600">
+                      paste image or{' '}
+                      <button className="text-[#2563eb] hover:underline">
+                        use camera
+                      </button>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Sample images section */}
+                <div className="space-y-4">
+                  <p className="text-gray-600 text-center">
+                    No image? Try one of these:
+                  </p>
+                  <div className="flex justify-center gap-3">
+                    {[1, 2, 3, 4].map((index) => (
+                      <button
+                        key={index}
+                        className="w-16 h-16 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all hover:scale-110 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"
+                      >
+                        <span className="text-xs text-gray-500">Sample {index}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Terms text */}
+                <p className="text-xs text-gray-500 text-center">
+                  By uploading an image you agree to our{' '}
+                  <a href="/terms" className="text-[#2563eb] hover:underline">Terms of Service</a>.
+                  To learn more about how we handle your personal data, check our{' '}
+                  <a href="/privacy" className="text-[#2563eb] hover:underline">Privacy Policy</a>.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Bottom gradient */}
-      <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-        <div
-          className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-primary to-blue-600 opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-          style={{
-            clipPath:
-              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-          }}
-        />
-      </div>
-    </div>
+    </section>
   )
 }

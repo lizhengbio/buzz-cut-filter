@@ -7,6 +7,8 @@ import { ThemeSwitcher } from "./theme-switcher";
 import { Logo } from "./logo";
 import { usePathname } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
+import { X } from "lucide-react";
+import { useState } from "react";
 
 interface HeaderProps {
   user: any;
@@ -20,6 +22,7 @@ interface NavItem {
 export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith("/dashboard");
+  const [showBanner, setShowBanner] = useState(true);
 
   // Main navigation items that are always shown
   const mainNavItems: NavItem[] = [
@@ -36,56 +39,79 @@ export default function Header({ user }: HeaderProps) {
   const navItems = isDashboard ? dashboardItems : mainNavItems;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2 md:gap-8">
-          <Logo />
-          <nav className="hidden md:flex items-center gap-6">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                {item.label}
+    <>
+      {/* Notification banner */}
+      {showBanner && !isDashboard && (
+        <div className="bg-yellow-400 px-4 py-2 text-sm text-gray-800">
+          <div className="container mx-auto flex items-center justify-between">
+            <div className="flex-1">
+              🎉 New AI technology! Try our advanced buzz cut simulator -{' '}
+              <Link href="/buzz-cut-simulator" className="underline hover:no-underline">
+                Get started
               </Link>
-            ))}
-          </nav>
+            </div>
+            <button 
+              className="text-gray-800 hover:text-gray-600"
+              onClick={() => setShowBanner(false)}
+            >
+              <X size={16} />
+            </button>
+          </div>
         </div>
+      )}
 
-        <div className="flex items-center gap-2">
-          <ThemeSwitcher />
-          {user ? (
-            <div className="hidden md:flex items-center gap-2">
-              {isDashboard && (
-                <span className="hidden sm:inline text-sm text-muted-foreground">
-                  {user.email}
-                </span>
-              )}
-              {!isDashboard && (
-                <Button asChild size="sm" variant="default">
-                  <Link href="/dashboard">Dashboard</Link>
+      {/* Main header */}
+      <header className="sticky top-0 z-50 w-full border-b bg-white border-gray-200">
+        <div className="container flex h-16 items-center justify-between px-4">
+          <div className="flex items-center gap-2 md:gap-8">
+            <Logo />
+            <nav className="hidden md:flex items-center gap-6">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-800"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <ThemeSwitcher />
+            {user ? (
+              <div className="hidden md:flex items-center gap-2">
+                {isDashboard && (
+                  <span className="hidden sm:inline text-sm text-gray-600">
+                    {user.email}
+                  </span>
+                )}
+                {!isDashboard && (
+                  <Button asChild size="sm" variant="default">
+                    <Link href="/dashboard">Dashboard</Link>
+                  </Button>
+                )}
+                <form action={signOutAction}>
+                  <Button type="submit" variant="outline" size="sm" className="text-gray-600 border-gray-300 hover:border-gray-400">
+                    Sign out
+                  </Button>
+                </form>
+              </div>
+            ) : (
+              <div className="hidden md:flex gap-2">
+                <Button asChild size="sm" variant="ghost" className="text-gray-600 hover:text-gray-800">
+                  <Link href="/sign-in">Sign in</Link>
                 </Button>
-              )}
-              <form action={signOutAction}>
-                <Button type="submit" variant="outline" size="sm">
-                  Sign out
+                <Button asChild size="sm" variant="outline" className="text-gray-600 border-gray-300 hover:border-gray-400">
+                  <Link href="/sign-up">Sign up</Link>
                 </Button>
-              </form>
-            </div>
-          ) : (
-            <div className="hidden md:flex gap-2">
-              <Button asChild size="sm" variant="outline">
-                <Link href="/sign-in">Sign in</Link>
-              </Button>
-              <Button asChild size="sm">
-                <Link href="/sign-up">Sign up</Link>
-              </Button>
-            </div>
-          )}
-          <MobileNav items={navItems} user={user} isDashboard={isDashboard} />
+              </div>
+            )}
+            <MobileNav items={navItems} user={user} isDashboard={isDashboard} />
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
