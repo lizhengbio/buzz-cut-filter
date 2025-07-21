@@ -7,8 +7,7 @@ import { ThemeSwitcher } from "./theme-switcher";
 import { Logo } from "./logo";
 import { usePathname } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
-import { X } from "lucide-react";
-import { useState } from "react";
+
 
 interface HeaderProps {
   user: any;
@@ -22,7 +21,6 @@ interface NavItem {
 export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith("/dashboard");
-  const [showBanner, setShowBanner] = useState(true);
 
   // Main navigation items that are always shown
   const mainNavItems: NavItem[] = [
@@ -40,26 +38,6 @@ export default function Header({ user }: HeaderProps) {
 
   return (
     <>
-      {/* Notification banner */}
-      {showBanner && !isDashboard && (
-        <div className="bg-yellow-400 px-4 py-2 text-sm text-gray-800">
-          <div className="container mx-auto flex items-center justify-between">
-            <div className="flex-1">
-              🎉 New AI technology! Try our advanced buzz cut simulator -{' '}
-              <Link href="/buzz-cut-simulator" className="underline hover:no-underline">
-                Get started
-              </Link>
-            </div>
-            <button 
-              className="text-gray-800 hover:text-gray-600"
-              onClick={() => setShowBanner(false)}
-            >
-              <X size={16} />
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Main header */}
       <header className="sticky top-0 z-50 w-full border-b bg-white border-gray-200">
         <div className="container flex h-16 items-center justify-between px-4">
@@ -103,7 +81,7 @@ export default function Header({ user }: HeaderProps) {
                 <Button asChild size="sm" variant="ghost" className="text-gray-600 hover:text-gray-800">
                   <Link href="/sign-in">Sign in</Link>
                 </Button>
-                <Button asChild size="sm" variant="outline" className="text-gray-600 border-gray-300 hover:border-gray-400">
+                <Button asChild size="sm" variant="default" className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-medium border-0 shadow-sm">
                   <Link href="/sign-up">Sign up</Link>
                 </Button>
               </div>
