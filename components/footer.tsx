@@ -44,16 +44,16 @@ export function Footer() {
 
   if (isDashboard) {
     return (
-      <footer className="border-t py-6 md:py-0">
+      <footer className="border-t border-gray-200 bg-white py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row md:py-0">
           <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+            <p className="text-center text-sm leading-loose text-gray-600 md:text-left">
               Built by{" "}
               <Link
-                href="https://Raphael.app"
-                className="font-medium underline underline-offset-4"
+                href="https://buzzcut.ai"
+                className="font-medium text-primary hover:underline underline-offset-4"
               >
-                Raphael Starter
+                Buzz Cut AI
               </Link>
             </p>
           </div>
@@ -63,25 +63,26 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t">
-      <div className="container px-4 py-8 md:py-12">
+    <footer className="border-t border-gray-200 bg-white">
+      <div className="container px-4 py-12 md:py-16">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6">
           <div className="col-span-full lg:col-span-2">
             <Logo />
-            <p className="mt-4 text-sm text-muted-foreground">
-              Smart AI buzz cut preview platform with safe face protection technology. See your real results before cutting.
+            <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
+              AI-powered buzz cut preview platform. See your transformation instantly with our advanced face-lock technology. 
+              Safe, fast, and completely free to try.
             </p>
           </div>
           <div className="col-span-2 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-4">
             {footerLinks.map((group) => (
-              <div key={group.title} className="flex flex-col gap-3">
-                <h3 className="text-sm font-medium">{group.title}</h3>
-                <nav className="flex flex-col gap-2">
+              <div key={group.title} className="flex flex-col gap-4">
+                <h3 className="text-sm font-semibold text-gray-900">{group.title}</h3>
+                <nav className="flex flex-col gap-3">
                   {group.links.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                      className="text-sm text-gray-600 transition-colors hover:text-gray-900"
                     >
                       {link.label}
                     </Link>
@@ -91,14 +92,18 @@ export function Footer() {
             ))}
           </div>
         </div>
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-gray-200 pt-8 md:flex-row">
+          <p className="text-center text-sm text-gray-600 md:text-left">
             © 2024{" "}
-            <Link href="/about-us" className="font-medium underline underline-offset-4">
+            <Link href="/about-us" className="font-medium text-gray-900 hover:text-primary transition-colors">
               Buzz Cut AI
             </Link>
             . All rights reserved.
           </p>
+          <div className="flex items-center gap-6 text-sm text-gray-600">
+            <Link href="/terms" className="hover:text-gray-900 transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-gray-900 transition-colors">Privacy Policy</Link>
+          </div>
         </div>
       </div>
     </footer>

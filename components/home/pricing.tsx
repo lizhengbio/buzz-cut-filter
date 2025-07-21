@@ -86,62 +86,62 @@ export default function Pricing() {
   };
 
   return (
-    <section id="pricing" className="bg-white py-8 md:py-12 lg:py-24">
-      <div className="container px-4 sm:px-6 lg:px-8 space-y-16 max-w-6xl">
+    <section id="pricing" className="bg-white py-20 md:py-24">
+      <div className="container px-4 sm:px-6 lg:px-8 space-y-20 max-w-6xl">
         {/* Subscription Plans */}
         <div>
-          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-            <h2 className="font-bold text-2xl sm:text-3xl md:text-6xl leading-[1.1]">
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-6 text-center">
+            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl leading-tight text-gray-900">
               Subscription Plans
             </h2>
-            <p className="max-w-[95%] sm:max-w-[85%] text-sm sm:text-lg leading-normal text-muted-foreground">
+            <p className="max-w-[95%] sm:max-w-[85%] text-lg leading-relaxed text-gray-600">
               Start with free trial and upgrade as needed. High-fidelity Face-Lock buzz cut previews 
               with commercial licensing options for all user types.
             </p>
           </div>
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 mt-8 md:mt-12">
+          <div className="grid lg:grid-cols-3 gap-8 mt-16">
             {SUBSCRIPTION_TIERS.map((tier) => (
               <div
                 key={tier.id}
-                className={`relative flex flex-col rounded-2xl border bg-background p-4 sm:p-6 shadow-lg ${
+                className={`relative flex flex-col rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg transition-all duration-300 ${
                   tier.featured
-                    ? "border-primary shadow-primary/10"
-                    : "border-border"
+                    ? "border-primary/30 shadow-primary/5 ring-1 ring-primary/10"
+                    : "border-gray-200"
                 }`}
               >
                 {tier.featured && (
-                  <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
+                  <div className="absolute -top-4 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm">
                     Most Popular
                   </div>
                 )}
-                <div className="space-y-4">
-                  <h3 className="text-xl sm:text-2xl font-bold">{tier.name}</h3>
-                  <div className="text-3xl sm:text-4xl font-bold">
+                <div className="space-y-6">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{tier.name}</h3>
+                  <div className="text-4xl sm:text-5xl font-bold text-gray-900">
                     {tier.priceMonthly}
                     {tier.priceMonthly !== "$0" && tier.priceMonthly !== "Custom" && (
-                      <span className="text-base font-normal text-muted-foreground">
+                      <span className="text-lg font-normal text-gray-500">
                         /month
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-gray-600 leading-relaxed">
                     {tier.description}
                   </p>
                 </div>
-                <div className="mt-6">
-                  <ul className="space-y-3 text-sm">
+                <div className="mt-8">
+                  <ul className="space-y-4 text-sm">
                     {tier?.features?.map((feature: string) => (
-                      <li key={feature} className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        {feature}
+                      <li key={feature} className="flex items-start">
+                        <Check className="mr-3 h-5 w-5 text-success flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700">{feature}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="mt-6">
+                <div className="mt-8 pt-4">
                   {tier.id === "tier-free" ? (
                     <Button
-                      className="w-full"
+                      className="w-full h-12 text-base font-medium"
                       variant="outline"
                       onClick={() => router.push("/buzz-cut-simulator")}
                     >
@@ -149,7 +149,7 @@ export default function Pricing() {
                     </Button>
                   ) : (
                     <Button
-                      className="w-full"
+                      className="w-full h-12 text-base font-medium"
                       variant={tier.featured ? "default" : "outline"}
                       onClick={() =>
                         handleSubscribe(tier.productId, tier.discountCode)
@@ -166,51 +166,51 @@ export default function Pricing() {
 
         {/* Credits Packages */}
         <div>
-          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-            <h2 className="font-bold text-2xl sm:text-3xl md:text-6xl leading-[1.1]">
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-6 text-center">
+            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl leading-tight text-gray-900">
               Credit Packages
             </h2>
-            <p className="max-w-[95%] sm:max-w-[85%] text-sm sm:text-lg leading-normal text-muted-foreground">
+            <p className="max-w-[95%] sm:max-w-[85%] text-lg leading-relaxed text-gray-600">
               Purchase credits on-demand for flexible buzz cut preview generation.
               Perfect for occasional users or those wanting premium quality without subscription.
             </p>
           </div>
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 mt-8 md:mt-12">
+          <div className="grid lg:grid-cols-3 gap-8 mt-16">
             {CREDITS_TIERS.map((tier) => (
               <div
                 key={tier.id}
-                className="relative flex flex-col rounded-2xl border bg-background p-4 sm:p-6 shadow-lg border-border"
+                className="relative flex flex-col rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg transition-all duration-300 border-gray-200"
               >
                 {tier.featured && (
-                  <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-green-600 px-3 py-1 text-xs font-medium text-white">
+                  <div className="absolute -top-4 left-0 right-0 mx-auto w-fit rounded-full bg-success px-4 py-2 text-sm font-medium text-white shadow-sm">
                     Best Value
                   </div>
                 )}
-                <div className="space-y-4">
-                  <h3 className="text-xl sm:text-2xl font-bold">{tier.name}</h3>
-                  <div className="text-3xl sm:text-4xl font-bold">
+                <div className="space-y-6">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{tier.name}</h3>
+                  <div className="text-4xl sm:text-5xl font-bold text-gray-900">
                     {tier.priceMonthly}
-                    <span className="text-base font-normal text-muted-foreground">
+                    <span className="text-lg font-normal text-gray-500">
                       {` (${tier.creditAmount} credits)`}
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-gray-600 leading-relaxed">
                     {tier.description}
                   </p>
                 </div>
-                <div className="mt-6">
-                  <ul className="space-y-3 text-sm">
+                <div className="mt-8">
+                  <ul className="space-y-4 text-sm">
                     {tier?.features?.map((feature: string) => (
-                      <li key={feature} className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        {feature}
+                      <li key={feature} className="flex items-start">
+                        <Check className="mr-3 h-5 w-5 text-success flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700">{feature}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="mt-6">
+                <div className="mt-8 pt-4">
                   <Button
-                    className="w-full"
+                    className="w-full h-12 text-base font-medium"
                     variant={tier.featured ? "default" : "outline"}
                     onClick={() =>
                       handleBuyCredits(
@@ -229,13 +229,13 @@ export default function Pricing() {
         </div>
 
         {/* Annual Savings Banner */}
-        <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border rounded-xl p-6 md:p-8">
-          <div className="text-center space-y-4">
-            <h3 className="text-2xl font-semibold">Save with Annual Plans</h3>
-            <p className="text-muted-foreground">
-              Pro Annual: <strong>$49/year</strong> (save $10) • Studio Annual: <strong>$99/year</strong> (save $20)
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100/50 border border-gray-200 rounded-2xl p-8 md:p-12">
+          <div className="text-center space-y-6">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900">Save with Annual Plans</h3>
+            <p className="text-gray-600 text-lg">
+              Pro Annual: <strong className="text-gray-900">$49/year</strong> (save $10) • Studio Annual: <strong className="text-gray-900">$99/year</strong> (save $20)
             </p>
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="h-12 px-8 text-base font-medium">
               <a href="/pricing">
                 View All Plans
               </a>

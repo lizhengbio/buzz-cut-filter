@@ -1,7 +1,6 @@
 'use client'
 
-import { ArrowRightIcon, SparklesIcon, CameraIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image'
+import { SparklesIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline'
 import { Button } from '../ui/button'
 import { useState } from 'react'
 
@@ -24,121 +23,120 @@ export default function Hero() {
     setDragActive(false)
   }
 
-  const sampleImages = [
-    '/images/sample-1.jpg',
-    '/images/sample-2.jpg',
-    '/images/sample-3.jpg',
-    '/images/sample-4.jpg'
-  ]
-
   return (
-    <section className="relative bg-white overflow-hidden">
-      <div className="container mx-auto px-4 py-8 lg:py-16">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
-          {/* Left side - Video and Title */}
-          <div className="flex flex-col md:flex-row lg:flex-col items-center lg:items-start gap-6 md:gap-8 md:max-w-2xl lg:max-w-lg order-2 lg:order-1">
-            {/* Video preview */}
-            <div className="relative">
-              <video
-                preload="auto"
-                className="w-full h-auto rounded-[32px] max-w-[320px] lg:max-w-[420px]"
-                poster="/images/buzz-cut-preview-poster.jpg"
-                autoPlay
-                loop
-                muted
-                playsInline
-              >
-                <source src="/videos/buzz-cut-preview.mp4" type="video/mp4" />
-                {/* Fallback image if video doesn't load */}
-                <div className="w-full h-[280px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-[32px] flex items-center justify-center">
-                  <div className="text-center">
-                    <SparklesIcon className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-                    <p className="text-gray-500">Buzz Cut Transformation</p>
-                  </div>
-                </div>
-              </video>
-            </div>
-
-            {/* Title and subtitle */}
-            <div className="flex flex-col gap-4">
-              <h1 className="font-bold text-gray-800 m-0 text-4xl md:text-5xl lg:text-6xl text-center md:!text-left leading-tight">
-                Try Buzz Cut AI Preview
-              </h1>
-              <p className="text-gray-800 font-bold text-xl m-0 text-center md:!text-left">
-                100% Automatically and{' '}
-                <span 
-                  className="py-1 px-4 bg-no-repeat bg-cover bg-center inline-block"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='40' viewBox='0 0 120 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 20C10 15 15 10 20 10L100 10C105 10 110 15 110 20C110 25 105 30 100 30L20 30C15 30 10 25 10 20Z' fill='%23f6c63d' stroke='%23f59e0b' stroke-width='2'/%3E%3C/svg%3E")`
-                  }}
-                >
-                  Free
-                </span>
-              </p>
-            </div>
+    <section className="relative bg-white min-h-[80vh] flex items-center justify-center">
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto text-center space-y-12">
+          
+          {/* Main Heading */}
+          <div className="space-y-6">
+            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
+              Buzz Cut Preview{' '}
+              <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                100% Automatically
+              </span>{' '}
+              and{' '}
+              <span className="relative">
+                Free
+                <svg className="absolute -bottom-2 left-0 w-full h-3" viewBox="0 0 120 12" fill="none">
+                  <path
+                    d="M2 10C20 4 40 2 60 6C80 2 100 4 118 10"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    className="text-yellow-400"
+                  />
+                </svg>
+              </span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+              Buzz cut preview: Fully automated in{' '}
+              <span className="font-semibold text-primary">5 seconds</span> with{' '}
+              <span className="font-semibold text-primary">1 click</span>
+            </p>
+            
+            <p className="text-gray-500 max-w-2xl mx-auto">
+              Thanks to our AI, you can see your buzz cut transformation instantly. 
+              Upload any photo and watch the magic happen automatically.
+            </p>
           </div>
 
-          {/* Right side - Upload Card */}
-          <div className="order-1 lg:order-2 lg:pl-8">
-            <div className="relative group flex flex-col gap-4 md:gap-8 max-w-md mt-8 md:mt-28 mx-auto lg:mx-0">
-              {/* Main upload card - Remove.bg style */}
-              <div 
-                className={`w-full flex flex-col sm:justify-center sm:items-center sm:gap-8 sm:pt-36 sm:pb-16 rounded-[32px] bg-white shadow-2xl transition-all ${
-                  dragActive ? 'shadow-3xl transform scale-[1.02]' : ''
-                }`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
-              >
+          {/* Upload Section - Remove.bg Style */}
+          <div className="max-w-lg mx-auto">
+            <div 
+              className={`relative p-16 border-2 border-dashed rounded-3xl transition-all duration-300 cursor-pointer bg-gradient-to-br from-gray-50 to-white hover:from-blue-50 hover:to-white ${
+                dragActive 
+                  ? 'border-primary bg-primary/5 scale-105' 
+                  : 'border-gray-300 hover:border-primary/50'
+              }`}
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+            >
+              <div className="text-center space-y-6">
+                <CloudArrowUpIcon className="w-16 h-16 text-gray-400 mx-auto" />
+                
                 <Button
                   size="lg"
-                  className="rounded-full font-bold transition ease-in-out text-center inline-flex items-center justify-center focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-primary-hover px-6 py-3 text-2xl py-2.5 text-white bg-[#ff6b6b] hover:bg-[#ff5252] active:bg-[#ff4444]"
+                  className="text-lg px-8 py-4 h-auto rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                   asChild
                 >
                   <a href="/buzz-cut-simulator">
-                    <span className="flex px-3">Upload Image</span>
+                    Upload Image
                   </a>
                 </Button>
-
-                <div className="hidden sm:flex flex-col gap-1.5">
-                  <p className="m-0 font-bold text-xl text-gray-600">or drop a file,</p>
-                  <span className="text-xs text-gray-600 text-center">
+                
+                <div className="space-y-2">
+                  <p className="text-gray-600 font-medium">or drop a file,</p>
+                  <p className="text-sm text-gray-500">
                     paste image or{' '}
-                    <button className="text-gray-600 underline hover:text-gray-800">
+                    <button className="text-primary hover:underline font-medium">
                       URL
                     </button>
-                    {' '}​
-                  </span>
+                  </p>
                 </div>
               </div>
-
-              {/* Sample images section */}
-              <div className="space-y-4">
-                <p className="text-gray-600 text-center">
-                  No image? Try one of these:
-                </p>
-                <div className="flex justify-center gap-3">
-                  {[1, 2, 3, 4].map((index) => (
-                    <button
-                      key={index}
-                      className="w-16 h-16 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all hover:scale-110 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"
-                    >
-                      <span className="text-xs text-gray-500">Sample {index}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Terms text */}
-              <p className="text-xs text-gray-500 text-center">
-                By uploading an image you agree to our{' '}
-                <a href="/terms" className="text-[#2563eb] hover:underline">Terms of Service</a>.
-                To learn more about how we handle your personal data, check our{' '}
-                <a href="/privacy" className="text-[#2563eb] hover:underline">Privacy Policy</a>.
+            </div>
+            
+            {/* Sample Images */}
+            <div className="mt-8 space-y-4">
+              <p className="text-gray-600 text-center font-medium">
+                No image? Try one of these:
               </p>
+              <div className="flex justify-center gap-3">
+                {[1, 2, 3, 4].map((index) => (
+                  <button
+                    key={index}
+                    className="w-16 h-16 rounded-xl overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all hover:scale-110 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center shadow-sm hover:shadow-md"
+                  >
+                    <span className="text-xs text-gray-500 font-medium">Sample {index}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
+
+          {/* Trust Indicators */}
+          <div className="flex items-center justify-center gap-8 text-sm text-gray-500">
+            <div className="flex items-center gap-2">
+              <SparklesIcon className="w-4 h-4" />
+              <span>AI-Powered</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+            <span>No Registration Required</span>
+            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+            <span>Instant Results</span>
+          </div>
+
+          {/* Privacy Notice */}
+          <p className="text-xs text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            By uploading an image you agree to our{' '}
+            <a href="/terms" className="text-primary hover:underline">Terms of Service</a>.
+            To learn more about how we handle your personal data, check our{' '}
+            <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
+          </p>
         </div>
       </div>
     </section>
