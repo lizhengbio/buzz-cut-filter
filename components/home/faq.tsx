@@ -39,15 +39,15 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <div id="faq" className="bg-background">
+    <div id="faq" className="bg-gray-50">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
-        <h2 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Frequently Asked Questions</h2>
-        <dl className="mt-20 divide-y divide-foreground/10">
+        <h2 className="text-4xl font-semibold tracking-tight text-gray-800 sm:text-5xl">Frequently Asked Questions</h2>
+        <dl className="mt-20 divide-y divide-gray-200">
           {faqs.map((faq) => (
             <div key={faq.id} className="py-8 first:pt-0 last:pb-0 lg:grid lg:grid-cols-12 lg:gap-8">
-              <dt className="text-base/7 font-semibold text-foreground lg:col-span-5">{faq.question}</dt>
+              <dt className="text-base/7 font-semibold text-gray-800 lg:col-span-5">{faq.question}</dt>
               <dd className="mt-4 lg:col-span-7 lg:mt-0">
-                <p className="text-base/7 text-muted-foreground">{faq.answer}</p>
+                <p className="text-base/7 text-gray-600">{faq.answer}</p>
               </dd>
             </div>
           ))}

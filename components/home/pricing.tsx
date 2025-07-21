@@ -86,7 +86,7 @@ export default function Pricing() {
   };
 
   return (
-    <section id="pricing" className="py-8 md:py-12 lg:py-24">
+    <section id="pricing" className="bg-white py-8 md:py-12 lg:py-24">
       <div className="container px-4 sm:px-6 lg:px-8 space-y-16 max-w-6xl">
         {/* Subscription Plans */}
         <div>

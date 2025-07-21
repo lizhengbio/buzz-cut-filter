@@ -1,98 +1,122 @@
-import { Card, CardContent } from '../ui/card'
-
 const testimonials = [
   {
-    logo: 'STYLIST WEEKLY',
+    companyLogo: 'HAIR TECH WEEKLY',
     quote: 'We are impressed by the AI and think it\'s the best buzz cut preview tool on the market.',
-    author: 'Sarah Johnson',
-    position: 'Senior Hair Stylist'
+    authorImage: '/images/testimonial-1.jpg',
+    authorName: 'Sarah Johnson',
+    authorPosition: 'Content & Marketing Coordinator'
   },
   {
-    logo: 'MODERN BARBER',
-    quote: 'BuzzCut AI is leaps and bounds ahead of the competition. A thousand times better. It simplified the whole consultation process.',
-    author: 'Mike Rodriguez',
-    position: 'Master Barber'
+    companyLogo: 'MODERN BARBER CO',
+    quote: 'BuzzCut AI is leaps and bounds ahead of the competition. A thousand times better. It simplified the whole process.',
+    authorImage: '/images/testimonial-2.jpg',
+    authorName: 'Mike Rodriguez',
+    authorPosition: 'CEO'
   },
   {
-    logo: 'HAIR TECH REVIEW',
+    companyLogo: 'STYLE REVIEW',
     quote: 'We were impressed by its ability to account for different face shapes and hair textures without making the result look artificial.',
-    author: 'Emma Chen',
-    position: 'Technology Editor'
+    authorImage: '/images/testimonial-3.jpg',
+    authorName: 'Emma Chen',
+    authorPosition: 'Senior Technology Editor'
   }
 ]
 
 export default function Testimonials() {
   return (
-    <section className="bg-yellow-400 py-16 lg:py-24 relative overflow-hidden">
-      {/* Background decorative stars */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-10 left-10 text-2xl">✨</div>
-        <div className="absolute top-20 right-20 text-xl">⭐</div>
-        <div className="absolute bottom-20 left-20 text-lg">✨</div>
-        <div className="absolute bottom-10 right-10 text-2xl">⭐</div>
-        <div className="absolute top-1/2 left-1/4 text-sm">✨</div>
-        <div className="absolute top-1/3 right-1/3 text-sm">⭐</div>
+    <div className="bg-yellow-400 py-12 md:py-24">
+      {/* Title */}
+      <div className="mx-auto w-full px-8 max-w-5xl">
+        <h2 className="font-bold text-4xl md:text-5xl text-center text-gray-800 m-0">
+          They love us. You will too.
+        </h2>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-8">
-            They love us. You will too.
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+      {/* Testimonials Grid */}
+      <div className="py-4 md:py-8">
+        <div className="mx-auto w-full px-8 max-w-7xl snap-x md:snap-none snap-mandatory overflow-x-scroll md:overflow-auto px-8 scroll-pl-8 md:scroll-p-0 flex flex-nowrap gap-6 md:grid md:grid-cols-3 [&>*]:snap-start scrollbar-hide">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="bg-white border-0 shadow-lg">
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {/* Company logo placeholder */}
-                  <div className="font-bold text-sm text-gray-600 tracking-wider">
-                    {testimonial.logo}
-                  </div>
-
-                  {/* Quote */}
-                  <blockquote className="text-gray-800 text-sm leading-relaxed">
-                    "{testimonial.quote}"
-                  </blockquote>
-
-                  {/* Author */}
-                  <div className="pt-4 border-t border-gray-100">
-                    <div className="font-semibold text-gray-800 text-sm">
-                      {testimonial.author}
-                    </div>
-                    <div className="text-gray-600 text-xs">
-                      {testimonial.position}
+            <div 
+              key={index}
+              className="rounded-2xl border border-gray-200 bg-white p-3 transition ease-in-out duration-150 flex-shrink-0 w-5/6 md:w-auto md:flex-shrink-1 p-4 md:p-8 flex flex-col justify-between"
+            >
+              {/* Top section with logo and quote */}
+              <div>
+                {/* Company logo */}
+                <figure className="m-0 w-36 h-16 mb-8 flex items-center">
+                  <div className="w-full h-auto">
+                    <div className="w-36 h-8 bg-gray-100 rounded flex items-center justify-center">
+                      <span className="text-xs font-bold text-gray-600 tracking-wider">
+                        {testimonial.companyLogo}
+                      </span>
                     </div>
                   </div>
+                </figure>
+
+                {/* Quote */}
+                <p className="lg:text-xl font-bold text-gray-800 leading-7">
+                  "{testimonial.quote}"
+                </p>
+              </div>
+
+              {/* Bottom section with author info */}
+              <div>
+                {/* Author image */}
+                <figure className="m-0 w-20 mt-8">
+                  <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">
+                      {testimonial.authorName.split(' ').map(name => name[0]).join('')}
+                    </span>
+                  </div>
+                </figure>
+
+                {/* Author details */}
+                <div className="flex flex-col mt-1">
+                  <span className="font-bold text-gray-600">
+                    {testimonial.authorName}
+                  </span>
+                  <span className="text-gray-600">
+                    {testimonial.authorPosition}
+                  </span>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
-
-        <div className="text-center">
-          <a
-            href="#"
-            className="inline-flex items-center text-gray-800 hover:text-gray-600 font-medium"
-          >
-            Read Success Stories
-            <svg
-              className="ml-2 w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </a>
-        </div>
       </div>
-    </section>
+
+      {/* Bottom link */}
+      <div className="flex flex-col items-center">
+        <a 
+          href="/about-us" 
+          className="group flex items-center font-bold cursor-pointer transition ease-in-out no-underline text-gray-800 hover:text-gray-600 text-xl focus:outline-none focus-visible:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-primary-hover rounded"
+        >
+          Read Success Stories
+          <svg 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="ml-2 group-hover:translate-x-1 transition-transform"
+          >
+            <path 
+              d="M11.3846 16.8L18.7692 12L11.3846 7.2" 
+              stroke="currentColor" 
+              strokeWidth="1.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+            />
+            <path 
+              d="M5.23077 12H17.5385" 
+              stroke="currentColor" 
+              strokeWidth="1.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
   )
 }
