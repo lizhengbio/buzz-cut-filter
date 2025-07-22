@@ -74,33 +74,81 @@ export default function StunningQuality() {
               {/* Image container */}
               <div className="relative">
                 <div className="relative overflow-hidden">
-                  {/* Original image (always visible) */}
+                  {/* After image (base layer - always visible) */}
                   <div className="w-full">
-                    <div className="w-full aspect-video bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <span className="text-white font-bold text-xl">Before</span>
+                    {activeCategory === 'male' ? (
+                      <div className="relative w-full">
+                        <img 
+                          src="/images/male-after.png" 
+                          alt="AI Buzz Cut Result" 
+                          className="w-full aspect-video object-cover"
+                        />
+                        <div className="absolute top-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm font-medium">
+                          After
                         </div>
-                        <p className="text-blue-700 font-medium">Original Photo with Hair</p>
                       </div>
-                    </div>
+                    ) : activeCategory === 'female' ? (
+                      <div className="relative w-full">
+                        <img 
+                          src="/images/female-after.png" 
+                          alt="AI Buzz Cut Result" 
+                          className="w-full aspect-video object-cover"
+                        />
+                        <div className="absolute top-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm font-medium">
+                          After
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full aspect-video bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-green-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span className="text-white font-bold text-xl">After</span>
+                          </div>
+                          <p className="text-green-700 font-medium">AI Buzz Cut Result</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
-                  {/* Processed image overlay with clip path */}
+                  {/* Before image overlay with clip path */}
                   <div 
                     className="absolute top-0 left-0 w-full h-full"
                     style={{
                       clipPath: `inset(0 ${100 - sliderValue}% 0 0)`
                     }}
                   >
-                    <div className="w-full aspect-video bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-green-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <span className="text-white font-bold text-xl">After</span>
+                    {activeCategory === 'male' ? (
+                      <div className="relative w-full h-full">
+                        <img 
+                          src="/images/male-before.jpg" 
+                          alt="Original Photo with Hair" 
+                          className="w-full aspect-video object-cover"
+                        />
+                        <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm font-medium">
+                          Before
                         </div>
-                        <p className="text-green-700 font-medium">AI Buzz Cut Result</p>
                       </div>
-                    </div>
+                    ) : activeCategory === 'female' ? (
+                      <div className="relative w-full h-full">
+                        <img 
+                          src="/images/female-before.jpg" 
+                          alt="Original Photo with Hair" 
+                          className="w-full aspect-video object-cover"
+                        />
+                        <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm font-medium">
+                          Before
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full aspect-video bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span className="text-white font-bold text-xl">Before</span>
+                          </div>
+                          <p className="text-blue-700 font-medium">Original Photo with Hair</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
                   {/* Slider overlay */}
