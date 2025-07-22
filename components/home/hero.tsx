@@ -72,12 +72,22 @@ export default function Hero() {
       
       const data = await response.json()
       
-      // 将图片数据存储到 sessionStorage
-      sessionStorage.setItem('uploadedImageData', JSON.stringify({
+      // 检查数据大小，如果太大则不使用 sessionStorage
+      const imageDataStr = JSON.stringify({
         imageUrl: data.imageUrl,
         imageBase64: data.imageBase64,
         uploadedAt: Date.now()
-      }))
+      })
+      
+      try {
+        // 尝试存储到 sessionStorage，如果失败则直接跳转
+        sessionStorage.setItem('uploadedImageData', imageDataStr)
+        console.log('📦 Image data saved to sessionStorage')
+      } catch (error) {
+        console.warn('⚠️ SessionStorage quota exceeded, proceeding without cache:', error)
+        // 如果存储失败，清除可能的部分数据
+        sessionStorage.removeItem('uploadedImageData')
+      }
       
       // 跳转到 buzz-cut-simulator 页面
       router.push('/buzz-cut-simulator')
@@ -366,25 +376,76 @@ export default function Hero() {
                 No image? Try one of these:
               </p>
               <div className="flex justify-center gap-3">
-                {[1, 2, 3, 4].map((index) => (
+                {[
+                  { id: 1, filename: 'sample1.png', alt: 'Sample 1' },
+                  { id: 2, filename: 'sample2.jpg', alt: 'Sample 2' },
+                  { id: 3, filename: 'sample3.jpg', alt: 'Sample 3' },
+                  { id: 4, filename: 'sample4.jpg', alt: 'Sample 4' }
+                ].map((sample) => (
                   <button
-                    key={index}
-                    className="w-16 h-16 rounded-xl overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all hover:scale-110 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center shadow-sm hover:shadow-md"
-                    onClick={async () => {
-                      // 使用占位符图片作为示例
+                    key={sample.id}
+                    className="w-16 h-16 rounded-xl overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all hover:scale-110 shadow-sm hover:shadow-md relative group"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      
+                      console.log('🖱️ Sample image clicked:', sample.filename);
+                      
                       try {
-                        const response = await fetch(`/api/placeholder/400/400`);
-                        const blob = await response.blob();
-                        const file = new File([blob], `sample-${index}.png`, { type: 'image/png' });
-                        await handleFileUpload(file);
+                        setIsUploading(true)
+                        
+                        // 直接传递图片URL，不使用sessionStorage
+                        const imageUrl = `/images/${sample.filename}`;
+                        
+                        console.log('🔗 Preparing to navigate with URL:', imageUrl);
+                        
+                        // 将图片URL作为查询参数传递
+                        const params = new URLSearchParams({
+                          sampleImage: imageUrl,
+                          filename: sample.filename
+                        });
+                        
+                        const targetUrl = `/buzz-cut-simulator?${params.toString()}`;
+                        console.log('🚀 Navigating to:', targetUrl);
+                        
+                        // 跳转到 buzz-cut-simulator 页面并传递参数
+                        try {
+                          await router.push(targetUrl);
+                          console.log('✅ Navigation successful');
+                        } catch (navError) {
+                          console.error('❌ Navigation failed:', navError);
+                          // 备用方案：使用 window.location
+                          window.location.href = targetUrl;
+                        }
+                        
                       } catch (error) {
                         console.error('Failed to load sample image:', error);
-                        // 如果失败，直接跳转
-                        router.push('/buzz-cut-simulator')
+                        alert('Failed to load sample image, please try uploading your own image');
+                        setIsUploading(false)
                       }
                     }}
+                    disabled={isUploading}
+                    style={{ pointerEvents: 'auto' }}
                   >
-                    <span className="text-xs text-gray-500 font-medium">Sample {index}</span>
+                    <img 
+                      src={`/images/${sample.filename}`}
+                      alt={sample.alt}
+                      className="w-full h-full object-cover pointer-events-none"
+                      onError={(e) => {
+                        // 如果图片加载失败，显示占位符
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `<div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"><span class="text-xs text-gray-500 font-medium">${sample.alt}</span></div>`;
+                        }
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 flex items-center justify-center pointer-events-none">
+                      <span className="text-xs text-white font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                        Try This
+                      </span>
+                    </div>
                   </button>
                 ))}
               </div>

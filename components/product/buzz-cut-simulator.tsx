@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { ImageUpload } from "./image-upload";
 import { ColorSelector } from "./color-selector";
 import { ResultDisplay } from "./result-display";
@@ -20,6 +21,7 @@ export interface GenerationResult {
 
 
 export function BuzzCutSimulator() {
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<GenerationStatus>("idle");
   const [selectedColor, setSelectedColor] = useState<string>("black");
   const [result, setResult] = useState<GenerationResult | null>(null);
@@ -27,29 +29,73 @@ export function BuzzCutSimulator() {
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
 
-  // 检查是否有从 landing page 传来的图片数据
+  // 检查是否有从 landing page 传来的图片数据或示例图片
   useEffect(() => {
-    const uploadedData = sessionStorage.getItem('uploadedImageData');
-    if (uploadedData) {
-      try {
-        const data = JSON.parse(uploadedData);
-        // 检查数据是否过期（1小时）
-        if (Date.now() - data.uploadedAt < 60 * 60 * 1000) {
-          setUploadedImageUrl(data.imageUrl);
-          setImageBase64(data.imageBase64);
-          console.log('📸 Loaded image from landing page:', {
-            imageUrlLength: data.imageUrl?.length || 0,
-            imageBase64Length: data.imageBase64?.length || 0
+    const handleImageLoading = async () => {
+      // 首先检查 URL 参数中的示例图片
+      const sampleImage = searchParams.get('sampleImage');
+      const filename = searchParams.get('filename');
+      
+      if (sampleImage && filename) {
+        console.log('📷 Loading sample image:', sampleImage);
+        setStatus("uploading");
+        
+        try {
+          const response = await fetch(sampleImage);
+          if (!response.ok) {
+            throw new Error('Failed to load sample image');
+          }
+          
+          const blob = await response.blob();
+          const base64Data = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob);
           });
+          
+          setUploadedImageUrl(base64Data);
+          setImageBase64(base64Data);
+          setStatus("idle");
+          
+          console.log('📸 Loaded sample image:', {
+            filename,
+            size: blob.size,
+            type: blob.type
+          });
+          
+          return; // 如果加载了示例图片，就不再检查 sessionStorage
+        } catch (error) {
+          console.error('Failed to load sample image:', error);
+          setError('Failed to load sample image. Please upload your own image.');
+          setStatus("idle");
         }
-        // 清除 sessionStorage 中的数据，避免重复使用
-        sessionStorage.removeItem('uploadedImageData');
-      } catch (error) {
-        console.error('Failed to parse uploaded image data:', error);
-        sessionStorage.removeItem('uploadedImageData');
       }
-    }
-  }, []);
+
+      // 检查 sessionStorage 中的数据
+      const uploadedData = sessionStorage.getItem('uploadedImageData');
+      if (uploadedData) {
+        try {
+          const data = JSON.parse(uploadedData);
+          // 检查数据是否过期（1小时）
+          if (Date.now() - data.uploadedAt < 60 * 60 * 1000) {
+            setUploadedImageUrl(data.imageUrl);
+            setImageBase64(data.imageBase64);
+            console.log('📸 Loaded image from landing page:', {
+              imageUrlLength: data.imageUrl?.length || 0,
+              imageBase64Length: data.imageBase64?.length || 0
+            });
+          }
+          // 清除 sessionStorage 中的数据，避免重复使用
+          sessionStorage.removeItem('uploadedImageData');
+        } catch (error) {
+          console.error('Failed to parse uploaded image data:', error);
+          sessionStorage.removeItem('uploadedImageData');
+        }
+      }
+    };
+
+    handleImageLoading();
+  }, [searchParams]);
 
   const handleImageUpload = async (file: File) => {
     setStatus("uploading");
