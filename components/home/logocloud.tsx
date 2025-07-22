@@ -3,15 +3,12 @@
 import { useState } from 'react'
 
 const categories = [
-  { id: 'haircuts', label: 'Haircuts', active: false },
-  { id: 'people', label: 'People', active: true },
-  { id: 'faces', label: 'Faces', active: false },
-  { id: 'styles', label: 'Styles', active: false },
-  { id: 'colors', label: 'Colors', active: false }
+  { id: 'male', label: 'Male', active: true },
+  { id: 'female', label: 'Female', active: false }
 ]
 
 export default function StunningQuality() {
-  const [activeCategory, setActiveCategory] = useState('people')
+  const [activeCategory, setActiveCategory] = useState('male')
   const [sliderValue, setSliderValue] = useState(50)
 
   return (
