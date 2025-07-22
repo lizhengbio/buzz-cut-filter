@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ImageUpload } from "./image-upload";
 import { ColorSelector } from "./color-selector";
 import { ResultDisplay } from "./result-display";
@@ -17,37 +17,7 @@ export interface GenerationResult {
   createdAt: Date;
 }
 
-// Usage steps data
-const usageSteps = [
-  {
-    step: 1,
-    title: "Upload Your Photo",
-    description: "Supports JPG, JPEG, PNG, BMP, WebP formats",
-    icon: "📤",
-    color: "from-blue-500 to-cyan-500"
-  },
-  {
-    step: 2,
-    title: "Choose Your Style",
-    description: "Select from preset styles or customize hair color",
-    icon: "✂️",
-    color: "from-purple-500 to-pink-500"
-  },
-  {
-    step: 3,
-    title: "AI Generation",
-    description: "High-quality transformation in seconds",
-    icon: "🤖",
-    color: "from-green-500 to-emerald-500"
-  },
-  {
-    step: 4,
-    title: "Download & Share",
-    description: "Save and share on social media",
-    icon: "📥",
-    color: "from-orange-500 to-red-500"
-  }
-];
+
 
 export function BuzzCutSimulator() {
   const [status, setStatus] = useState<GenerationStatus>("idle");
@@ -56,6 +26,30 @@ export function BuzzCutSimulator() {
   const [error, setError] = useState<string | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
+
+  // 检查是否有从 landing page 传来的图片数据
+  useEffect(() => {
+    const uploadedData = sessionStorage.getItem('uploadedImageData');
+    if (uploadedData) {
+      try {
+        const data = JSON.parse(uploadedData);
+        // 检查数据是否过期（1小时）
+        if (Date.now() - data.uploadedAt < 60 * 60 * 1000) {
+          setUploadedImageUrl(data.imageUrl);
+          setImageBase64(data.imageBase64);
+          console.log('📸 Loaded image from landing page:', {
+            imageUrlLength: data.imageUrl?.length || 0,
+            imageBase64Length: data.imageBase64?.length || 0
+          });
+        }
+        // 清除 sessionStorage 中的数据，避免重复使用
+        sessionStorage.removeItem('uploadedImageData');
+      } catch (error) {
+        console.error('Failed to parse uploaded image data:', error);
+        sessionStorage.removeItem('uploadedImageData');
+      }
+    }
+  }, []);
 
   const handleImageUpload = async (file: File) => {
     setStatus("uploading");
@@ -188,60 +182,7 @@ export function BuzzCutSimulator() {
 
   return (
     <div id="buzz-cut-simulator" className="max-w-6xl mx-auto p-4 space-y-8">
-      {/* Usage Guide */}
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-foreground mb-4">
-          How to Use the Buzz Cut Filter?
-        </h2>
-        <p className="text-lg text-muted-foreground mb-12">
-          Get your professional buzz cut preview in just 4 simple steps
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {usageSteps.map((step, index) => (
-            <div key={step.step} className="relative">
-              {/* Connection line - only show for non-last steps */}
-              {index < usageSteps.length - 1 && (
-                <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-gray-300 to-gray-200 dark:from-gray-600 dark:to-gray-700 z-0"></div>
-              )}
-              
-              <div className="relative bg-background border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-105">
-                {/* Step icon */}
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${step.color} flex items-center justify-center text-2xl shadow-lg`}>
-                  {step.icon}
-                </div>
-                
-                {/* Step number */}
-                <div className="absolute -top-3 -right-3 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
-                  {step.step}
-                </div>
-                
-                {/* Title and description */}
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {step.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        {/* CTA Button */}
-        <div className="mt-12">
-          <button
-            onClick={() => document.getElementById('upload-section')?.scrollIntoView({ behavior: 'smooth' })}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-blue-600 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-          >
-            <span className="text-xl">🚀</span>
-            Start Your Transformation
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </button>
-        </div>
-      </div>
+
 
       <Card id="upload-section">
         <CardHeader>
