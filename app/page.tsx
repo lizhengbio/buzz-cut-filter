@@ -124,7 +124,159 @@ export default async function Home() {
           
 
         </div>
-      </section>
+              </section>
+
+        {/* Try Buzz Cut Filter Section */}
+        <section className="bg-white py-20">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
+              {/* Left Column - Image */}
+              <div className="lg:w-1/2">
+                <img 
+                  src="/images/female-before.jpg" 
+                  alt="turn female short hair portrait into buzz cut" 
+                  className="w-full rounded-2xl shadow-lg"
+                />
+              </div>
+
+              {/* Right Column - Content */}
+              <div className="lg:w-1/2 space-y-6">
+                <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                  Try on Buzz Cut Filter in a Snap
+                </h2>
+                
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  Have you ever wondered what you'd look like with a{' '}
+                  <span className="text-yellow-500 font-medium">buzzcut</span>{' '}
+                  but were too nervous to take the plunge? Now, you can easily try this bold look without committing to the clippers! Our{' '}
+                  <span className="text-yellow-500 font-medium">free buzz cut filter</span>{' '}
+                  lets you effortlessly preview a buzzcut style directly on your photos. In just a snap, you can see yourself with a clean, sharp buzzcut and decide if it's the right look for you.
+                </p>
+
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
+                >
+                  <Link href="/buzz-cut-simulator">Try Buzz Cut</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Effortlessly Give Yourself a Buzzcut Look Section */}
+        <section className="bg-gray-50 py-20">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
+              {/* Left Column - Content */}
+              <div className="lg:w-1/2 space-y-6">
+                <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                  Effortlessly Give Yourself a Buzzcut Look
+                </h2>
+                
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  Changing your hairstyle has always been challenging. With the{' '}
+                  <span className="text-red-500 font-medium">buzz cut filter</span>
+                  , you can skip the hassle and cost of a salon visit and transform your look in seconds. Whether you're curious about how you'd look with a fresh buzz or want to experiment with different styles, this filter makes it simple. No need to pick up the clippers—use this online tool, and within moments, you'll see yourself rocking a buzzcut.
+                </p>
+
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
+                >
+                  <Link href="/buzz-cut-simulator">Try Buzz Cut</Link>
+                </Button>
+              </div>
+
+              {/* Right Column - Image */}
+              <div className="lg:w-1/2">
+                <img 
+                  src="/images/male-after.png" 
+                  alt="generate buzz cut looks of both man and woman" 
+                  className="w-full rounded-2xl shadow-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Create Scroll-Stopping Posts Section */}
+        <section className="bg-white py-20">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
+              {/* Left Column - Image */}
+              <div className="lg:w-1/2">
+                <img 
+                  src="/images/male-before.jpg" 
+                  alt="post buzz cut portrait on instagram" 
+                  className="w-full rounded-2xl shadow-lg"
+                />
+              </div>
+
+              {/* Right Column - Content */}
+              <div className="lg:w-1/2 space-y-6">
+                <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                  Create Scroll-Stopping Posts with Buzz Cut
+                </h2>
+                
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  A bold new look is sure to make your posts stand out. The{' '}
+                  <span className="text-yellow-500 font-medium">buzzcut filter</span>{' '}
+                  gives your photos a powerful, edgy vibe, perfect for capturing attention in a scroll-heavy world. Share your{' '}
+                  <span className="text-yellow-500 font-medium">buzzcut</span>{' '}
+                  look to surprise your followers, or use it as a fun style experiment to mix up your feed. With this filter, you can create eye-catching content that will have everyone stopping and double-tapping to get a closer look at your fresh new look.
+                </p>
+
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
+                >
+                  <Link href="/buzz-cut-simulator">Try Buzz Cut</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Trick Friends With Realistic Buzzcut Portraits Section */}
+        <section className="bg-gray-50 py-20">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
+              {/* Left Column - Content */}
+              <div className="lg:w-1/2 space-y-6">
+                <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                  Trick Friends With Realistic Buzzcut Portraits
+                </h2>
+                
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  Want to surprise your friends? The{' '}
+                  <span className="text-red-500 font-medium">buzz cut filter</span>{' '}
+                  creates a highly realistic look, allowing you to prank friends with a portrait they'll believe is real. Imagine their reactions when they see your new "haircut" in their feed or message box. It's a fun, risk-free way to try a dramatic look that's bound to get people talking and sharing your post.
+                </p>
+
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
+                >
+                  <Link href="/buzz-cut-simulator">Try Buzz Cut</Link>
+                </Button>
+              </div>
+
+              {/* Right Column - Image */}
+              <div className="lg:w-1/2">
+                <img 
+                  src="/images/sample1.png" 
+                  alt="send buzz cut portrait in whatsapp messaging box and share with friends" 
+                  className="w-full rounded-2xl shadow-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
       
       <Features />
       <Stats />
