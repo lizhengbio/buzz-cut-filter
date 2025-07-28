@@ -12,7 +12,7 @@ export default function BuzzCutSimulatorPage() {
     <div className="flex flex-col gap-8 md:gap-12 container px-4 py-8">
       <div className="text-center space-y-4">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-          Buzz Cut Simulator
+          AI Buzz Cut Filter Online for Free
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           See how you'd look with a buzz cut before making the commitment. Our AI technology provides realistic previews with face protection technology.
