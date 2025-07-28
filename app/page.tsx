@@ -4,7 +4,7 @@ import Stats from "@/components/home/stats";
 import Pricing from "@/components/home/pricing";
 import FAQ from "@/components/home/faq";
 import Contact from "@/components/home/contact";
-import StunningQuality from "@/components/home/logocloud";
+
 import Testimonials from "@/components/home/testimonials";
 import { BuzzCutSimulator } from "@/components/product/buzz-cut-simulator";
 import Link from "next/link";
@@ -43,7 +43,6 @@ export default async function Home() {
   return (
     <div className="flex flex-col">
       <Hero /> 
-      <StunningQuality />
       
       {/* Quick Access Section */}
       <section className="bg-gray-50/50 py-20">
