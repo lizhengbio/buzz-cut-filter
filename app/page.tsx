@@ -48,32 +48,81 @@ export default async function Home() {
       <section className="bg-gray-50/50 py-20">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Quick Start</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Choose the best way to experience AI buzz cut preview
-            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">How to Use the Buzz Cut Filter Online?</h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {quickLinks.map((link) => (
-              <Card key={link.href} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 bg-white hover:bg-white/80 relative overflow-hidden">
-                <Link href={link.href}>
-                  <CardHeader className="text-center p-8">
-                    <div className="w-14 h-14 bg-gray-100 group-hover:bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-colors">
-                      <link.icon className="w-7 h-7 text-gray-600 group-hover:text-primary transition-colors" />
+          
+          {/* How to Use Steps */}
+          <div className="max-w-6xl mx-auto bg-gray-100 rounded-3xl p-6">
+            <div className="flex flex-col lg:flex-row items-center gap-8">
+              {/* Steps List */}
+              <div className="flex flex-col space-y-6 lg:w-2/5">
+                {/* Step 1 */}
+                <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    <div className="w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                      1
                     </div>
-                    <CardTitle className="text-lg text-gray-900 group-hover:text-gray-900">{link.title}</CardTitle>
-                    <CardDescription className="text-gray-600 text-sm leading-relaxed">{link.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-0 pb-8 px-8">
-                    <div className="flex items-center justify-center text-sm text-gray-500 group-hover:text-primary transition-colors">
-                      <span className="mr-2">Get Started</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Upload Your Photo</h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Simply click the "Upload your photo" button and choose a picture that you want to transform. We support jpg, png, webp, and jpeg to upload.
+                      </p>
                     </div>
-                  </CardContent>
-                </Link>
-              </Card>
-            ))}
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="bg-gray-100 p-6 rounded-xl cursor-pointer hover:bg-white hover:shadow-md transition-all">
+                  <div className="flex items-start gap-4">
+                    <div className="w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                      2
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Select the Buzz Cut Filter</h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Here, you can explore different hairstyles and try them out on your photo. Simply select "Buzz Cut" from the filters list to give yourself a buzz cut look.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="bg-gray-100 p-6 rounded-xl cursor-pointer hover:bg-white hover:shadow-md transition-all">
+                  <div className="flex items-start gap-4">
+                    <div className="w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                      3
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Generate and Download</h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        Once you choose the filter, click the "Generate" button. Our AI tool will transform your image, allowing you to see yourself with the perfect buzz cut. If you're satisfied with the result, simply click the download button and enjoy your new AI-generated image.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Preview Image */}
+              <div className="lg:w-3/5">
+                <div className="bg-gray-200 rounded-2xl overflow-hidden aspect-[3/2]">
+                  <img 
+                    src="/images/male-before.jpg" 
+                    alt="Buzz Cut Filter Preview" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="text-center mt-8">
+              <Button asChild size="lg" className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl">
+                <Link href="/buzz-cut-simulator">Upload your picture</Link>
+              </Button>
+            </div>
           </div>
+          
+
         </div>
       </section>
       

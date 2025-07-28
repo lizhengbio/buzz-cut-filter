@@ -258,8 +258,7 @@ export default function Hero() {
             </p>
             
             <p className="text-gray-500 max-w-2xl mx-auto">
-              Thanks to our AI, you can see your buzz cut transformation instantly. 
-              Upload any photo and watch the magic happen automatically.
+              Ever wondered how you'd look with a buzz cut? Upload your photo, and our buzz cut filter will create the most realistic version of you with a buzz cut in seconds!
             </p>
 
             {/* Trust Indicators */}
