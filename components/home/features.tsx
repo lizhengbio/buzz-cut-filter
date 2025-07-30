@@ -1,20 +1,21 @@
 'use client'
 
 import { 
-  ShieldCheckIcon, 
+  GiftIcon, 
   SparklesIcon, 
   CameraIcon, 
   SwatchIcon,
   CloudArrowDownIcon,
+  LockClosedIcon,
   BoltIcon 
 } from '@heroicons/react/24/outline'
 
 const features = [
   {
-    name: 'Face Protection Technology',
+    name: 'Free',
     description:
-      'Advanced IP-Adapter FaceID technology ensures generated results maintain original facial features, changing only the hairstyle without altering identity. Safe and reliable AI processing.',
-    icon: ShieldCheckIcon,
+      'Try our AI buzz cut filter without any registration required. Experience realistic buzz cut previews instantly without spending a penny.',
+    icon: GiftIcon,
   },
   {
     name: 'Smart Hair Transformation',
@@ -23,10 +24,10 @@ const features = [
     icon: SparklesIcon,
   },
   {
-    name: 'Instant Upload & Use',
+    name: 'Ultra-Fast Generation',
     description:
-      'Support direct photo upload or camera capture with simple, intuitive interface design. No registration required for trial, see buzz cut preview in seconds.',
-    icon: CameraIcon,
+      'Optimized inference pipeline technology ensures fast generation of high-quality images without waiting.',
+    icon: BoltIcon,
   },
   {
     name: 'Multiple Hair Colors',
@@ -41,10 +42,10 @@ const features = [
     icon: CloudArrowDownIcon,
   },
   {
-    name: 'Fast Processing',
+    name: 'Privacy Protection',
     description:
-      'Optimized AI processing workflow with average generation time of just 1-3 minutes. Real-time status updates keep you informed of progress for a smooth experience.',
-    icon: BoltIcon,
+      'Zero data retention policy - your prompts and generated images are never stored on our servers.',
+    icon: LockClosedIcon,
   },
 ]
 
@@ -93,14 +94,13 @@ export default function Features() {
               </div>
             </div>
 
-            {/* Main illustration placeholder */}
+            {/* Main illustration */}
             <div className="relative z-10 max-w-md mx-auto">
-              <div className="w-full h-80 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <SparklesIcon className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-                  <p className="text-gray-500">AI buzz cut preview illustration</p>
-                </div>
-              </div>
+              <img 
+                src="/images/benefit.jpg" 
+                alt="AI-powered buzz cut preview benefits illustration" 
+                className="w-full object-contain rounded-lg shadow-lg"
+              />
             </div>
           </div>
         </div>

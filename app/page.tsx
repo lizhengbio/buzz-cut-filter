@@ -106,17 +106,7 @@ export default function Home() {
     <div className="flex flex-col">
       <Hero />
 
-      {/* Quick Access Section (now "How to Use") */}
-      <section className="bg-gray-50/50 py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">How to Use the Buzz Cut Filter Online?</h2>
-          </div>
-
-          {/* Interactive How to Use Steps */}
-          <HowToUseSection />
-        </div>
-      </section>
+      <Features />
 
       {/* Try on Buzz Cut Filter in a Snap Section (replicated from aiease.ai) */}
       <section className="bg-white py-20">
@@ -263,8 +253,19 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* How to Use Section - moved after Trick Friends section */}
+      <section className="bg-gray-50/50 py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">How to Use the Buzz Cut Filter Online?</h2>
+          </div>
+
+          {/* Interactive How to Use Steps */}
+          <HowToUseSection />
+        </div>
+      </section>
       
-      <Features />
       <Stats />
       <Testimonials />
       <Pricing />
