@@ -24,7 +24,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <div className="bg-yellow-400 py-12 md:py-24">
+    <div className="bg-gray-50 py-12 md:py-24">
       {/* Title */}
       <div className="mx-auto w-full px-8 max-w-5xl">
         <h2 className="font-bold text-4xl md:text-5xl text-center text-gray-800 m-0">
@@ -83,39 +83,6 @@ export default function Testimonials() {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Bottom link */}
-      <div className="flex flex-col items-center">
-        <a 
-          href="/about-us" 
-          className="group flex items-center font-bold cursor-pointer transition ease-in-out no-underline text-gray-800 hover:text-gray-600 text-xl focus:outline-none focus-visible:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-primary-hover rounded"
-        >
-          Read Success Stories
-          <svg 
-            width="24" 
-            height="24" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg" 
-            className="ml-2 group-hover:translate-x-1 transition-transform"
-          >
-            <path 
-              d="M11.3846 16.8L18.7692 12L11.3846 7.2" 
-              stroke="currentColor" 
-              strokeWidth="1.5" 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-            />
-            <path 
-              d="M5.23077 12H17.5385" 
-              stroke="currentColor" 
-              strokeWidth="1.5" 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-            />
-          </svg>
-        </a>
       </div>
     </div>
   )
