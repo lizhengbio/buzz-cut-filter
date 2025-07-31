@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { SubscriptionPortalDialog } from "./subscription-portal-dialog";
 import { SubscriptionState } from "@/types/subscriptions";
+import { formatDate } from "@/lib/utils";
 
 type StatusConfig = {
   color: string;
@@ -22,10 +23,6 @@ type StatusConfig = {
 type StatusConfigs = {
   [key in SubscriptionState]: StatusConfig;
 };
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString();
-}
 
 function isFutureDate(date: string) {
   return new Date(date) > new Date();
