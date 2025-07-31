@@ -3,7 +3,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:reset": "supabase db reset",
+    "supabase:status": "supabase status",
+    "db:types": "supabase gen types typescript --local > types/supabase.ts",
+    "db:migrate": "supabase db push",
+    "db:seed": "supabase db seed"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
