@@ -7,20 +7,18 @@ import { ThemeSwitcher } from "./theme-switcher";
 import { Logo } from "./logo";
 import { usePathname } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
+import { useUser } from "@/hooks/use-user";
 
-
-interface HeaderProps {
-  user: any;
-}
 
 interface NavItem {
   label: string;
   href: string;
 }
 
-export default function Header({ user }: HeaderProps) {
+export default function Header() {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith("/dashboard");
+  const { user, loading } = useUser();
 
   // Main navigation items that are always shown
   const mainNavItems: NavItem[] = [

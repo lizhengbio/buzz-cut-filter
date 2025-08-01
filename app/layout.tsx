@@ -2,7 +2,6 @@ import Header from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { createClient } from "@/utils/supabase/server";
 import { Toaster } from "@/components/ui/toaster";
 import { StagewiseToolbar } from "@stagewise/toolbar-next";
 import ReactPlugin from "@stagewise-plugins/react";
@@ -23,16 +22,11 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-white text-gray-900 antialiased">
@@ -43,7 +37,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className="relative min-h-screen bg-white">
-            <Header user={user} />
+            <Header />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>

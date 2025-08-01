@@ -15,30 +15,10 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  // 创建一个临时页面来处理客户端重定向
-  const targetUrl = redirectTo ? `${origin}${redirectTo}` : `${origin}/dashboard`;
-  
-  // 返回一个HTML页面，使用JavaScript强制完全刷新
-  return new NextResponse(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Redirecting...</title>
-        <script>
-          // 强制完全刷新页面，清除所有缓存
-          window.location.href = "${targetUrl}";
-        </script>
-      </head>
-      <body>
-        <p>Redirecting...</p>
-      </body>
-    </html>
-  `, {
-    headers: {
-      'Content-Type': 'text/html',
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
-    }
-  });
+  if (redirectTo) {
+    return NextResponse.redirect(`${origin}${redirectTo}`);
+  }
+
+  // URL to redirect to after sign up process completes
+  return NextResponse.redirect(`${origin}/dashboard`);
 }
