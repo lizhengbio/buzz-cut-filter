@@ -10,15 +10,25 @@ export async function GET(request: Request) {
   const origin = requestUrl.origin;
   const redirectTo = requestUrl.searchParams.get("redirect_to")?.toString();
 
+  console.log("🔍 Auth Callback Debug:");
+  console.log("Full URL:", request.url);
+  console.log("Code:", code);
+  console.log("Origin:", origin);
+  console.log("Redirect To:", redirectTo);
+
   if (code) {
     const supabase = await createClient();
     await supabase.auth.exchangeCodeForSession(code);
   }
 
   if (redirectTo) {
-    return NextResponse.redirect(`${origin}${redirectTo}`);
+    const finalUrl = `${origin}${redirectTo}`;
+    console.log("Redirecting to:", finalUrl);
+    return NextResponse.redirect(finalUrl);
   }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/dashboard`);
+  const defaultUrl = `${origin}/dashboard`;
+  console.log("Default redirect to:", defaultUrl);
+  return NextResponse.redirect(defaultUrl);
 }
