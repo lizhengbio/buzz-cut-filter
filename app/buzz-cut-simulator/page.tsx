@@ -1,5 +1,6 @@
 import { BuzzCutSimulator } from "@/components/product/buzz-cut-simulator";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Buzz Cut Simulator - Try Virtual Buzz Cut AI",
@@ -19,7 +20,9 @@ export default function BuzzCutSimulatorPage() {
         </p>
       </div>
       
-      <BuzzCutSimulator />
+      <Suspense fallback={<div className="flex justify-center py-8">Loading...</div>}>
+        <BuzzCutSimulator />
+      </Suspense>
       
       <div className="bg-muted/50 rounded-xl p-6 md:p-8 space-y-4">
         <h2 className="text-xl font-semibold">How It Works</h2>

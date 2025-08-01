@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Camera } from "lucide-react";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Upload Photo Buzz Cut Simulator - AI Hair Preview",
@@ -30,7 +31,9 @@ export default function UploadPhotoPage() {
         </div>
       </div>
 
-      <BuzzCutSimulator />
+      <Suspense fallback={<div className="flex justify-center py-8">Loading...</div>}>
+        <BuzzCutSimulator />
+      </Suspense>
 
       <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border rounded-xl p-6 md:p-8">
         <h2 className="text-xl font-semibold mb-4">Photo Tips for Best Results</h2>
