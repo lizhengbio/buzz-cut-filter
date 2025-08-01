@@ -21,14 +21,8 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  if (redirectTo) {
-    const finalUrl = `${origin}${redirectTo}`;
-    console.log("Redirecting to:", finalUrl);
-    return NextResponse.redirect(finalUrl);
-  }
-
-  // URL to redirect to after sign up process completes
-  const defaultUrl = `${origin}/dashboard`;
-  console.log("Default redirect to:", defaultUrl);
-  return NextResponse.redirect(defaultUrl);
+  // 强制所有 OAuth 登录都跳转到 dashboard
+  const dashboardUrl = `${origin}/dashboard`;
+  console.log("Force redirect to dashboard:", dashboardUrl);
+  return NextResponse.redirect(dashboardUrl);
 }

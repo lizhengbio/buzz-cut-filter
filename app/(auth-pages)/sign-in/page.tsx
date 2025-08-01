@@ -20,7 +20,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${origin}/auth/callback?redirect_to=/dashboard`,
+        redirectTo: `${origin}/auth/callback`,
         queryParams: {
           access_type: "offline",
           prompt: "consent",
