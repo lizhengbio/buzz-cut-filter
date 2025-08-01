@@ -43,12 +43,10 @@ export const updateSession = async (request: NextRequest) => {
     if (request.nextUrl.pathname.startsWith("/dashboard") && user.error) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
-    
-    // 强制已登录用户从首页重定向到 dashboard（仅在生产环境）
-    if (request.nextUrl.pathname === "/" && !user.error && process.env.NODE_ENV === "production") {
-      console.log("🔄 Redirecting logged-in user from homepage to dashboard in production");
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
+    // Redirect to dashboard all the time if user is logged in
+    // if (request.nextUrl.pathname === "/" && !user.error) {
+    //   return NextResponse.redirect(new URL("/dashboard", request.url));
+    // }
 
     return response;
   } catch (e) {
