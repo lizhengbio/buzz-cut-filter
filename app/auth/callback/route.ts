@@ -16,9 +16,15 @@ export async function GET(request: Request) {
   }
 
   if (redirectTo) {
-    return NextResponse.redirect(`${origin}${redirectTo}`);
+    // 添加查询参数强制刷新客户端状态
+    const redirectUrl = new URL(`${origin}${redirectTo}`);
+    redirectUrl.searchParams.set('auth_callback', 'true');
+    return NextResponse.redirect(redirectUrl);
   }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/dashboard`);
+  // 添加查询参数强制刷新客户端状态
+  const dashboardUrl = new URL(`${origin}/dashboard`);
+  dashboardUrl.searchParams.set('auth_callback', 'true');
+  return NextResponse.redirect(dashboardUrl);
 }
