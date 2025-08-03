@@ -266,7 +266,6 @@ export default function Home() {
         </div>
       </section>
       
-      <Testimonials />
       <Pricing />
       <FAQ />
       <Contact />

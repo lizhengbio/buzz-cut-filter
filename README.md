@@ -377,6 +377,30 @@ Thanks to the following open source projects and services:
 - 🐛 Issues: ![GitHub issues](https://img.shields.io/github/issues/yourusername/buzz-cut-filter)
 - 📦 Version: ![GitHub package.json version](https://img.shields.io/github/package-json/v/yourusername/buzz-cut-filter)
 
+## 📧 Email Configuration
+
+To enable the contact form functionality, you need to configure email settings in your `.env` file:
+
+```env
+# Email Configuration (for contact form)
+GMAIL_USER=your_gmail_address@gmail.com
+GMAIL_APP_PASSWORD=your_gmail_app_password
+```
+
+### Setting up Gmail SMTP
+
+1. Enable 2-factor authentication on your Gmail account
+2. Generate an App Password:
+   - Go to Google Account settings
+   - Security → 2-Step Verification → App passwords
+   - Generate a new app password for "Mail"
+3. Use your Gmail address as `GMAIL_USER`
+4. Use the generated app password as `GMAIL_APP_PASSWORD`
+
+**Note**: If email credentials are not configured, the contact form will work in demo mode, showing success messages without actually sending emails. This allows for testing and development without requiring email setup.
+
+The contact form will send emails to `support@buzzcutfilter.app` when users submit inquiries and email is properly configured.
+
 ---
 
 **🔥 If this project helps you, please give us a star! Your support drives our continuous improvement.**

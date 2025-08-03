@@ -129,6 +129,55 @@ export const signOutAction = async () => {
   return redirect("/sign-in");
 };
 
+export const sendContactEmailAction = async (formData: FormData) => {
+  const firstName = formData.get("first-name")?.toString();
+  const lastName = formData.get("last-name")?.toString();
+  const email = formData.get("email")?.toString();
+  const company = formData.get("company")?.toString();
+  const message = formData.get("message")?.toString();
+
+  if (!firstName || !lastName || !email || !message) {
+    return encodedRedirect(
+      "error",
+      "/#contact",
+      "Please fill in all required fields"
+    );
+  }
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/send-contact-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        company,
+        message,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to send email');
+    }
+
+    return encodedRedirect(
+      "success",
+      "/#contact",
+      "Message sent successfully! We'll get back to you soon."
+    );
+  } catch (error) {
+    console.error("Error sending contact email:", error);
+    return encodedRedirect(
+      "error",
+      "/#contact",
+      "Failed to send message. Please try again."
+    );
+  }
+};
+
 export async function createCheckoutSession(
   productId: string,
   email: string,

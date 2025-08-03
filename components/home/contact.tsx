@@ -1,6 +1,38 @@
 'use client'
 
-export default function Contact() {
+import { sendContactEmailAction } from "@/app/actions";
+import { FormMessage, type Message } from "@/components/form-message";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { useRef } from "react";
+
+function ContactForm() {
+  const searchParams = useSearchParams();
+  const message = searchParams.get("message");
+  const error = searchParams.get("error");
+  const messageObj: Message | null = message
+    ? { success: message }
+    : error
+    ? { error: error }
+    : null;
+  const formRef = useRef<HTMLFormElement>(null);
+
+  function handleMailto(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = formRef.current;
+    if (!form) return;
+    const firstName = (form.elements.namedItem("first-name") as HTMLInputElement)?.value || "";
+    const lastName = (form.elements.namedItem("last-name") as HTMLInputElement)?.value || "";
+    const email = (form.elements.namedItem("email") as HTMLInputElement)?.value || "";
+    const company = (form.elements.namedItem("company") as HTMLInputElement)?.value || "";
+    const message = (form.elements.namedItem("message") as HTMLTextAreaElement)?.value || "";
+
+    const subject = `Contact Form Submission from ${firstName} ${lastName}`;
+    const body = `\nName: ${firstName} ${lastName}\nEmail: ${email}\n${company ? `Company: ${company}\n` : ""}Message:\n${message}\n\n---\nThis message was sent from the Buzz Cut AI contact form.`.trim();
+
+    window.location.href = `mailto:support@buzzcutfilter.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
   return (
     <div id="contact" className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
       <svg
@@ -35,7 +67,12 @@ export default function Contact() {
           Have questions about Buzz Cut AI Preview or need technical support? Our team is here to help you.
         </p>
         <div className="mt-16 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
-          <form action="#" method="POST" className="lg:flex-auto">
+          <form ref={formRef} onSubmit={handleMailto} className="lg:flex-auto">
+            {messageObj && (
+              <div className="mb-6">
+                <FormMessage message={messageObj} />
+              </div>
+            )}
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               <div>
                 <label htmlFor="first-name" className="block text-sm/6 font-semibold text-gray-800">
@@ -46,6 +83,7 @@ export default function Contact() {
                     id="first-name"
                     name="first-name"
                     type="text"
+                    required
                     autoComplete="given-name"
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-800 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600"
                   />
@@ -60,6 +98,7 @@ export default function Contact() {
                     id="last-name"
                     name="last-name"
                     type="text"
+                    required
                     autoComplete="family-name"
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-800 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600"
                   />
@@ -74,6 +113,7 @@ export default function Contact() {
                     id="email"
                     name="email"
                     type="email"
+                    required
                     autoComplete="email"
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-800 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600"
                   />
@@ -101,6 +141,7 @@ export default function Contact() {
                     id="message"
                     name="message"
                     rows={4}
+                    required
                     placeholder="Tell us about your questions or suggestions..."
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-800 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600"
                     defaultValue={''}
@@ -111,7 +152,7 @@ export default function Contact() {
             <div className="mt-10">
               <button
                 type="submit"
-                className="block w-full rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-primary"
+                className="block w-full rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Send Message
               </button>
@@ -148,5 +189,13 @@ export default function Contact() {
         </div>
       </div>
     </div>
-  )
+  );
+}
+
+export default function Contact() {
+  return (
+    <Suspense fallback={<div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">Loading...</div>}>
+      <ContactForm />
+    </Suspense>
+  );
 } 
