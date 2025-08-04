@@ -81,7 +81,7 @@ export function ResultDisplay({
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-lg font-medium">Generating your buzz cut...</p>
             <p className="text-sm text-muted-foreground mt-2">
-              Using GPT-4o Vision AI with face preservation
+              Using Flux Kontext Pro with face preservation
             </p>
             <p className="text-xs text-muted-foreground mt-1">
               This may take up to 60 seconds
