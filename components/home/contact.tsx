@@ -159,7 +159,7 @@ function ContactForm() {
             </div>
             <p className="mt-4 text-sm/6 text-gray-600">
               By submitting this form, I agree to the{' '}
-              <a href="#" className="font-semibold text-blue-600">
+              <a href="/privacy" className="font-semibold text-blue-600">
                 privacy&nbsp;policy
               </a>
               .
@@ -176,8 +176,12 @@ function ContactForm() {
                 </p>
               </blockquote>
               <figcaption className="mt-10 flex gap-x-6">
-                <div className="size-12 flex-none rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                  <span className="text-blue-600 font-semibold">J</span>
+                <div className="size-12 flex-none rounded-full overflow-hidden">
+                  <img 
+                    src="/images/Satisfied Customer.jpg" 
+                    alt="Satisfied Customer" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <div className="text-base font-semibold text-gray-800">John D.</div>

@@ -228,9 +228,6 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="bg-gray-50 p-6 rounded-lg">
               <p className="text-gray-700 mb-2">
-                <strong>Email:</strong> privacy@buzzcut.ai
-              </p>
-              <p className="text-gray-700 mb-2">
                 <strong>Support:</strong> support@buzzcut.ai
               </p>
               <p className="text-gray-700 mb-2">
