@@ -1,25 +1,25 @@
+"use client";
+
+import { useState } from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, X, Star, Crown, Zap } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Pricing - BuzzCut AI Plans & Pricing",
-  description: "Choose the perfect plan for your buzz cut preview needs. Free trial available with Pro upgrades and flexible credit packages.",
-};
-
 const plans = [
   {
     name: "Free",
-    price: "Free",
+    priceMonthly: "Free",
+    priceYearly: "Free",
     period: "",
     description: "Perfect for trying out our Face-Lock buzz cut simulator",
     features: [
-      "3 generations per day",
-      "720p JPG format with watermark",
-      "Face-Lock Lite technology",
-      "Basic color options (black, brown)",
+      "5 credits per day",
+      "Watermarked images",
+      "Basic color options (No change, Black, Brown, Gold, Gray)",
+      "Ad-supported experience",
+      "Buzz cut filter only",
       "24-hour image auto-deletion",
       "Community support"
     ],
@@ -34,20 +34,20 @@ const plans = [
     icon: Zap
   },
   {
-    name: "Pro",
-    price: "$4.99",
+    name: "Pro Plan",
+    priceMonthly: "$6",
+    priceYearly: "$3.6",
     period: "/month",
-    yearlyPrice: "$49",
-    description: "For serious users who want the best quality and features",
+    description: "For users who want premium quality and features",
     features: [
-      "Unlimited generations",
-      "4K JPG/PNG/WebP formats",
-      "Watermark-free downloads",
+      "300 credits per month (60 generations)",
+      "No watermarks",
       "Ad-free experience",
       "Commercial usage rights",
       "2x faster processing queue",
       "All color adjustment options",
-      "Face-Lock Pro technology",
+      "Complete privacy protection",
+      "50+ AI hairstyle filters access",
       "Priority support"
     ],
     limitations: [],
@@ -57,33 +57,33 @@ const plans = [
     icon: Star
   },
   {
-    name: "Studio",
-    price: "$9.99",
+    name: "Ultra Plan",
+    priceMonthly: "$10",
+    priceYearly: "$6",
     period: "/month",
-    yearlyPrice: "$99",
-    description: "For businesses, content creators, and API integration",
+    description: "For power users and content creators",
     features: [
-      "Everything in Pro",
-      "API access included",
-      "500 generations per month",
-      "Batch processing capabilities",
-      "GDPR compliance contract",
-      "Service Level Agreement (SLA)",
-      "Commercial licensing",
-      "Dedicated account manager",
-      "Custom integration support"
+      "1,500 credits per month (300 generations)",
+      "No watermarks",
+      "Ad-free experience",
+      "Commercial usage rights",
+      "2x faster processing queue",
+      "All color adjustment options",
+      "Complete privacy protection",
+      "50+ AI hairstyle filters access",
+      "Priority support"
     ],
     limitations: [],
-    cta: "Upgrade to Studio",
+    cta: "Upgrade to Ultra",
     ctaHref: "/dashboard",
     popular: false,
     icon: Crown
   }
 ];
 
-
-
 export default function PricingPage() {
+  const [isYearly, setIsYearly] = useState(false);
+
   return (
     <div className="flex flex-col gap-8 md:gap-12 container px-4 py-8">
       <div className="text-center space-y-4">
@@ -91,15 +91,42 @@ export default function PricingPage() {
           Choose Your Plan
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Start with a free trial and experience our Face-Lock technology. Upgrade to Pro for unlimited high-quality generations or choose Studio for business needs and API access.
+          Start with a free trial and experience our Face-Lock technology. Upgrade to Pro for unlimited high-quality generations or choose Ultra for maximum credits.
         </p>
       </div>
 
       {/* Subscription Plans */}
       <div className="space-y-8">
-        <div className="text-center">
+        <div className="text-center space-y-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-2">Subscription Plans</h2>
-          <p className="text-muted-foreground">Monthly and annual billing options available</p>
+          <p className="text-muted-foreground">Choose between monthly and yearly billing</p>
+          
+          {/* Monthly/Yearly Toggle */}
+          <div className="flex items-center justify-center gap-4">
+            <span className={`text-sm font-medium ${!isYearly ? 'text-primary' : 'text-muted-foreground'}`}>
+              Monthly
+            </span>
+            <button
+              onClick={() => setIsYearly(!isYearly)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                isYearly ? 'bg-primary' : 'bg-muted'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  isYearly ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+            <span className={`text-sm font-medium ${isYearly ? 'text-primary' : 'text-muted-foreground'}`}>
+              Yearly
+            </span>
+            {isYearly && (
+              <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">
+                Save 40%
+              </span>
+            )}
+          </div>
         </div>
         
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -121,12 +148,14 @@ export default function PricingPage() {
                 <CardTitle className="text-2xl">{plan.name}</CardTitle>
                 <div className="flex flex-col items-center gap-1">
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span className="text-4xl font-bold">
+                      {isYearly ? plan.priceYearly : plan.priceMonthly}
+                    </span>
                     <span className="text-muted-foreground">{plan.period}</span>
                   </div>
-                  {plan.yearlyPrice && (
+                  {plan.name !== "Free" && isYearly && (
                     <div className="text-sm text-green-600 font-medium">
-                      or {plan.yearlyPrice}/year (save {plan.name === "Pro" ? "$10" : "$20"})
+                      Yearly billing - Save 40%
                     </div>
                   )}
                 </div>
@@ -171,8 +200,6 @@ export default function PricingPage() {
         </div>
       </div>
 
-
-
       {/* Features Comparison */}
       <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border rounded-xl p-6 md:p-8 space-y-6">
         <div className="text-center space-y-4">
@@ -204,7 +231,7 @@ export default function PricingPage() {
               </div>
               <h3 className="font-semibold">Commercial Rights</h3>
               <p className="text-sm text-muted-foreground">
-                Pro and Studio users can use generated images for business purposes, social media, marketing, and content creation
+                Pro and Ultra users can use generated images for business purposes, social media, marketing, and content creation
               </p>
             </div>
           </div>
@@ -235,7 +262,7 @@ export default function PricingPage() {
           <div className="space-y-3">
             <h3 className="font-semibold">What's included in commercial rights?</h3>
             <p className="text-sm text-muted-foreground">
-              Pro and Studio users can use generated images for business purposes, social media, marketing, and content creation
+              Pro and Ultra users can use generated images for business purposes, social media, marketing, and content creation
             </p>
           </div>
           

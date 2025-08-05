@@ -6,12 +6,14 @@ export const SUBSCRIPTION_TIERS: ProductTier[] = [
     id: "tier-free",
     productId: "", // Free tier doesn't have a product ID
     priceMonthly: "$0",
-    description: "Perfect for trying out our buzz cut simulator",
+    priceYearly: "$0",
+    description: "Perfect for trying out our Face-Lock buzz cut simulator",
     features: [
-      "3 generations per day",
-      "720p JPG format with watermark",
-      "Face-Lock Lite technology",
-      "Basic color options",
+      "5 credits per day",
+      "Watermarked images",
+      "Basic color options (No change, Black, Brown, Gold, Gray)",
+      "Ad-supported experience",
+      "Buzz cut filter only",
       "24-hour image auto-deletion",
       "Community support"
     ],
@@ -19,39 +21,43 @@ export const SUBSCRIPTION_TIERS: ProductTier[] = [
     discountCode: "",
   },
   {
-    name: "Pro",
+    name: "Pro Plan",
     id: "tier-pro",
-    productId: "prod_36Wgp4JJF3b1i29KggQXiC", // $4.99 monthly subscription
-    priceMonthly: "$4.99",
-    description: "For serious users who want the best quality",
+    productId: "prod_36Wgp4JJF3b1i29KggQXiC", // $6 monthly subscription
+    priceMonthly: "$6",
+    priceYearly: "$3.6",
+    description: "For users who want premium quality and features",
     features: [
-      "Unlimited generations",
-      "4K JPG/PNG/WebP formats",
-      "Watermark-free downloads",
+      "300 credits per month (60 generations)",
+      "No watermarks",
       "Ad-free experience",
       "Commercial usage rights",
       "2x faster processing queue",
       "All color adjustment options",
+      "Complete privacy protection",
+      "50+ AI hairstyle filters access",
       "Priority support"
     ],
     featured: true,
     discountCode: "",
   },
   {
-    name: "Studio",
-    id: "tier-studio",
-    productId: "prod_3qPYksZMtk94wQsdkgajrJ", // $9.99 monthly subscription
-    priceMonthly: "$9.99",
-    description: "For businesses and content creators",
+    name: "Ultra Plan",
+    id: "tier-ultra",
+    productId: "prod_3qPYksZMtk94wQsdkgajrJ", // $10 monthly subscription
+    priceMonthly: "$10",
+    priceYearly: "$6",
+    description: "For power users and content creators",
     features: [
-      "Everything in Pro",
-      "API access included",
-      "500 generations per month",
-      "Batch processing",
-      "GDPR compliance contract",
-      "Service Level Agreement (SLA)",
-      "Commercial licensing",
-      "Dedicated account manager"
+      "1,500 credits per month (300 generations)",
+      "No watermarks",
+      "Ad-free experience",
+      "Commercial usage rights",
+      "2x faster processing queue",
+      "All color adjustment options",
+      "Complete privacy protection",
+      "50+ AI hairstyle filters access",
+      "Priority support"
     ],
     featured: false,
     discountCode: "",

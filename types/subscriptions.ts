@@ -3,6 +3,7 @@ export interface ProductTier {
   id: string;
   productId: string;
   priceMonthly: string;
+  priceYearly?: string;
   description: string;
   featured: boolean;
   features?: string[];
