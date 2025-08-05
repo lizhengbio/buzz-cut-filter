@@ -62,23 +62,14 @@
 
 | 方案 | 价格 | 权益 |
 |------|------|------|
-| **Free** | $0 | 3次/天，720p JPG带水印；Face-Lock Lite；可选基础颜色；广告支持 |
-| **Pro** | $4.99/月 或 $49/年 | 无限生成；4K JPG/PNG/WebP；无水印；广告关闭；商用授权；2×队列速度；支持颜色调节所有选项 |
-| **Studio (B2B)** | $9.99/月 或 $99/年 | 包含API访问；500次/月额度；批量处理；GDPR合规合同；SLA；商业许可 |
+| **Free** | $0 | 5 credits/day；带水印；可选基础颜色；广告支持；只可生成平头滤镜 |
+| **Pro plan** | $4.99/月 或 $49/年 | 300 credits/month(60 generations)；无水印；广告关闭；商用授权；2×队列速度；支持颜色调节所有选项；完全隐私；50➕款AI发型滤镜使用权限|
+| **Ultra Plan** | $9.99/月 或 $99/年 | 1500 credits/month(300 generations)；无水印；广告关闭；商用授权；2×队列速度；支持颜色调节所有选项；完全隐私；50➕款AI发型滤镜使用权限 |
 
-**积分包（积分制用于非订阅用户）：**
-- $1.99 → 5次
-- $5.99 → 25次
-- $14.99 → 100次  
-（单次成本：$0.40，$0.24，$0.15；适合偶尔使用者与创作者）
-
----
 
 ## 六、技术架构概览
 
-- **前端**：Next.js App Router + TypeScript + TailwindCSS + shadcn/ui  
-- **掩码**：MediaPipe WASM 实现头发分割  
-- **Face‑Lock**：IP‑Adapter FaceID 模型（SDXL）  
+- **前端**：Next.js App Router + TypeScript + TailwindCSS + shadcn/ui    
 - **生成引擎**：Flux-Kontext-Pro 调用 Replicate API  
 - **支付**：Creem + Stripe 集成 + Webhook 同步订阅状态  
 - **存储/CDN**：Supabase Storage / R2 缓存  
@@ -86,26 +77,6 @@
 
 ---
 
-## 七、核心 API 设计
-
-```
-POST /api/generate
-{
-  image_url: string,
-  mask_url: string,
-  color: "black"|"brown"|"blonde"|"gray",
-  tier: "free"|"pro"|"studio"
-}
-
-→ 202 Created: { task_id: string }
-
-GET /api/generate/:task_id
-→ 200 OK: { status, result_url, facesim: number }
-```
-
-> facesim ≤ 0.3 表示面部一致；失败触发重试逻辑或错误提示。
-
----
 
 ## 八、性能与质量指标
 

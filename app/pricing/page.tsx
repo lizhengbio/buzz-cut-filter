@@ -81,54 +81,7 @@ const plans = [
   }
 ];
 
-const creditPackages = [
-  {
-    name: "Starter Pack",
-    price: "$1.99",
-    credits: 5,
-    costPerCredit: "$0.40",
-    description: "Perfect for occasional use",
-    features: [
-      "5 buzz cut generations",
-      "4K quality output",
-      "Watermark-free downloads",
-      "All color options",
-      "No expiration date"
-    ]
-  },
-  {
-    name: "Value Pack",
-    price: "$5.99",
-    credits: 25,
-    costPerCredit: "$0.24",
-    description: "Best value for regular users",
-    features: [
-      "25 buzz cut generations",
-      "4K quality output",
-      "Watermark-free downloads",
-      "Priority processing",
-      "All color options",
-      "No expiration date"
-    ],
-    popular: true
-  },
-  {
-    name: "Creator Pack",
-    price: "$14.99",
-    credits: 100,
-    costPerCredit: "$0.15",
-    description: "For content creators and professionals",
-    features: [
-      "100 buzz cut generations",
-      "4K quality output",
-      "Watermark-free downloads",
-      "Priority processing",
-      "Commercial usage rights",
-      "All color options",
-      "No expiration date"
-    ]
-  }
-];
+
 
 export default function PricingPage() {
   return (
@@ -218,59 +171,7 @@ export default function PricingPage() {
         </div>
       </div>
 
-      {/* Credit Packages */}
-      <div className="space-y-8">
-        <div className="text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-2">Credit Packages</h2>
-          <p className="text-muted-foreground">Pay-as-you-go option for flexible usage</p>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {creditPackages.map((pack) => (
-            <Card key={pack.name} className={`relative ${pack.popular ? 'border-green-500 shadow-lg' : ''}`}>
-              {pack.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                    Best Value
-                  </div>
-                </div>
-              )}
-              
-              <CardHeader className="text-center pb-4">
-                <CardTitle className="text-xl">{pack.name}</CardTitle>
-                <div className="flex flex-col items-center gap-1">
-                  <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-3xl font-bold">{pack.price}</span>
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {pack.credits} credits • {pack.costPerCredit} per credit
-                  </div>
-                </div>
-                <p className="text-muted-foreground">{pack.description}</p>
-              </CardHeader>
-              
-              <CardContent className="space-y-6">
-                <div className="space-y-3">
-                  <ul className="space-y-2">
-                    {pack.features.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <Button asChild className="w-full" size="lg" variant={pack.popular ? "default" : "outline"}>
-                  <Link href="/dashboard">
-                    Buy {pack.credits} Credits
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+
 
       {/* Features Comparison */}
       <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border rounded-xl p-6 md:p-8 space-y-6">
@@ -325,9 +226,9 @@ export default function PricingPage() {
           </div>
           
           <div className="space-y-3">
-            <h3 className="font-semibold">Do credits expire?</h3>
+            <h3 className="font-semibold">Can I upgrade or downgrade my plan?</h3>
             <p className="text-sm text-muted-foreground">
-              No, purchased credits never expire. Use them at your own pace whenever you need buzz cut previews.
+              Yes, you can upgrade or downgrade your subscription anytime. Changes will take effect at the start of your next billing cycle.
             </p>
           </div>
           
