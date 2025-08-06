@@ -51,25 +51,26 @@ export async function POST(request: NextRequest) {
     console.log("📊 Base64 size:", image_base64.length);
     console.log(`👤 User: ${user.id} (Subscribed: ${isSubscribed}, Credits: ${credits})`);
     
-    // For free users, deduct 5 credits before generation
-    if (!isSubscribed) {
-      const deducted = await deductCredits(
-        user.id, 
-        5, 
-        "Buzz cut generation", 
-        { 
-          color,
-          generation_type: "buzz_cut",
-          user_email: user.email 
-        }
-      );
-      
-      if (!deducted) {
-        return createErrorResponse("Failed to deduct credits. Please try again.", 500);
+    // Deduct 5 credits for all users (including subscribers for usage tracking)
+    // Note: Subscribers should have monthly credits to spend from their allocated pool
+    const deducted = await deductCredits(
+      user.id, 
+      5, 
+      "Buzz cut generation", 
+      { 
+        color,
+        generation_type: "buzz_cut",
+        user_email: user.email,
+        is_subscriber: isSubscribed
       }
-      
-      console.log(`💳 Deducted 5 credits from user ${user.id}`);
+    );
+    
+    if (!deducted) {
+      return createErrorResponse("Failed to deduct credits. Please try again.", 500);
     }
+    
+    console.log(`💳 Deducted 5 credits from user ${user.id} (Subscriber: ${isSubscribed})`);
+    
     
     try {
       // Generate hair mask for targeted editing
@@ -101,19 +102,17 @@ export async function POST(request: NextRequest) {
           timestamp: new Date().toISOString(),
           model: "flux-kontext-pro",
           user_id: user.id,
-          credits_deducted: !isSubscribed ? 5 : 0
+          credits_deducted: 5 // All users have 5 credits deducted for usage tracking
         }
       });
     } catch (generationError) {
-      // If generation fails, refund credits for free users
-      if (!isSubscribed) {
-        try {
-          // Note: We would need to create a refundCredits function
-          // For now, we'll log this case
-          console.error(`❌ Generation failed for user ${user.id}, should refund 5 credits`);
-        } catch (refundError) {
-          console.error("Failed to refund credits:", refundError);
-        }
+      // If generation fails, refund credits for all users
+      try {
+        // Note: We would need to create a refundCredits function
+        // For now, we'll log this case
+        console.error(`❌ Generation failed for user ${user.id}, should refund 5 credits`);
+      } catch (refundError) {
+        console.error("Failed to refund credits:", refundError);
       }
       throw generationError;
     }

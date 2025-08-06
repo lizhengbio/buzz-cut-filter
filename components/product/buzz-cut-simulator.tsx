@@ -221,9 +221,7 @@ export function BuzzCutSimulator() {
       }
       
       // Refresh credits after successful generation start
-      if (!isSubscribed) {
-        refreshCredits();
-      }
+      refreshCredits();
       
       // Poll for result using kie.ai API with timeout
       const pollResult = async (taskId: string, attempts: number = 0) => {
@@ -283,9 +281,7 @@ export function BuzzCutSimulator() {
       setError(error instanceof Error ? error.message : "Generation failed. Please try again.");
       setStatus("idle");
       // Refresh credits in case there was a refund
-      if (!isSubscribed) {
-        refreshCredits();
-      }
+      refreshCredits();
     }
   };
 

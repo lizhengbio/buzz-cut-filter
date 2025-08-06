@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/client";
 import { createServiceRoleClient } from "@/utils/supabase/service-role";
+import { SUBSCRIPTION_TIERS } from "@/config/subscriptions";
 
 export interface CustomerCredits {
   credits: number;
@@ -67,42 +68,67 @@ export async function ensureCustomerExists(userId: string, email: string, name?:
       return existingCustomer.id;
     }
 
-    // Create new customer with 10 initial credits
-    const { data: newCustomer, error } = await supabase
-      .from('customers')
-      .insert({
-        user_id: userId,
-        creem_customer_id: `free_${userId}`, // Placeholder for free users
-        email: email.toLowerCase(),
-        name: name || '',
-        credits: 10, // Start with 10 credits for new users
-        last_credit_grant_date: new Date().toISOString().split('T')[0]
-      })
-      .select('id')
-      .single();
+    // Generate a unique creem_customer_id by checking for conflicts
+    let creemCustomerId = `free_${userId}`;
+    let suffix = 1;
+    
+    while (true) {
+      try {
+        // Create new customer with 10 initial credits
+        const { data: newCustomer, error } = await supabase
+          .from('customers')
+          .insert({
+            user_id: userId,
+            creem_customer_id: creemCustomerId,
+            email: email.toLowerCase(),
+            name: name || '',
+            credits: 10, // Start with 10 credits for new users
+            last_credit_grant_date: new Date().toISOString().split('T')[0]
+          })
+          .select('id')
+          .single();
 
-    if (error) {
-      console.error('❌ Error creating customer:', error);
-      throw error;
-    }
-
-    // Record initial credit grant
-    await supabase
-      .from('credits_history')
-      .insert({
-        customer_id: newCustomer.id,
-        amount: 10,
-        type: 'add',
-        description: 'Welcome bonus - Daily free credits',
-        metadata: {
-          granted_date: new Date().toISOString().split('T')[0],
-          welcome_bonus: true,
-          user_email: email
+        if (error) {
+          // If it's a unique constraint violation on creem_customer_id, try with suffix
+          if (error.code === '23505' && error.message.includes('creem_customer_id')) {
+            creemCustomerId = `free_${userId}_${suffix}`;
+            suffix++;
+            continue; // Try again with new ID
+          }
+          console.error('❌ Error creating customer:', error);
+          throw error;
         }
-      });
 
-    console.log(`✅ Created new customer with 10 initial credits: ${email}`);
-    return newCustomer.id;
+        // Record initial credit grant
+        await supabase
+          .from('credits_history')
+          .insert({
+            customer_id: newCustomer.id,
+            amount: 10,
+            type: 'add',
+            description: 'Welcome bonus - Daily free credits',
+            metadata: {
+              granted_date: new Date().toISOString().split('T')[0],
+              welcome_bonus: true,
+              user_email: email
+            }
+          });
+
+        console.log(`✅ Created new customer with 10 initial credits: ${email} (${creemCustomerId})`);
+        return newCustomer.id;
+      } catch (insertError: any) {
+        // If we still get a constraint error, try with a different ID
+        if (insertError.code === '23505' && insertError.message.includes('creem_customer_id')) {
+          creemCustomerId = `free_${userId}_${suffix}`;
+          suffix++;
+          if (suffix > 10) {
+            throw new Error('Unable to generate unique customer ID after 10 attempts');
+          }
+          continue;
+        }
+        throw insertError;
+      }
+    }
   } catch (error) {
     console.error('❌ Error ensuring customer exists:', error);
     throw error;
@@ -280,5 +306,160 @@ export async function canGenerate(userId: string): Promise<{ canGenerate: boolea
   } catch (error) {
     console.error('Error checking generation eligibility:', error);
     return { canGenerate: false, credits: 0, isSubscribed: false };
+  }
+}
+
+/**
+ * Grant monthly credits to subscribed users
+ * This function should be called monthly (e.g., via cron job or webhook)
+ */
+export async function grantMonthlyCredits(userId: string, email: string): Promise<boolean> {
+  const supabase = createServiceRoleClient();
+  
+  try {
+    // Get customer and subscription info
+    const { data: customer, error: customerError } = await supabase
+      .from('customers')
+      .select(`
+        id, 
+        credits, 
+        last_monthly_credit_grant_date,
+        subscriptions (
+          creem_product_id,
+          status,
+          current_period_start,
+          current_period_end
+        )
+      `)
+      .eq('user_id', userId)
+      .single();
+
+    if (customerError) {
+      throw customerError;
+    }
+
+    // Check if user has active subscription
+    const subscription = customer.subscriptions?.[0];
+    if (!subscription || !['active', 'trialing'].includes(subscription.status)) {
+      console.log('ℹ️ User has no active subscription, no monthly credits to grant');
+      return false;
+    }
+
+    // Find the subscription tier config based on product ID
+    const subscriptionTier = SUBSCRIPTION_TIERS.find(tier => tier.productId === subscription.creem_product_id);
+    if (!subscriptionTier || !subscriptionTier.monthlyCredits) {
+      console.log('ℹ️ No monthly credits configured for this subscription tier');
+      return false;
+    }
+
+    // Check if credits were already granted this month
+    const currentPeriodStart = new Date(subscription.current_period_start);
+    const lastGrantDate = customer.last_monthly_credit_grant_date ? new Date(customer.last_monthly_credit_grant_date) : null;
+    
+    if (lastGrantDate && lastGrantDate >= currentPeriodStart) {
+      console.log('ℹ️ Monthly credits already granted for this billing period');
+      return false;
+    }
+
+    // Grant monthly credits (add to existing balance)
+    const newCreditAmount = customer.credits + subscriptionTier.monthlyCredits;
+    const today = new Date().toISOString().split('T')[0];
+    
+    const { error: updateError } = await supabase
+      .from('customers')
+      .update({ 
+        credits: newCreditAmount,
+        last_monthly_credit_grant_date: today,
+        monthly_credits_granted: subscriptionTier.monthlyCredits
+      })
+      .eq('id', customer.id);
+
+    if (updateError) {
+      throw updateError;
+    }
+
+    // Record the credit transaction
+    const { error: historyError } = await supabase
+      .from('credits_history')
+      .insert({
+        customer_id: customer.id,
+        amount: subscriptionTier.monthlyCredits,
+        type: 'add',
+        description: `Monthly credits - ${subscriptionTier.name}`,
+        metadata: {
+          granted_date: today,
+          billing_period_start: subscription.current_period_start,
+          billing_period_end: subscription.current_period_end,
+          subscription_tier: subscriptionTier.name,
+          product_id: subscription.creem_product_id,
+          user_email: email,
+          previous_credits: customer.credits
+        }
+      });
+
+    if (historyError) {
+      console.error('⚠️ Failed to record monthly credit history:', historyError);
+      // Don't throw error, credits were still granted
+    }
+
+    console.log(`✅ Granted ${subscriptionTier.monthlyCredits} monthly credits to ${subscriptionTier.name} subscriber ${email} (previous: ${customer.credits}, new: ${newCreditAmount})`);
+    return true;
+  } catch (error) {
+    console.error('❌ Error granting monthly credits:', error);
+    throw error;
+  }
+}
+
+/**
+ * Grant monthly credits to all active subscribers
+ * This function should be called by a scheduled job (e.g., daily cron)
+ */
+export async function grantMonthlyCreditsToAllSubscribers(): Promise<{ processed: number; granted: number; errors: number }> {
+  const supabase = createServiceRoleClient();
+  
+  try {
+    // Get all customers with active subscriptions
+    const { data: customers, error } = await supabase
+      .from('customers')
+      .select(`
+        user_id,
+        email,
+        credits,
+        last_monthly_credit_grant_date,
+        subscriptions!inner (
+          creem_product_id,
+          status,
+          current_period_start,
+          current_period_end
+        )
+      `)
+      .in('subscriptions.status', ['active', 'trialing']);
+
+    if (error) {
+      throw error;
+    }
+
+    let processed = 0;
+    let granted = 0;
+    let errors = 0;
+
+    for (const customer of customers || []) {
+      processed++;
+      try {
+        const wasGranted = await grantMonthlyCredits(customer.user_id, customer.email);
+        if (wasGranted) {
+          granted++;
+        }
+      } catch (error) {
+        console.error(`❌ Failed to grant monthly credits to ${customer.email}:`, error);
+        errors++;
+      }
+    }
+
+    console.log(`📊 Monthly credit grant summary: ${processed} processed, ${granted} granted, ${errors} errors`);
+    return { processed, granted, errors };
+  } catch (error) {
+    console.error('❌ Error in bulk monthly credit grant:', error);
+    throw error;
   }
 }

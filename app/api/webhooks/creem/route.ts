@@ -7,6 +7,7 @@ import {
   createOrUpdateSubscription,
   addCreditsToCustomer,
 } from "@/utils/supabase/subscriptions";
+import { grantMonthlyCredits } from "@/utils/credits";
 
 const CREEM_WEBHOOK_SECRET = process.env.CREEM_WEBHOOK_SECRET!;
 
@@ -103,6 +104,20 @@ async function handleSubscriptionActive(event: CreemWebhookEvent) {
 
     // Create or update subscription
     await createOrUpdateSubscription(subscription, customerId);
+
+    // Grant monthly credits for active subscription
+    if (subscription.metadata?.user_id && subscription.customer?.email) {
+      try {
+        await grantMonthlyCredits(
+          subscription.metadata.user_id,
+          subscription.customer.email
+        );
+        console.log(`✅ Monthly credits granted for subscription activation: ${subscription.customer.email}`);
+      } catch (creditError) {
+        console.error("⚠️ Failed to grant monthly credits on activation:", creditError);
+        // Don't fail the webhook for credit errors
+      }
+    }
   } catch (error) {
     console.error("Error handling subscription active:", error);
     throw error;
@@ -120,6 +135,20 @@ async function handleSubscriptionPaid(event: CreemWebhookEvent) {
       subscription.metadata?.user_id
     );
     await createOrUpdateSubscription(subscription, customerId);
+
+    // Grant monthly credits for paid subscription
+    if (subscription.metadata?.user_id && subscription.customer?.email) {
+      try {
+        await grantMonthlyCredits(
+          subscription.metadata.user_id,
+          subscription.customer.email
+        );
+        console.log(`✅ Monthly credits granted for subscription payment: ${subscription.customer.email}`);
+      } catch (creditError) {
+        console.error("⚠️ Failed to grant monthly credits on payment:", creditError);
+        // Don't fail the webhook for credit errors
+      }
+    }
   } catch (error) {
     console.error("Error handling subscription paid:", error);
     throw error;

@@ -7,6 +7,37 @@ export async function createOrUpdateCustomer(
 ) {
   const supabase = createServiceRoleClient();
 
+  // First check if customer exists by user_id (primary lookup)
+  const { data: existingCustomerByUserId, error: userIdFetchError } = await supabase
+    .from("customers")
+    .select()
+    .eq("user_id", userId)
+    .single();
+
+  if (userIdFetchError && userIdFetchError.code !== "PGRST116") {
+    throw userIdFetchError;
+  }
+
+  if (existingCustomerByUserId) {
+    // Update existing customer with Creem data, but preserve the original creem_customer_id if it was already a free account
+    const { error } = await supabase
+      .from("customers")
+      .update({
+        email: creemCustomer.email,
+        name: creemCustomer.name,
+        country: creemCustomer.country,
+        // Only update creem_customer_id if it's currently a free account pattern
+        ...(existingCustomerByUserId.creem_customer_id.startsWith('free_') ? 
+          { creem_customer_id: creemCustomer.id } : {}),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", existingCustomerByUserId.id);
+
+    if (error) throw error;
+    return existingCustomerByUserId.id;
+  }
+
+  // Check if customer exists by creem_customer_id (secondary lookup)
   const { data: existingCustomer, error: fetchError } = await supabase
     .from("customers")
     .select()
@@ -21,6 +52,7 @@ export async function createOrUpdateCustomer(
     const { error } = await supabase
       .from("customers")
       .update({
+        user_id: userId, // Update user_id in case it was missing
         email: creemCustomer.email,
         name: creemCustomer.name,
         country: creemCustomer.country,
@@ -32,6 +64,7 @@ export async function createOrUpdateCustomer(
     return existingCustomer.id;
   }
 
+  // Create new customer
   const { data: newCustomer, error } = await supabase
     .from("customers")
     .insert({
@@ -40,12 +73,18 @@ export async function createOrUpdateCustomer(
       email: creemCustomer.email,
       name: creemCustomer.name,
       country: creemCustomer.country,
+      credits: 0, // Start with 0 credits for paid customers
       updated_at: new Date().toISOString(),
     })
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('❌ Error creating customer in webhook:', error);
+    throw error;
+  }
+  
+  console.log(`✅ Created new customer from webhook: ${creemCustomer.email} (${creemCustomer.id})`);
   return newCustomer.id;
 }
 

@@ -19,6 +19,7 @@ export const SUBSCRIPTION_TIERS: ProductTier[] = [
     ],
     featured: false,
     discountCode: "",
+    monthlyCredits: 0, // Free users get daily credits, not monthly
   },
   {
     name: "Pro Plan",
@@ -40,6 +41,7 @@ export const SUBSCRIPTION_TIERS: ProductTier[] = [
     ],
     featured: true,
     discountCode: "",
+    monthlyCredits: 300, // Pro plan gets 300 credits per month
   },
   {
     name: "Ultra Plan",
@@ -61,6 +63,7 @@ export const SUBSCRIPTION_TIERS: ProductTier[] = [
     ],
     featured: false,
     discountCode: "",
+    monthlyCredits: 1500, // Ultra plan gets 1500 credits per month
   },
 ];
 

@@ -8,6 +8,7 @@ export interface ProductTier {
   featured: boolean;
   features?: string[];
   creditAmount?: number;
+  monthlyCredits?: number; // New field for subscription plans monthly credits
   discountCode?: string;
 }
 
