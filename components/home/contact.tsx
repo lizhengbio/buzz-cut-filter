@@ -166,31 +166,7 @@ function ContactForm() {
               .
             </p>
           </form>
-          <div className="lg:mt-6 lg:w-80 lg:flex-none">
-            <div className="h-12 w-auto flex items-center">
-              <Logo />
-            </div>
-            <figure className="mt-10">
-              <blockquote className="text-lg/8 font-semibold text-gray-800">
-                <p>
-                  "Buzz Cut AI Preview let me see the result before cutting! So practical! The generated effect is very realistic and gave me great confidence."
-                </p>
-              </blockquote>
-              <figcaption className="mt-10 flex gap-x-6">
-                <div className="size-12 flex-none rounded-full overflow-hidden">
-                  <img 
-                    src="/images/Satisfied Customer.jpg" 
-                    alt="Satisfied Customer" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
-                  <div className="text-base font-semibold text-gray-800">John D.</div>
-                  <div className="text-sm/6 text-gray-600">Satisfied Customer</div>
-                </div>
-              </figcaption>
-            </figure>
-          </div>
+
         </div>
       </div>
     </div>
