@@ -15,7 +15,7 @@ const plans = [
     period: "",
     description: "Perfect for trying out our Face-Lock buzz cut simulator",
     features: [
-      "5 credits per day",
+      "10 credits per day",
       "Watermarked images",
       "Basic color options (No change, Black, Brown, Gold, Gray)",
       "Ad-supported experience",

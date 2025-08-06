@@ -2,6 +2,7 @@
 
 import { sendContactEmailAction } from "@/app/actions";
 import { FormMessage, type Message } from "@/components/form-message";
+import { Logo } from "@/components/logo";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { useRef } from "react";
@@ -167,7 +168,7 @@ function ContactForm() {
           </form>
           <div className="lg:mt-6 lg:w-80 lg:flex-none">
             <div className="h-12 w-auto flex items-center">
-              <span className="text-2xl font-bold text-blue-600">🔥 Buzz Cut AI</span>
+              <Logo />
             </div>
             <figure className="mt-10">
               <blockquote className="text-lg/8 font-semibold text-gray-800">
