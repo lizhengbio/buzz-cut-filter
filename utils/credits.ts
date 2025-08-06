@@ -19,10 +19,10 @@ export async function getUserCredits(userId: string): Promise<CustomerCredits | 
   const supabase = createClient();
   
   try {
-    // Get customer data with credits
+    // Get customer data with credits and id
     const { data: customer, error: customerError } = await supabase
       .from('customers')
-      .select('credits, updated_at')
+      .select('id, credits, updated_at')
       .eq('user_id', userId)
       .single();
 
