@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { SubscriptionStatusCard } from "@/components/dashboard/subscription-status-card";
 import { CreditsBalanceCard } from "@/components/dashboard/credits-balance-card";
 import { QuickActionsCard } from "@/components/dashboard/quick-actions-card";
+import { DailyCreditGranter } from "@/components/dashboard/daily-credit-granter";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -38,10 +39,13 @@ export default async function DashboardPage() {
 
   const subscription = customerData?.subscriptions?.[0];
   const credits = customerData?.credits || 0;
-  const recentCreditsHistory = customerData?.credits_history?.slice(0, 2) || [];
+  const recentCreditsHistory = customerData?.credits_history?.slice(0, 5) || [];
 
   return (
     <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 px-4 sm:px-8 container">
+      {/* Auto-grant daily credits component */}
+      <DailyCreditGranter />
+      
       {/* Welcome Banner */}
       <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border rounded-lg p-6 sm:p-8 mt-6 sm:mt-8">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2 break-words">
@@ -50,6 +54,7 @@ export default async function DashboardPage() {
         </h1>
         <p className="text-sm sm:text-base text-muted-foreground">
           Manage your subscription and credits from your personal dashboard.
+          {!subscription && " Free users get 10 credits daily!"}
         </p>
       </div>
 
@@ -59,6 +64,7 @@ export default async function DashboardPage() {
         <CreditsBalanceCard
           credits={credits}
           recentHistory={recentCreditsHistory}
+          isSubscribed={!!subscription}
         />
         <QuickActionsCard />
       </div>

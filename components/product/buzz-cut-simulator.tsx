@@ -1,11 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useUser } from "@/hooks/use-user";
+import { useCredits } from "@/hooks/use-credits";
+import { useToast } from "@/hooks/use-toast";
 import { ImageUpload } from "./image-upload";
 import { ColorSelector } from "./color-selector";
 import { ResultDisplay } from "./result-display";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Coins, User, Crown } from "lucide-react";
 
 export type GenerationStatus = "idle" | "uploading" | "generating" | "success" | "error";
 
@@ -18,10 +24,13 @@ export interface GenerationResult {
   createdAt: Date;
 }
 
-
-
 export function BuzzCutSimulator() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { user } = useUser();
+  const { credits, loading: creditsLoading, canGenerateImage, refreshCredits, isSubscribed } = useCredits();
+  const { toast } = useToast();
+  
   const [status, setStatus] = useState<GenerationStatus>("idle");
   const [selectedColor, setSelectedColor] = useState<string>("black");
   const [result, setResult] = useState<GenerationResult | null>(null);
@@ -138,6 +147,31 @@ export function BuzzCutSimulator() {
       return;
     }
 
+    // Check if user is authenticated
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to generate buzz cut images.",
+        variant: "destructive",
+      });
+      router.push('/sign-in');
+      return;
+    }
+
+    // Check if user can generate
+    if (!canGenerateImage) {
+      const message = isSubscribed 
+        ? "Something went wrong. Please try again." 
+        : `You need 5 credits to generate. You have ${credits?.credits || 0} credits.`;
+      
+      toast({
+        title: "Cannot Generate",
+        description: message,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setStatus("generating");
     setError(null);
     
@@ -145,7 +179,7 @@ export function BuzzCutSimulator() {
       console.log("🚀 Starting generation with:", {
         imageBase64Length: imageBase64.length,
         color: selectedColor,
-        tier: "free"
+        tier: isSubscribed ? "pro" : "free"
       });
       
       const response = await fetch("/api/generate", {
@@ -156,15 +190,40 @@ export function BuzzCutSimulator() {
         body: JSON.stringify({
           image_base64: imageBase64,
           color: selectedColor,
-          tier: "free",
+          tier: isSubscribed ? "pro" : "free",
         }),
       });
       
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error("Failed to generate buzz cut");
+        if (response.status === 401) {
+          // Authentication required
+          toast({
+            title: "Authentication Required",
+            description: data.error || "Please sign in to generate images.",
+            variant: "destructive",
+          });
+          router.push('/sign-in');
+          return;
+        } else if (response.status === 402) {
+          // Insufficient credits
+          toast({
+            title: "Insufficient Credits",
+            description: data.error || "You don't have enough credits to generate.",
+            variant: "destructive",
+          });
+          refreshCredits(); // Refresh to show current credits
+          setStatus("idle");
+          return;
+        }
+        throw new Error(data.error || "Failed to generate buzz cut");
       }
       
-      const data = await response.json();
+      // Refresh credits after successful generation start
+      if (!isSubscribed) {
+        refreshCredits();
+      }
       
       // Poll for result using kie.ai API with timeout
       const pollResult = async (taskId: string, attempts: number = 0) => {
@@ -223,13 +282,42 @@ export function BuzzCutSimulator() {
       console.error("Generation error:", error);
       setError(error instanceof Error ? error.message : "Generation failed. Please try again.");
       setStatus("idle");
+      // Refresh credits in case there was a refund
+      if (!isSubscribed) {
+        refreshCredits();
+      }
     }
+  };
+
+  const renderCreditsInfo = () => {
+    if (!user) {
+      return (
+        <Alert className="mb-4">
+          <User className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Sign in required:</strong> Please sign in to use the buzz cut generator. Free users get 10 credits daily!
+          </AlertDescription>
+        </Alert>
+      );
+    }
+
+    if (!canGenerateImage && !isSubscribed) {
+      return (
+        <Alert className="mb-4 border-red-200 bg-red-50">
+          <Coins className="h-4 w-4 text-red-600" />
+          <AlertDescription className="text-red-800">
+            <strong>Insufficient Credits:</strong> You need 5 credits to generate. 
+            {credits?.credits === 0 ? " Sign in daily for free credits!" : ` You have ${credits?.credits || 0} credits.`}
+          </AlertDescription>
+        </Alert>
+      );
+    }
+
+    return null;
   };
 
   return (
     <div id="buzz-cut-simulator" className="max-w-6xl mx-auto p-4 space-y-8">
-
-
       <Card id="upload-section">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
@@ -240,6 +328,8 @@ export function BuzzCutSimulator() {
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
+          {renderCreditsInfo()}
+          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-4">
               <ImageUpload
@@ -255,9 +345,10 @@ export function BuzzCutSimulator() {
               />
               
               <div className="flex justify-center">
-                <button
+                <Button
                   onClick={handleGenerate}
-                  disabled={!uploadedImageUrl || status === "generating"}
+                  disabled={!uploadedImageUrl || status === "generating" || (!user || (!canGenerateImage && !isSubscribed))}
+                  size="lg"
                   className="px-8 py-4 bg-gradient-to-r from-primary to-blue-600 text-white font-bold rounded-lg shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 disabled:hover:scale-100"
                 >
                   {status === "generating" ? (
@@ -265,13 +356,23 @@ export function BuzzCutSimulator() {
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       Generating Your Look...
                     </div>
+                  ) : !user ? (
+                    <div className="flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      Sign In to Generate
+                    </div>
                   ) : (
                     <div className="flex items-center gap-2">
                       <span className="text-lg">✨</span>
                       Generate My Buzz Cut
+                      {!isSubscribed && (
+                        <span className="ml-2 px-2 py-1 bg-white/20 rounded-full text-xs">
+                          5 credits
+                        </span>
+                      )}
                     </div>
                   )}
-                </button>
+                </Button>
               </div>
             </div>
             
@@ -284,6 +385,7 @@ export function BuzzCutSimulator() {
                   setResult(null);
                   setError(null);
                   setStatus("idle");
+                  refreshCredits();
                 }}
               />
             </div>
