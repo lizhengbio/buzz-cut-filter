@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -13,6 +14,7 @@ interface ColorSelectorProps {
   selectedColor: string;
   onColorSelect: (color: string) => void;
   disabled?: boolean;
+  isSubscribed?: boolean;
 }
 
 const COLOR_OPTIONS = [
@@ -49,17 +51,33 @@ const COLOR_OPTIONS = [
   { id: "rose-gold", name: "Rose Gold", hex: "#e8b4b8", description: "Trendy rose gold" },
 ];
 
+// Free user limited options
+const FREE_COLOR_OPTIONS = [
+  { id: "no-change", name: "No change", hex: "#f0f0f0", description: "Keep original color" },
+  { id: "black", name: "Black", hex: "#1a1a1a", description: "Classic black hair" },
+  { id: "medium-brown", name: "Brown", hex: "#8b4513", description: "Natural brown hair" },
+  { id: "golden-blonde", name: "Gold", hex: "#ffdf00", description: "Warm golden tone" },
+  { id: "silver", name: "Gray", hex: "#c0c0c0", description: "Metallic silver" },
+];
+
 export function ColorSelector({
   selectedColor,
   onColorSelect,
   disabled = false,
+  isSubscribed = false,
 }: ColorSelectorProps) {
-  const selectedColorOption = COLOR_OPTIONS.find(c => c.id === selectedColor) || COLOR_OPTIONS[4]; // Default to black
+  const colorOptions = isSubscribed ? COLOR_OPTIONS : FREE_COLOR_OPTIONS;
+  const selectedColorOption = colorOptions.find(c => c.id === selectedColor) || colorOptions[1]; // Default to black for free, or first available
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">Choose Hair Color</CardTitle>
+        {!isSubscribed && (
+          <p className="text-sm text-muted-foreground">
+            Free users get 5 basic colors. <Link href="/pricing" className="text-primary font-medium hover:underline cursor-pointer">Upgrade to Pro</Link> for 30+ hair colors including vibrant shades!
+          </p>
+        )}
       </CardHeader>
       <CardContent className="space-y-4">
         <Select 
@@ -83,7 +101,7 @@ export function ColorSelector({
             </SelectValue>
           </SelectTrigger>
           <SelectContent className="max-h-[300px]">
-            {COLOR_OPTIONS.map((color) => (
+            {colorOptions.map((color) => (
               <SelectItem key={color.id} value={color.id} className="cursor-pointer">
                 <div className="flex items-center gap-3 py-1">
                   <div

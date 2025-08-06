@@ -32,7 +32,7 @@ export function BuzzCutSimulator() {
   const { toast } = useToast();
   
   const [status, setStatus] = useState<GenerationStatus>("idle");
-  const [selectedColor, setSelectedColor] = useState<string>("black");
+  const [selectedColor, setSelectedColor] = useState<string>(isSubscribed ? "black" : "black"); // Default to black for both
   const [result, setResult] = useState<GenerationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
@@ -342,6 +342,7 @@ export function BuzzCutSimulator() {
                 selectedColor={selectedColor}
                 onColorSelect={setSelectedColor}
                 disabled={status === "generating"}
+                isSubscribed={isSubscribed}
               />
               
               <div className="flex justify-center">
@@ -381,6 +382,7 @@ export function BuzzCutSimulator() {
                 status={status}
                 result={result}
                 error={error}
+                isSubscribed={isSubscribed}
                 onReset={() => {
                   setResult(null);
                   setError(null);

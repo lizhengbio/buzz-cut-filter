@@ -1,15 +1,18 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, RotateCcw, Share2, CheckCircle } from "lucide-react";
 import { GenerationResult, GenerationStatus } from "./buzz-cut-simulator";
+import { addWatermarkToImage } from "@/utils/watermark";
 
 interface ResultDisplayProps {
   status: GenerationStatus;
   result: GenerationResult | null;
   error: string | null;
   onReset: () => void;
+  isSubscribed?: boolean;
 }
 
 export function ResultDisplay({
@@ -17,18 +20,47 @@ export function ResultDisplay({
   result,
   error,
   onReset,
+  isSubscribed = false,
 }: ResultDisplayProps) {
+  const [watermarkedImage, setWatermarkedImage] = useState<string | null>(null);
+  const [isProcessingWatermark, setIsProcessingWatermark] = useState(false);
+
+  // Add watermark when result is available and user is not subscribed
+  useEffect(() => {
+    const processWatermark = async () => {
+      if (result && result.resultImageUrl && !isSubscribed && !watermarkedImage) {
+        setIsProcessingWatermark(true);
+        try {
+          const watermarked = await addWatermarkToImage(result.resultImageUrl, isSubscribed);
+          setWatermarkedImage(watermarked);
+        } catch (error) {
+          console.error('Failed to add watermark:', error);
+          setWatermarkedImage(result.resultImageUrl); // Fallback to original image
+        } finally {
+          setIsProcessingWatermark(false);
+        }
+      } else if (isSubscribed && result) {
+        // For subscribed users, use original image
+        setWatermarkedImage(result.resultImageUrl);
+      }
+    };
+
+    processWatermark();
+  }, [result, isSubscribed, watermarkedImage]);
+
+  const displayImage = watermarkedImage || result?.resultImageUrl;
   const handleDownload = async () => {
-    if (!result) return;
+    if (!displayImage) return;
     
     try {
-      const response = await fetch(result.resultImageUrl);
+      // Use watermarked image for download
+      const response = await fetch(displayImage);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       
       const a = document.createElement("a");
       a.href = url;
-      a.download = `buzz-cut-${result.id}.png`;
+      a.download = `buzz-cut-${result?.id || 'generated'}${isSubscribed ? '' : '-watermarked'}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -146,9 +178,16 @@ export function ResultDisplay({
             </div>
             <div>
               <p className="text-sm font-medium mb-3 text-center">Buzz Cut</p>
-              <div className="w-full max-w-xs mx-auto">
+              <div className="w-full max-w-xs mx-auto relative">
+                {isProcessingWatermark && !isSubscribed && (
+                  <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center z-10">
+                    <div className="bg-white/90 px-3 py-1 rounded-full text-xs">
+                      Adding watermark...
+                    </div>
+                  </div>
+                )}
                 <img
-                  src={result.resultImageUrl}
+                  src={displayImage}
                   alt="Buzz Cut Result"
                   className="w-full max-h-48 sm:max-h-56 object-contain rounded-lg bg-muted/20 shadow-sm"
                 />
@@ -183,11 +222,13 @@ export function ResultDisplay({
           </div>
           
           {/* Watermark Notice for Free Users */}
-          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-sm text-yellow-800">
-              Free version includes watermark. Upgrade to Pro for 4K downloads without watermark.
-            </p>
-          </div>
+          {!isSubscribed && (
+            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <p className="text-sm text-yellow-800">
+                <strong>Free Version:</strong> Images include buzzcutfilter.app watermark. Upgrade to Pro for 4K downloads without watermark.
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
     );
