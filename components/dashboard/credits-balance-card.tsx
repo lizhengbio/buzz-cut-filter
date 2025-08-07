@@ -16,7 +16,7 @@ export function CreditsBalanceCard({
   isSubscribed = false,
 }: CreditsBalanceCardProps) {
   const canGenerate = isSubscribed || credits >= 5;
-  const maxGenerations = isSubscribed ? "Unlimited" : Math.floor(credits / 5);
+  const maxGenerations = Math.floor(credits / 5);
 
   return (
     <div className="rounded-xl border bg-card p-6">
@@ -30,10 +30,10 @@ export function CreditsBalanceCard({
         </div>
         <div>
           <p className="text-sm text-muted-foreground">
-            {isSubscribed ? "Premium User" : "Available Credits"}
+            {isSubscribed ? "Premium Credits" : "Available Credits"}
           </p>
           <h3 className="text-2xl font-bold mt-1">
-            {isSubscribed ? "Unlimited" : credits}
+            {credits}
           </h3>
         </div>
       </div>
@@ -49,7 +49,7 @@ export function CreditsBalanceCard({
         <div className="flex items-center justify-between text-sm mt-1">
           <span className="text-muted-foreground">Cost per generation:</span>
           <span className="font-medium">
-            {isSubscribed ? "Free" : "5 credits"}
+            5 credits {isSubscribed ? "(Premium rate)" : ""}
           </span>
         </div>
       </div>
@@ -63,6 +63,19 @@ export function CreditsBalanceCard({
           </div>
           <p className="text-xs text-blue-700 mt-1">
             Free users get 10 credits daily. Credits reset every 24 hours.
+          </p>
+        </div>
+      )}
+
+      {/* Premium Info for Subscribed Users */}
+      {isSubscribed && (
+        <div className="mt-4 p-3 rounded-lg border border-yellow-200 bg-yellow-50">
+          <div className="flex items-center gap-2 text-sm text-yellow-800">
+            <Crown className="h-4 w-4" />
+            <span className="font-medium">Premium Subscription:</span>
+          </div>
+          <p className="text-xs text-yellow-700 mt-1">
+            You receive monthly credits with your subscription. Credits accumulate and don't expire.
           </p>
         </div>
       )}

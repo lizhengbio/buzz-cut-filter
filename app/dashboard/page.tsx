@@ -17,6 +17,7 @@ export default async function DashboardPage() {
   }
 
   // Get customer data including credits and subscription
+  // Order by created_at desc to get the latest customer record
   const { data: customerData } = await supabase
     .from("customers")
     .select(
@@ -35,6 +36,8 @@ export default async function DashboardPage() {
     `
     )
     .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(1)
     .single();
 
   const subscription = customerData?.subscriptions?.[0];

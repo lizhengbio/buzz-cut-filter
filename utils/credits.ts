@@ -57,78 +57,91 @@ export async function ensureCustomerExists(userId: string, email: string, name?:
   const supabase = createServiceRoleClient();
   
   try {
-    // Check if customer exists
-    const { data: existingCustomer } = await supabase
+    // Check if customer exists (use consistent query)
+    const { data: existingCustomer, error: fetchError } = await supabase
       .from('customers')
       .select('id')
       .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(1)
       .single();
 
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error('❌ Error checking existing customer:', fetchError);
+      throw fetchError;
+    }
+
     if (existingCustomer) {
+      console.log(`ℹ️ Customer already exists: ${email} (${existingCustomer.id})`);
       return existingCustomer.id;
     }
 
-    // Generate a unique creem_customer_id by checking for conflicts
-    let creemCustomerId = `free_${userId}`;
-    let suffix = 1;
+    console.log(`🔄 Creating new customer for user: ${email} (${userId})`);
+
+    // Generate a unique creem_customer_id with timestamp to avoid conflicts
+    const timestamp = Date.now();
+    const creemCustomerId = `free_${userId}_${timestamp}`;
     
-    while (true) {
-      try {
-        // Create new customer with 10 initial credits
-        const { data: newCustomer, error } = await supabase
+    // Create new customer with 10 initial credits
+    const { data: newCustomer, error } = await supabase
+      .from('customers')
+      .insert({
+        user_id: userId,
+        creem_customer_id: creemCustomerId,
+        email: email.toLowerCase(),
+        name: name || '',
+        credits: 10, // Start with 10 credits for new users
+        last_credit_grant_date: new Date().toISOString().split('T')[0]
+      })
+      .select('id')
+      .single();
+
+    if (error) {
+      // If it's still a unique constraint violation, check if customer was created by another request
+      if (error.code === '23505') {
+        console.log(`⚠️ Unique constraint violation, checking if customer exists: ${error.message}`);
+        
+        // Try to find existing customer again
+        const { data: retryCustomer } = await supabase
           .from('customers')
-          .insert({
-            user_id: userId,
-            creem_customer_id: creemCustomerId,
-            email: email.toLowerCase(),
-            name: name || '',
-            credits: 10, // Start with 10 credits for new users
-            last_credit_grant_date: new Date().toISOString().split('T')[0]
-          })
           .select('id')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(1)
           .single();
-
-        if (error) {
-          // If it's a unique constraint violation on creem_customer_id, try with suffix
-          if (error.code === '23505' && error.message.includes('creem_customer_id')) {
-            creemCustomerId = `free_${userId}_${suffix}`;
-            suffix++;
-            continue; // Try again with new ID
-          }
-          console.error('❌ Error creating customer:', error);
-          throw error;
+          
+        if (retryCustomer) {
+          console.log(`✅ Found existing customer created by concurrent request: ${retryCustomer.id}`);
+          return retryCustomer.id;
         }
-
-        // Record initial credit grant
-        await supabase
-          .from('credits_history')
-          .insert({
-            customer_id: newCustomer.id,
-            amount: 10,
-            type: 'add',
-            description: 'Welcome bonus - Daily free credits',
-            metadata: {
-              granted_date: new Date().toISOString().split('T')[0],
-              welcome_bonus: true,
-              user_email: email
-            }
-          });
-
-        console.log(`✅ Created new customer with 10 initial credits: ${email} (${creemCustomerId})`);
-        return newCustomer.id;
-      } catch (insertError: any) {
-        // If we still get a constraint error, try with a different ID
-        if (insertError.code === '23505' && insertError.message.includes('creem_customer_id')) {
-          creemCustomerId = `free_${userId}_${suffix}`;
-          suffix++;
-          if (suffix > 10) {
-            throw new Error('Unable to generate unique customer ID after 10 attempts');
-          }
-          continue;
-        }
-        throw insertError;
       }
+      
+      console.error('❌ Error creating customer:', error);
+      throw error;
     }
+
+    // Record initial credit grant
+    try {
+      await supabase
+        .from('credits_history')
+        .insert({
+          customer_id: newCustomer.id,
+          amount: 10,
+          type: 'add',
+          description: 'Welcome bonus - Daily free credits',
+          metadata: {
+            granted_date: new Date().toISOString().split('T')[0],
+            welcome_bonus: true,
+            user_email: email
+          }
+        });
+    } catch (historyError) {
+      console.error('⚠️ Failed to record initial credit history:', historyError);
+      // Don't fail customer creation for this
+    }
+
+    console.log(`✅ Created new customer with 10 initial credits: ${email} (${creemCustomerId})`);
+    return newCustomer.id;
   } catch (error) {
     console.error('❌ Error ensuring customer exists:', error);
     throw error;
@@ -324,7 +337,7 @@ export async function grantMonthlyCredits(userId: string, email: string): Promis
         id, 
         credits, 
         last_monthly_credit_grant_date,
-        subscriptions (
+        subscriptions!inner (
           creem_product_id,
           status,
           current_period_start,
@@ -332,15 +345,17 @@ export async function grantMonthlyCredits(userId: string, email: string): Promis
         )
       `)
       .eq('user_id', userId)
+      .in('subscriptions.status', ['active', 'trialing'])
       .single();
 
     if (customerError) {
+      console.error('❌ Error fetching customer subscription data:', customerError);
       throw customerError;
     }
 
-    // Check if user has active subscription
+    // Check if user has active subscription (should exist due to inner join)
     const subscription = customer.subscriptions?.[0];
-    if (!subscription || !['active', 'trialing'].includes(subscription.status)) {
+    if (!subscription) {
       console.log('ℹ️ User has no active subscription, no monthly credits to grant');
       return false;
     }
@@ -348,7 +363,11 @@ export async function grantMonthlyCredits(userId: string, email: string): Promis
     // Find the subscription tier config based on product ID
     const subscriptionTier = SUBSCRIPTION_TIERS.find(tier => tier.productId === subscription.creem_product_id);
     if (!subscriptionTier || !subscriptionTier.monthlyCredits) {
-      console.log('ℹ️ No monthly credits configured for this subscription tier');
+      console.log('ℹ️ No monthly credits configured for this subscription tier', {
+        product_id: subscription.creem_product_id,
+        available_tiers: SUBSCRIPTION_TIERS.map(t => ({ id: t.productId, name: t.name, credits: t.monthlyCredits })),
+        subscription_status: subscription.status
+      });
       return false;
     }
 
@@ -356,14 +375,36 @@ export async function grantMonthlyCredits(userId: string, email: string): Promis
     const currentPeriodStart = new Date(subscription.current_period_start);
     const lastGrantDate = customer.last_monthly_credit_grant_date ? new Date(customer.last_monthly_credit_grant_date) : null;
     
+    console.log('🔍 Checking monthly credit grant eligibility:', {
+      user_email: email,
+      subscription_tier: subscriptionTier.name,
+      monthly_credits: subscriptionTier.monthlyCredits,
+      current_period_start: subscription.current_period_start,
+      last_grant_date: customer.last_monthly_credit_grant_date,
+      current_credits: customer.credits
+    });
+    
+    // 强化防重复检查：检查当天是否已经授予过月度积分
+    const today = new Date().toISOString().split('T')[0];
     if (lastGrantDate && lastGrantDate >= currentPeriodStart) {
-      console.log('ℹ️ Monthly credits already granted for this billing period');
+      console.log('ℹ️ Monthly credits already granted for this billing period', {
+        last_grant_date: lastGrantDate.toISOString(),
+        current_period_start: currentPeriodStart.toISOString()
+      });
+      return false;
+    }
+
+    // 额外检查：如果今天已经授予过，也不重复授予
+    if (customer.last_monthly_credit_grant_date === today) {
+      console.log('ℹ️ Monthly credits already granted today', {
+        last_grant_date: today,
+        current_period_start: currentPeriodStart.toISOString()
+      });
       return false;
     }
 
     // Grant monthly credits (add to existing balance)
     const newCreditAmount = customer.credits + subscriptionTier.monthlyCredits;
-    const today = new Date().toISOString().split('T')[0];
     
     const { error: updateError } = await supabase
       .from('customers')
