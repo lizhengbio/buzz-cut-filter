@@ -10,9 +10,10 @@ export async function POST(request: Request) {
     const headersList = headers();
     
     const allHeaders = {} as Record<string, string>;
-    for (const [key, value] of (await headersList).entries()) {
+    const h = await headersList;
+    h.forEach((value, key) => {
       allHeaders[key] = value;
-    }
+    });
 
     const timestamp = new Date().toISOString();
     
