@@ -74,7 +74,7 @@ export async function GET(request: Request) {
   } catch (error) {
     return NextResponse.json({ 
       error: "Internal server error",
-      details: error.message
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

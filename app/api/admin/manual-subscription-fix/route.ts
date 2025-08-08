@@ -129,7 +129,7 @@ export async function POST(request: Request) {
       console.log('💰 Monthly credits grant result:', creditGrantResult);
     } catch (creditError) {
       console.error('❌ Failed to grant monthly credits:', creditError);
-      creditGrantResult = { error: creditError.message };
+      creditGrantResult = { error: creditError instanceof Error ? creditError.message : 'Unknown error' };
     }
 
     // 6. 获取最终状态
@@ -165,7 +165,7 @@ export async function POST(request: Request) {
     console.error('❌ Manual subscription fix error:', error);
     return NextResponse.json({
       error: "Internal server error",
-      details: error.message
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

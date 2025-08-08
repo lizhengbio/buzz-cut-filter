@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     }
 
     // 检查是否有活跃订阅
-    const activeSubscription = customer.subscriptions?.find(sub => 
+    const activeSubscription = customer.subscriptions?.find((sub: { status: string }) => 
       ['active', 'trialing'].includes(sub.status)
     );
 
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
     }
 
     // 找到订阅层级
-    const subscriptionTier = SUBSCRIPTION_TIERS.find(tier => 
+    const subscriptionTier = SUBSCRIPTION_TIERS.find((tier) => 
       tier.productId === activeSubscription.creem_product_id
     );
 
@@ -70,14 +70,15 @@ export async function POST(request: Request) {
     }
 
     // 计算正确的积分数
-    const welcomeBonusEntries = customer.credits_history?.filter(entry => 
+    const welcomeBonusEntries = customer.credits_history?.filter((entry: { type: string; description?: string | null }) => 
       entry.type === 'add' && 
       entry.description?.includes('Welcome bonus')
     ) || [];
 
+    const monthlyCredits = subscriptionTier.monthlyCredits ?? 0;
     const correctCredits = 
       (welcomeBonusEntries.length > 0 ? 10 : 0) + // 欢迎奖励
-      subscriptionTier.monthlyCredits; // 一次月度积分
+      monthlyCredits; // 一次月度积分
 
     // 直接设置正确的积分数
     const { error: updateError } = await supabase
@@ -103,7 +104,7 @@ export async function POST(request: Request) {
         customer_id: customer.id,
         amount: Math.abs(creditsChange),
         type: creditsChange > 0 ? 'add' : 'subtract',
-        description: `Admin Fix: Set correct credits to ${correctCredits} (${subscriptionTier.name}: 10 welcome + ${subscriptionTier.monthlyCredits} monthly)`,
+        description: `Admin Fix: Set correct credits to ${correctCredits} (${subscriptionTier.name}: 10 welcome + ${monthlyCredits} monthly)`,
         metadata: {
           fix_date: new Date().toISOString(),
           original_credits: customer.credits,
@@ -126,9 +127,9 @@ export async function POST(request: Request) {
         original_credits: customer.credits,
         corrected_credits: correctCredits,
         credits_change: creditsChange,
-        calculation: {
+         calculation: {
           welcome_bonus: welcomeBonusEntries.length > 0 ? 10 : 0,
-          monthly_credits: subscriptionTier.monthlyCredits,
+           monthly_credits: monthlyCredits,
           total: correctCredits
         }
       }
@@ -138,7 +139,7 @@ export async function POST(request: Request) {
     console.error('❌ Error setting correct credits:', error);
     return NextResponse.json({
       error: "Internal server error",
-      details: error.message
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

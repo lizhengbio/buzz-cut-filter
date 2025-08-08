@@ -44,7 +44,7 @@ export async function GET(request: Request) {
 
     const subscription = customer.subscriptions?.[0];
     const subscriptionTier = subscription ? 
-      SUBSCRIPTION_TIERS.find(tier => tier.productId === subscription.creem_product_id) : null;
+      SUBSCRIPTION_TIERS.find((tier) => tier.productId === subscription.creem_product_id) : null;
 
     // ⚠️ 已禁用：不在调试端点中实际授予积分，只检查资格
     let creditGrantResult = null;
@@ -94,7 +94,7 @@ export async function GET(request: Request) {
   } catch (error) {
     return NextResponse.json({ 
       error: "Internal server error",
-      details: error.message
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

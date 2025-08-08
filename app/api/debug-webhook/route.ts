@@ -67,7 +67,7 @@ export async function POST(request: Request) {
           type: 'debug_webhook_error',
           data: {
             timestamp: new Date().toISOString(),
-            error: error.message
+            error: error instanceof Error ? error.message : 'Unknown error'
           }
         })
       });
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: false,
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString()
     }, { status: 200 }); // 返回200以避免Creem重试
   }
