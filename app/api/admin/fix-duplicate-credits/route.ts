@@ -48,8 +48,9 @@ export async function POST(request: Request) {
     }
 
     // 检查是否有活跃订阅
-    const activeSubscription = customer.subscriptions?.find(sub => 
-      ['active', 'trialing'].includes(sub.status)
+    const activeSubscription = customer.subscriptions?.find(
+      (sub: { status: string; creem_product_id: string }) =>
+        ['active', 'trialing'].includes(sub.status)
     );
 
     if (!activeSubscription) {
@@ -70,15 +71,17 @@ export async function POST(request: Request) {
     }
 
     // 分析积分历史
-    const monthlyCreditsEntries = customer.credits_history?.filter(entry => 
-      entry.type === 'add' && 
-      entry.description?.includes('Monthly credits')
-    ) || [];
+    const monthlyCreditsEntries =
+      customer.credits_history?.filter(
+        (entry: { amount: number; type: string; description?: string | null }) =>
+          entry.type === 'add' && entry.description?.includes('Monthly credits')
+      ) || [];
 
-    const welcomeBonusEntries = customer.credits_history?.filter(entry => 
-      entry.type === 'add' && 
-      entry.description?.includes('Welcome bonus')
-    ) || [];
+    const welcomeBonusEntries =
+      customer.credits_history?.filter(
+        (entry: { amount: number; type: string; description?: string | null }) =>
+          entry.type === 'add' && entry.description?.includes('Welcome bonus')
+      ) || [];
 
     const correctCredits = 
       (welcomeBonusEntries.length > 0 ? 10 : 0) + // 欢迎奖励
@@ -158,9 +161,10 @@ export async function POST(request: Request) {
 
   } catch (error) {
     console.error('❌ Error fixing duplicate credits:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json({
       error: "Internal server error",
-      details: error.message
+      details: message
     }, { status: 500 });
   }
 }
