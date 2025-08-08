@@ -21,7 +21,7 @@ export async function GET(request: Request) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ test: 'local webhook test' })
-    }).then(res => res.json()).catch(err => ({ error: err.message }));
+    }).then(res => res.json()).catch(err => ({ error: err instanceof Error ? err.message : 'Unknown error' }));
 
     let externalTest = null;
     if (testUrl) {
@@ -33,7 +33,7 @@ export async function GET(request: Request) {
           body: JSON.stringify({ test: 'external webhook test' })
         }).then(res => res.json());
       } catch (err) {
-        externalTest = { error: err.message };
+        externalTest = { error: err instanceof Error ? err.message : 'Unknown error' };
       }
     }
 

@@ -34,11 +34,11 @@ export async function POST(request: Request) {
     });
 
     // 查找订阅层级配置
-    const subscriptionTier = SUBSCRIPTION_TIERS.find(tier => tier.productId === product_id);
+    const subscriptionTier = SUBSCRIPTION_TIERS.find((tier) => tier.productId === product_id);
     if (!subscriptionTier) {
       return NextResponse.json({
         error: `Unknown product_id: ${product_id}`,
-        available_products: SUBSCRIPTION_TIERS.map(t => ({ id: t.productId, name: t.name }))
+        available_products: SUBSCRIPTION_TIERS.map((t) => ({ id: t.productId, name: t.name }))
       }, { status: 400 });
     }
 

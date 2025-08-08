@@ -84,7 +84,7 @@ export async function GET(request: Request) {
       } : null,
       credit_grant_test: creditGrantResult,
       recent_credit_history: customer.credits_history?.slice(0, 5),
-      available_subscription_tiers: SUBSCRIPTION_TIERS.map(tier => ({
+      available_subscription_tiers: SUBSCRIPTION_TIERS.map((tier) => ({
         product_id: tier.productId,
         name: tier.name,
         monthly_credits: tier.monthlyCredits

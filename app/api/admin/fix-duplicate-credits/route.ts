@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     }
 
     // 找到订阅层级
-    const subscriptionTier = SUBSCRIPTION_TIERS.find(tier => 
+    const subscriptionTier = SUBSCRIPTION_TIERS.find((tier) => 
       tier.productId === activeSubscription.creem_product_id
     );
 

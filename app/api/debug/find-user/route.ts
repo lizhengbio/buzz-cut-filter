@@ -27,7 +27,7 @@ export async function GET(request: Request) {
       }, { status: 500 });
     }
 
-    const matchingUser = authUsers.users.find(user => 
+    const matchingUser = authUsers.users.find((user: { email?: string }) => 
       user.email?.toLowerCase() === email.toLowerCase()
     );
 

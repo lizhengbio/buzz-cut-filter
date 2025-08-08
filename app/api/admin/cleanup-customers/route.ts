@@ -28,7 +28,7 @@ export async function POST() {
     }
 
     // 统计每个user_id的记录
-    const userIdGroups = allCustomers.reduce((acc, customer) => {
+    const userIdGroups = allCustomers.reduce((acc: Record<string, typeof allCustomers>, customer) => {
       if (!acc[customer.user_id]) {
         acc[customer.user_id] = [];
       }
@@ -43,7 +43,7 @@ export async function POST() {
       deleted: 0
     };
 
-    const duplicateUsers = Object.keys(userIdGroups).filter(userId => 
+    const duplicateUsers = Object.keys(userIdGroups).filter((userId: string) => 
       userIdGroups[userId].length > 1
     );
 

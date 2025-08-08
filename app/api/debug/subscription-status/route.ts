@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     const { data: subscriptions, error: subscriptionError } = await serviceSupabase
       .from('subscriptions')
       .select('*')
-      .in('customer_id', customers?.map(c => c.id) || []);
+      .in('customer_id', customers?.map((c: { id: string }) => c.id) || []);
 
     console.log('📋 Subscriptions:', subscriptions);
 
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     const { data: creditHistory, error: historyError } = await serviceSupabase
       .from('credits_history')
       .select('*')
-      .in('customer_id', customers?.map(c => c.id) || [])
+      .in('customer_id', customers?.map((c: { id: string }) => c.id) || [])
       .order('created_at', { ascending: false })
       .limit(10);
 
