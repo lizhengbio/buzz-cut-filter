@@ -89,7 +89,8 @@ export async function POST(request: Request) {
       monthlyCredits; // 一次月度积分
 
     const actualMonthlyCreditsGranted = monthlyCreditsEntries.reduce(
-      (sum, entry) => sum + entry.amount, 0
+      (sum: number, entry: { amount: number }) => sum + entry.amount,
+      0
     );
 
     const excessCredits = actualMonthlyCreditsGranted - monthlyCredits;
