@@ -68,7 +68,7 @@ export async function POST() {
       console.log(`🔍 处理用户 ${userId}:`, {
         total_records: userRecords.length,
         keeping: latestRecord.id,
-        deleting: recordsToDelete.map(r => r.id),
+        deleting: recordsToDelete.map((r: { id: string }) => r.id),
         latest_credits: latestRecord.credits
       });
 
@@ -110,9 +110,10 @@ export async function POST() {
 
   } catch (error) {
     console.error('❌ 清理过程中发生错误:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json({
       success: false,
-      error: error.message
+      error: message
     }, { status: 500 });
   }
 }
