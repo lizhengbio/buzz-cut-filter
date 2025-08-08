@@ -83,15 +83,16 @@ export async function POST(request: Request) {
           entry.type === 'add' && entry.description?.includes('Welcome bonus')
       ) || [];
 
+    const monthlyCredits = subscriptionTier.monthlyCredits ?? 0;
     const correctCredits = 
       (welcomeBonusEntries.length > 0 ? 10 : 0) + // 欢迎奖励
-      subscriptionTier.monthlyCredits; // 一次月度积分
+      monthlyCredits; // 一次月度积分
 
     const actualMonthlyCreditsGranted = monthlyCreditsEntries.reduce(
       (sum, entry) => sum + entry.amount, 0
     );
 
-    const excessCredits = actualMonthlyCreditsGranted - subscriptionTier.monthlyCredits;
+    const excessCredits = actualMonthlyCreditsGranted - monthlyCredits;
 
     if (excessCredits <= 0) {
       return NextResponse.json({
@@ -100,7 +101,7 @@ export async function POST(request: Request) {
           current_credits: customer.credits,
           expected_credits: correctCredits,
           monthly_credits_granted: actualMonthlyCreditsGranted,
-          expected_monthly_credits: subscriptionTier.monthlyCredits,
+          expected_monthly_credits: monthlyCredits,
           excess_credits: excessCredits
         }
       });
