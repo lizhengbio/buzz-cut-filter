@@ -1,4 +1,4 @@
-'use client'
+// Server Component: purely presentational, no client-side JS needed
 
 import { 
   GiftIcon, 
