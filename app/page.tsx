@@ -6,12 +6,8 @@ import Contact from "@/components/home/contact";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-const HowToUse = dynamic(() => import("@/components/home/how-to-use"), {
-  ssr: false,
-});
-const Pricing = dynamic(() => import("@/components/home/pricing"), {
-  ssr: false,
-});
+const HowToUse = dynamic(() => import("@/components/home/how-to-use"));
+const Pricing = dynamic(() => import("@/components/home/pricing"));
 
 // How to Use Interactive Component
 export default function Home() {
