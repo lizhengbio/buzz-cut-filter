@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Hero from "@/components/home/hero";
 import Features from "@/components/home/features";
 import FAQ from "@/components/home/faq";
@@ -23,10 +24,16 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
             {/* Left Column - Image */}
             <div className="lg:w-1/2">
-              <img
+              <Image
                 src="/images/Try on Buzz Cut Filter in a Snap.jpg"
                 alt="turn female short hair portrait into buzz cut"
-                className="w-full rounded-2xl shadow-lg"
+                width={1024}
+                height={768}
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="w-full rounded-2xl shadow-lg h-auto"
               />
             </div>
             {/* Right Column - Content */}
@@ -80,10 +87,16 @@ export default function Home() {
 
               {/* Right Column - Image */}
               <div className="lg:w-1/2">
-                <img 
-                  src="/images/Effortlessly Give Yourself a Buzzcut Look.jpeg" 
-                  alt="generate buzz cut looks of both man and woman" 
-                  className="w-full rounded-2xl shadow-lg"
+                <Image
+                  src="/images/Effortlessly Give Yourself a Buzzcut Look.jpeg"
+                  alt="generate buzz cut looks of both man and woman"
+                  width={1024}
+                  height={768}
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="w-full rounded-2xl shadow-lg h-auto"
                 />
               </div>
             </div>
@@ -96,10 +109,16 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
             {/* Left Column - Image */}
             <div className="lg:w-1/2">
-              <img
+              <Image
                 src="/images/Create Scroll-Stopping Posts with Buzz Cut.jpeg"
                 alt="post buzz cut portrait on instagram"
-                className="w-full rounded-2xl shadow-lg"
+                width={1024}
+                height={768}
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="w-full rounded-2xl shadow-lg h-auto"
               />
             </div>
             {/* Right Column - Content */}

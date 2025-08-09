@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import { useState } from 'react'
 
 const categories = [
@@ -78,10 +80,16 @@ export default function StunningQuality() {
                   <div className="w-full">
                     {activeCategory === 'male' ? (
                       <div className="relative w-full">
-                        <img 
+                        <Image 
                           src="/images/male-after.png" 
                           alt="AI Buzz Cut Result" 
-                          className="w-full aspect-video object-cover"
+                          width={1280}
+                          height={720}
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                          sizes="(min-width: 1024px) 960px, 100vw"
+                          className="w-full aspect-video object-cover h-auto"
                         />
                         <div className="absolute top-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm font-medium">
                           After
@@ -89,10 +97,16 @@ export default function StunningQuality() {
                       </div>
                     ) : activeCategory === 'female' ? (
                       <div className="relative w-full">
-                        <img 
+                        <Image 
                           src="/images/female-after.png" 
                           alt="AI Buzz Cut Result" 
-                          className="w-full aspect-video object-cover"
+                          width={1280}
+                          height={720}
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                          sizes="(min-width: 1024px) 960px, 100vw"
+                          className="w-full aspect-video object-cover h-auto"
                         />
                         <div className="absolute top-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm font-medium">
                           After
@@ -119,10 +133,16 @@ export default function StunningQuality() {
                   >
                     {activeCategory === 'male' ? (
                       <div className="relative w-full h-full">
-                        <img 
+                        <Image 
                           src="/images/male-before.jpg" 
                           alt="Original Photo with Hair" 
-                          className="w-full aspect-video object-cover"
+                          width={1280}
+                          height={720}
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                          sizes="(min-width: 1024px) 960px, 100vw"
+                          className="w-full aspect-video object-cover h-auto"
                         />
                         <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm font-medium">
                           Before
@@ -130,10 +150,16 @@ export default function StunningQuality() {
                       </div>
                     ) : activeCategory === 'female' ? (
                       <div className="relative w-full h-full">
-                        <img 
+                        <Image 
                           src="/images/female-before.jpg" 
                           alt="Original Photo with Hair" 
-                          className="w-full aspect-video object-cover"
+                          width={1280}
+                          height={720}
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                          sizes="(min-width: 1024px) 960px, 100vw"
+                          className="w-full aspect-video object-cover h-auto"
                         />
                         <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm font-medium">
                           Before

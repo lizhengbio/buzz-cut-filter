@@ -9,6 +9,7 @@ import {
   LockClosedIcon,
   BoltIcon 
 } from '@heroicons/react/24/outline'
+import Image from "next/image";
 
 const features = [
   {
@@ -96,10 +97,16 @@ export default function Features() {
 
             {/* Main illustration */}
             <div className="relative z-10 max-w-md mx-auto">
-              <img 
-                src="/images/benefit.jpg" 
-                alt="AI-powered buzz cut preview benefits illustration" 
-                className="w-full object-contain rounded-lg shadow-lg"
+              <Image
+                src="/images/benefit.jpg"
+                alt="AI-powered buzz cut preview benefits illustration"
+                width={800}
+                height={600}
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                sizes="(min-width: 1024px) 33vw, 90vw"
+                className="w-full h-auto object-contain rounded-lg shadow-lg"
               />
             </div>
           </div>

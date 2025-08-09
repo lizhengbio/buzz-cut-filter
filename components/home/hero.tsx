@@ -1,6 +1,7 @@
 'use client'
 
 import { SparklesIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline'
+import Image from 'next/image'
 import { Button } from '../ui/button'
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -286,9 +287,15 @@ export default function Hero() {
                     {/* After image (base layer) */}
                     <div className="w-full h-full">
                       <div className="relative w-full h-full">
-                        <img 
+                        <Image 
                           src="/images/male-after.jpg" 
                           alt="AI Buzz Cut Result" 
+                          width={800}
+                          height={600}
+                          priority
+                          placeholder="blur"
+                          blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                          sizes="(min-width: 1024px) 540px, 100vw"
                           className="w-full h-full object-cover"
                         />
                         <div className="absolute bottom-3 right-3 bg-black/60 text-white px-2 py-1 rounded-xl text-xs font-semibold">
@@ -305,9 +312,15 @@ export default function Hero() {
                       }}
                     >
                       <div className="relative w-full h-full">
-                        <img 
+                        <Image 
                           src="/images/male-before.jpg" 
                           alt="Original Photo with Hair" 
+                          width={800}
+                          height={600}
+                          priority
+                          placeholder="blur"
+                          blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                          sizes="(min-width: 1024px) 540px, 100vw"
                           className="w-full h-full object-cover"
                         />
                         <div className="absolute bottom-3 left-3 bg-black/60 text-white px-2 py-1 rounded-xl text-xs font-semibold">
