@@ -146,7 +146,7 @@ export default function Pricing() {
                       variant="outline"
                       onClick={() => router.push("/buzz-cut-simulator")}
                     >
-                      Get Started Free
+                      Start Free Trial
                     </Button>
                   ) : (
                     <Button

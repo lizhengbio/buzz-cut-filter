@@ -44,9 +44,9 @@ export default function Home() {
               <p className="text-gray-600 text-lg leading-relaxed">
                 Have you ever wondered what you'd look like with a{' '}
                 <span className="text-yellow-500 font-medium">buzzcut</span>{' '}
-                but were too nervous to take the plunge? Now, you can easily try this bold look without committing to the clippers! Our{' '}
-                <span className="text-yellow-500 font-medium">free buzz cut filter</span>{' '}
-                lets you effortlessly preview a buzzcut style directly on your photos. In just a snap, you can see yourself with a clean, sharp buzzcut and decide if it's the right look for you.
+                but were too nervous to take the plunge? Now, you can easily try this bold look without committing to the clippers! Start a{' '}
+                <span className="text-yellow-500 font-medium">free trial</span>{' '}
+                to preview a buzzcut style directly on your photos. In just a snap, you can see yourself with a clean, sharp buzzcut and decide if it's the right look for you.
               </p>
               <Button
                 asChild

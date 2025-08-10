@@ -11,7 +11,7 @@ export default function PricingPreview() {
             Pricing Overview
           </h2>
           <p className="max-w-[95%] sm:max-w-[85%] text-lg leading-relaxed text-gray-600">
-            Start free, upgrade anytime. Visit full pricing for checkout and discounts.
+            Start with a free trial, upgrade anytime. Visit full pricing for checkout and discounts.
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export default function PricingPreview() {
               <div className="mt-8 pt-4">
                 {tier.id === "tier-free" ? (
                   <Button asChild className="w-full h-12 text-base font-medium" variant="outline">
-                    <Link href="/buzz-cut-simulator">Get Started Free</Link>
+                    <Link href="/buzz-cut-simulator">Start Free Trial</Link>
                   </Button>
                 ) : (
                   <Button asChild className="w-full h-12 text-base font-medium" variant={tier.featured ? "default" : "outline"}>

@@ -12,7 +12,7 @@ const baseUrl = process.env.BASE_URL
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
-  title: "Buzz Cut AI Preview - 100% Automatically and Free",
+  title: "Buzz Cut AI Preview - 100% Automatic, Free Trial",
   description: "Experience AI-powered buzz cut preview in 5 seconds with 1 click. Upload any photo and see your transformation instantly.",
   icons: {
     icon: [

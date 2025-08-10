@@ -70,7 +70,7 @@ export function Footer() {
             <Logo />
             <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
               AI-powered buzz cut preview platform. See your transformation instantly with our advanced face-lock technology. 
-              Safe, fast, and completely free to try.
+              Safe, fast, and available as a free trial.
             </p>
           </div>
           <div className="col-span-2 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-4">

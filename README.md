@@ -22,7 +22,7 @@ A modern AI hair transformation platform using Flux Kontext Pro model and face p
 - **Drag & Drop Upload** - Supports JPG, PNG, WEBP formats
 - **Instant Preview** - 1-3 minute fast generation
 - **Responsive Design** - Perfect adaptation for mobile, tablet, desktop
-- **No Registration Trial** - Free trial without registration required
+- **Free Trial**
 
 ### 💎 **Flexible Subscription Model**
 - **Free Version** - 3 daily uses, 720p with watermark

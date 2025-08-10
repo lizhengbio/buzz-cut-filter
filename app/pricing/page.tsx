@@ -28,7 +28,7 @@ const plans = [
       "Basic resolution with watermark",
       "Limited color options"
     ],
-    cta: "Get Started Free",
+    cta: "Start Free Trial",
     ctaHref: "/buzz-cut-simulator",
     popular: false,
     icon: Zap

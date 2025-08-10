@@ -237,9 +237,8 @@ export default function Hero() {
               <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
                 Online
               </span>{' '}
-              for{' '}
               <span className="relative">
-                Free
+                Free Trial
                 <svg className="absolute -bottom-2 left-0 w-full h-3" viewBox="0 0 120 12" fill="none">
                   <path
                     d="M2 10C20 4 40 2 60 6C80 2 100 4 118 10"
@@ -269,7 +268,7 @@ export default function Hero() {
                 <span>AI-Powered</span>
               </div>
               <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-              <span>No Registration Required</span>
+              <span>Free trial</span>
               <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
               <span>Instant Results</span>
             </div>

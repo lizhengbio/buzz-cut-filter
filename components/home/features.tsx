@@ -13,9 +13,9 @@ import Image from "next/image";
 
 const features = [
   {
-    name: 'Free',
+    name: 'Free Trial',
     description:
-      'Try our AI buzz cut filter without any registration required. Experience realistic buzz cut previews instantly without spending a penny.',
+      'Try our AI buzz cut filter with a free trial. Experience realistic buzz cut previews instantly.',
     icon: GiftIcon,
   },
   {

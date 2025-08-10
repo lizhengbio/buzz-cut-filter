@@ -154,7 +154,7 @@ export default function FAQPage() {
             </Button>
             <Button asChild variant="outline" size="lg">
               <Link href="/buzz-cut-simulator">
-                Try Free
+                Start Free Trial
               </Link>
             </Button>
           </div>
