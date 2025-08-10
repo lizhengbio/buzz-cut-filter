@@ -4,7 +4,6 @@ import Hero from "@/components/home/hero";
 import Features from "@/components/home/features";
 import FAQ from "@/components/home/faq";
 import Contact from "@/components/home/contact";
-import PricingPreview from "@/components/home/pricing-preview";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -195,8 +194,6 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Defer non-critical interactive section: keep preview static, full pricing deferred */}
-      <PricingPreview />
       <Pricing />
       <FAQ />
       <Contact />
