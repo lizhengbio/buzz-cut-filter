@@ -6,14 +6,29 @@ import FAQ from "@/components/home/faq";
 import Contact from "@/components/home/contact";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { generateStructuredData } from "@/lib/structured-data";
 
 const HowToUse = dynamic(() => import("@/components/home/how-to-use"));
 const Pricing = dynamic(() => import("@/components/home/pricing"));
 
 // How to Use Interactive Component
 export default function Home() {
+  const schemas = generateStructuredData();
+  
   return (
     <div className="flex flex-col">
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            schemas.organizationSchema,
+            schemas.websiteSchema,
+            schemas.webApplicationSchema,
+            schemas.serviceSchema
+          ])
+        }}
+      />
       <Hero />
 
       <Features />
@@ -172,10 +187,16 @@ export default function Home() {
 
             {/* Right Column - Image */}
             <div className="lg:w-1/2">
-              <img 
-                src="/images/Trick Friends With Realistic Buzzcut Portraits.jpeg" 
-                alt="send buzz cut portrait in whatsapp messaging box and share with friends" 
-                className="w-full rounded-2xl shadow-lg"
+              <Image
+                src="/images/Trick Friends With Realistic Buzzcut Portraits.jpeg"
+                alt="send buzz cut portrait in whatsapp messaging box and share with friends"
+                width={1024}
+                height={768}
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="w-full rounded-2xl shadow-lg h-auto"
               />
             </div>
           </div>
