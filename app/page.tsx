@@ -40,7 +40,7 @@ export default function Home() {
             {/* Left Column - Image */}
             <div className="lg:w-1/2">
               <Image
-                src="/images/Try on Buzz Cut Filter in a Snap.jpg"
+                src="/images/optimized/Try on Buzz Cut Filter in a Snap.webp"
                 alt="turn female short hair portrait into buzz cut"
                 width={1024}
                 height={768}
@@ -103,7 +103,7 @@ export default function Home() {
               {/* Right Column - Image */}
               <div className="lg:w-1/2">
                 <Image
-                  src="/images/Effortlessly Give Yourself a Buzzcut Look.jpeg"
+                  src="/images/optimized/Effortlessly Give Yourself a Buzzcut Look.webp"
                   alt="generate buzz cut looks of both man and woman"
                   width={1024}
                   height={768}
@@ -125,7 +125,7 @@ export default function Home() {
             {/* Left Column - Image */}
             <div className="lg:w-1/2">
               <Image
-                src="/images/Create Scroll-Stopping Posts with Buzz Cut.jpeg"
+                src="/images/optimized/Create Scroll-Stopping Posts with Buzz Cut.webp"
                 alt="post buzz cut portrait on instagram"
                 width={1024}
                 height={768}
@@ -188,7 +188,7 @@ export default function Home() {
             {/* Right Column - Image */}
             <div className="lg:w-1/2">
               <Image
-                src="/images/Trick Friends With Realistic Buzzcut Portraits.jpeg"
+                src="/images/optimized/Trick Friends With Realistic Buzzcut Portraits.webp"
                 alt="send buzz cut portrait in whatsapp messaging box and share with friends"
                 width={1024}
                 height={768}

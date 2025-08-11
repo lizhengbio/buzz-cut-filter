@@ -106,6 +106,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="//www.buzzcutfilter.app" />
+      </head>
       <body className="bg-white text-gray-900 antialiased">
         <ThemeProvider
           attribute="class"

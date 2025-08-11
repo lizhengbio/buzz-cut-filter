@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce layout shifts */
+img, video, svg {
+  height: auto;
+  max-width: 100%;
+}
+
+/* Critical performance improvements */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @layer utilities {
   .scrollbar-hide {
     scrollbar-width: none;

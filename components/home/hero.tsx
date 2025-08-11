@@ -280,18 +280,19 @@ export default function Hero() {
             {/* Left Column - Image Comparison */}
             <div className="flex-1 lg:max-w-[540px]">
               {/* Image comparison container */}
-              <div className="relative overflow-hidden bg-gray-100 border border-gray-200 select-none transition-all duration-300 rounded-2xl h-[360px]">
+              <div className="relative overflow-hidden bg-gray-100 border border-gray-200 select-none transition-all duration-300 rounded-2xl h-[360px] w-full">
                 <div className="relative h-full">
                   <div className="relative overflow-hidden h-full">
                     {/* After image (base layer) */}
                     <div className="w-full h-full">
                       <div className="relative w-full h-full">
                         <Image 
-                          src="/images/male-after.jpg" 
+                          src="/images/optimized/male-after.webp" 
                           alt="AI Buzz Cut Result" 
                           width={800}
                           height={600}
                           priority
+                          fetchPriority="high"
                           placeholder="blur"
                           blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
                           sizes="(min-width: 1024px) 540px, 100vw"
@@ -312,11 +313,12 @@ export default function Hero() {
                     >
                       <div className="relative w-full h-full">
                         <Image 
-                          src="/images/male-before.jpg" 
+                          src="/images/optimized/male-before.webp" 
                           alt="Original Photo with Hair" 
                           width={800}
                           height={600}
                           priority
+                          fetchPriority="high"
                           placeholder="blur"
                           blurDataURL="data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAADwAQCdASoQAAkAAUAmJQBOgB0AAABAAADAAAA"
                           sizes="(min-width: 1024px) 540px, 100vw"
@@ -481,9 +483,12 @@ export default function Hero() {
                               }}
                               disabled={isUploading}
                             >
-                              <img 
-                                src={`/images/${sample.filename}`}
+                              <Image 
+                                src={`/images/optimized/${sample.filename.replace(/\.(jpg|jpeg|png)$/i, '.webp')}`}
                                 alt={sample.alt}
+                                width={48}
+                                height={48}
+                                sizes="48px"
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement;
