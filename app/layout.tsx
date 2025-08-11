@@ -3,17 +3,84 @@ import { Footer } from "@/components/footer";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
+import { generateStructuredData } from "@/lib/structured-data";
 
 import "./globals.css";
 
 const baseUrl = process.env.BASE_URL
   ? `https://${process.env.BASE_URL}`
-  : "http://localhost:3000";
+  : process.env.NODE_ENV === 'production' 
+    ? "https://www.buzzcutfilter.app" 
+    : "http://localhost:3000";
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
-  title: "Buzz Cut AI Preview - 100% Automatic, Free Trial",
-  description: "Experience AI-powered buzz cut preview in 5 seconds with 1 click. Upload any photo and see your transformation instantly.",
+  title: {
+    default: "Buzz Cut AI Preview - 100% Automatic, Free Trial",
+    template: "%s | Buzz Cut AI"
+  },
+  description: "Experience AI-powered buzz cut preview in 5 seconds with 1 click. Upload any photo and see your transformation instantly with Face-Lock technology.",
+  keywords: [
+    'buzz cut simulator',
+    'AI haircut preview', 
+    'virtual buzz cut',
+    'hair transformation',
+    'buzz cut filter',
+    'haircut simulator',
+    'AI buzz cut',
+    'hair makeover',
+    'buzz cut generator'
+  ],
+  authors: [{ name: 'Buzz Cut AI' }],
+  creator: 'Buzz Cut AI',
+  publisher: 'Buzz Cut AI',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'Buzz Cut AI',
+    title: 'Buzz Cut AI Preview - 100% Automatic, Free Trial',
+    description: 'Experience AI-powered buzz cut preview in 5 seconds with 1 click. Upload any photo and see your transformation instantly.',
+    url: baseUrl,
+    images: [
+      {
+        url: '/images/BuzzCut AI Logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Buzz Cut AI - Virtual Haircut Simulator',
+      },
+    ],
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@BuzzCutAI',
+    creator: '@BuzzCutAI',
+    title: 'Buzz Cut AI Preview - 100% Automatic, Free Trial',
+    description: 'Experience AI-powered buzz cut preview in 5 seconds with 1 click. Try our free virtual buzz cut simulator.',
+    images: ['/images/BuzzCut AI Logo.png'],
+  },
+  verification: {
+    google: process.env.GOOGLE_VERIFICATION,
+    other: {
+      'msvalidate.01': process.env.BING_VERIFICATION,
+    },
+  },
+  alternates: {
+    canonical: baseUrl,
+    languages: {
+      'en-US': baseUrl,
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -24,6 +91,7 @@ export const metadata = {
     ],
     shortcut: '/favicon.ico',
   },
+  manifest: '/manifest.json',
 };
 
 const geistSans = Geist({

@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, X, Star, Crown, Zap } from "lucide-react";
 
+// Since this is a client component, we'll add metadata via a separate export
+// The metadata will be handled by a separate metadata.ts file in this directory
+
 const plans = [
   {
     name: "Free",

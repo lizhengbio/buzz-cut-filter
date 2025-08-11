@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# Disallow sensitive areas
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /debug/
+Disallow: /_next/
+Disallow: /temp-uploads/
+
+# Allow important directories
+Allow: /buzz-cut-simulator/
+Allow: /buzz-cut-guides/
+Allow: /pricing/
+Allow: /about-us/
+Allow: /contact/
+Allow: /blog/
+Allow: /faq/
+
+# Sitemap
+Sitemap: https://www.buzzcutfilter.app/sitemap.xml
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
